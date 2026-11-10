@@ -6,7 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Teaching material, not an application, for practical classes for *AI in Quantitative Biology*.
 
+Do not create worktrees unless necessary. Work in main.
 
+## New 3-session course (`course/`)
+
+`course/` is a separate, newer set of three 90-min practicals (QSAR toxicity, enzyme EC classes, GRU on protein targeting signals), in the style of `carlos-course/`: one self-contained notebook per session, solutions inline, `.py` = `nbconvert --to script` export. There the **notebooks are the source** (no generator); re-export the `.py` after editing. Datasets `data/enzymes.tsv` and `data/targeting.tsv` come from `course/data_prep/`. See `course/README.md` for the key numbers quoted in the answers. Everything below describes the older material.
 
 ## Commands
 

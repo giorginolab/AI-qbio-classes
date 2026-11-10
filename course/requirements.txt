@@ -1,0 +1,8 @@
+# AI in Quantitative Biology - three practicals
+# uv venv --python 3.12 && uv pip install -r course/requirements.txt
+numpy>=1.26
+pandas>=2.1
+scikit-learn>=1.4
+matplotlib>=3.8
+torch>=2.2            # t03 only; CPU build is enough
+jupyterlab>=4.0
