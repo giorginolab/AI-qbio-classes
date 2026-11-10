@@ -17,9 +17,9 @@
 # |---|---|---|
 # | 1 | Meet the data | 15 min |
 # | 2 | Correlations: what goes with toxicity? | 10 min |
-# | 3 | An unsupervised look: PCA | 10 min |
+# | 3 | An unsupervised look: PCA | 5 min |
 # | 4 | A first model: linear regression | 20 min |
-# | 5 | Non-linear models and cross-validation | 20 min |
+# | 5 | Non-linear models and cross-validation | 25 min |
 # | 6 | What did the model learn? | 10 min |
 # | 7 | Your turn: water fleas | homework |
 # 
@@ -32,7 +32,7 @@
 # On Google Colab, upload the `data/` folder to your Drive in `MyDrive/AI_QBio/data` and run the
 # cell below: it mounts the Drive and finds it there.
 
-# In[ ]:
+# In[1]:
 
 
 import sys
@@ -94,20 +94,20 @@ def load_aquatic():
 # | `NdssC` | number of `=C<` atoms (unsaturated carbons) |
 # | `MLOGP` | predicted octanol/water partition coefficient - **lipophilicity** ("how fatty") |
 
-# In[ ]:
+# In[2]:
 
 
 fish = load_fish()
 fish.head()
 
 
-# In[ ]:
+# In[3]:
 
 
 fish.describe()
 
 
-# In[ ]:
+# In[4]:
 
 
 fish.hist(bins=30, figsize=(10, 6))
@@ -119,7 +119,7 @@ plt.tight_layout()
 # 2. What is the LC50 of the **most toxic** chemical, and in which row is it? *Hint:* `.max()`, `.idxmax()`.
 # 3. How many chemicals have an LC50 above 6 (i.e. lethal below 1 µmol/L)?
 
-# In[ ]:
+# In[5]:
 
 
 # 1. counts have few distinct values
@@ -140,7 +140,7 @@ print((fish["LC50"] > 6).sum(), "chemicals with LC50 > 6")
 # 
 # The Pearson correlation $r$ measures how well two variables follow a straight line ($-1$ to $+1$).
 
-# In[ ]:
+# In[6]:
 
 
 corr = fish.corr()
@@ -158,7 +158,7 @@ plt.title("Correlation matrix");
 # ✏️ **Exercise 2.1.** Sort the descriptors by their correlation with `LC50`, then make a scatter
 # plot of the most correlated one against `LC50`.
 
-# In[ ]:
+# In[7]:
 
 
 print(corr["LC50"].drop("LC50").sort_values(ascending=False))
@@ -184,7 +184,7 @@ plt.ylabel("LC50  [-log10 mol/L]");
 # 
 # Descriptors have very different units, so we first **standardise** them (mean 0, std 1).
 
-# In[ ]:
+# In[8]:
 
 
 from sklearn.preprocessing import StandardScaler
@@ -203,7 +203,7 @@ plt.colorbar(label="LC50")
 plt.xlabel("PC1"); plt.ylabel("PC2");
 
 
-# In[ ]:
+# In[9]:
 
 
 # which descriptors make up each component ("loadings")?
@@ -226,7 +226,7 @@ pd.DataFrame(pca.components_.T, index=X.columns, columns=["PC1", "PC2"])
 # * **RMSE** (root mean squared error), in LC50 units: the typical size of an error.
 # * **R²**: fraction of the variance explained. 0 = no better than always predicting the mean, 1 = perfect.
 
-# In[ ]:
+# In[10]:
 
 
 from sklearn.model_selection import train_test_split
@@ -241,7 +241,7 @@ baseline = np.full(len(y_test), y_train.mean())
 print(f"baseline  RMSE = {root_mean_squared_error(y_test, baseline):.3f}")
 
 
-# In[ ]:
+# In[11]:
 
 
 lr1 = LinearRegression().fit(X_train[["MLOGP"]], y_train)
@@ -255,10 +255,77 @@ plt.plot(xs, lr1.predict(pd.DataFrame({"MLOGP": xs})), "r", label="fit")
 plt.xlabel("MLOGP"); plt.ylabel("LC50"); plt.legend();
 
 
+# ### What does "fitting" mean? The loss landscape
+# 
+# `LinearRegression` chooses the intercept $a$ and slope $b$ that minimise the **loss**: the mean
+# squared error (MSE) on the *training* chemicals,
+# $\text{MSE}(a, b) = \frac{1}{n}\sum_i \big(y_i - (a + b\,x_i)\big)^2$.
+# Each pair $(a, b)$ has its own loss, so we can draw the loss as a map, like a landscape with a valley.
+# 
+# Linear regression finds the bottom of the valley with a formula. Neural networks (session 2) have no
+# such formula. They start somewhere and walk **downhill** in small steps, each step following the
+# slope of the loss (**gradient descent**). Below we do both and check that they end up at the same point.
+
+# In[12]:
+
+
+x_tr, y_tr = X_train["MLOGP"].values, y_train.values
+x_te, y_te = X_test["MLOGP"].values, y_test.values
+
+def mse(a, b, x=x_tr, y=y_tr):
+    return np.mean((y - (a + b * x)) ** 2)
+
+# the loss on a grid of (intercept, slope) values
+a_grid, b_grid = np.linspace(-0.5, 5, 150), np.linspace(-0.3, 1.5, 150)
+L = np.array([[mse(a, b) for a in a_grid] for b in b_grid])
+
+# gradient descent: start from a bad guess, step against the gradient of the MSE
+a, b, lr = 0.0, -0.2, 0.05                     # lr = learning rate (step size)
+path, train_loss, test_loss = [(a, b)], [mse(a, b)], [mse(a, b, x_te, y_te)]
+for step in range(300):
+    err = (a + b * x_tr) - y_tr
+    a -= lr * 2 * err.mean()                   # dMSE/da
+    b -= lr * 2 * (err * x_tr).mean()          # dMSE/db
+    path.append((a, b))
+    train_loss.append(mse(a, b)); test_loss.append(mse(a, b, x_te, y_te))
+path = np.array(path)
+print(f"gradient descent: a = {a:.3f}, b = {b:.3f}")
+print(f"LinearRegression: a = {lr1.intercept_:.3f}, b = {lr1.coef_[0]:.3f}")
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
+cs = ax1.contourf(a_grid, b_grid, np.log10(L), levels=30, cmap="viridis_r")
+fig.colorbar(cs, ax=ax1, label="log10 training MSE")
+ax1.plot(path[:, 0], path[:, 1], "r.-", ms=3, lw=1, label="gradient descent")
+ax1.plot(*path[0], "wo", ms=8, label="start")
+ax1.plot(lr1.intercept_, lr1.coef_[0], "w*", ms=15, mec="k", label="LinearRegression")
+ax1.set_xlabel("intercept a"); ax1.set_ylabel("slope b"); ax1.legend(loc="upper right")
+ax1.set_title("Loss landscape of LC50 = a + b * MLOGP")
+
+ax2.plot(train_loss, label="training set")
+ax2.plot(test_loss, label="test set")
+ax2.axhline(mse(lr1.intercept_, lr1.coef_[0]), color="k", ls=":", label="minimum (training)")
+ax2.set_yscale("log"); ax2.set_xlabel("gradient-descent step"); ax2.set_ylabel("MSE")
+ax2.set_title("Loss during training"); ax2.legend()
+plt.tight_layout()
+
+
+# ❓ The valley is long, narrow and **tilted**. Why? Gradient descent drops quickly into the valley and
+# then crawls along it: what does that tell you? Try `lr = 0.15`: what happens?
+# 
+# **Answer.** The two parameters trade off against each other. All MLOGP values are around 2, so a
+# steeper slope can be almost compensated by a lower intercept, and many $(a, b)$ pairs along that
+# diagonal fit almost equally well. Gradient descent takes big steps where the walls are steep and tiny
+# steps along the flat floor of the valley, so most of the 300 steps are spent creeping along it.
+# With `lr = 0.15` the steps overshoot from one wall to the other and the loss **explodes**: here any
+# learning rate above ≈ 0.14 diverges. If MLOGP is centred (mean 0) the valley becomes round and
+# gradient descent goes straight to the minimum. This is one reason we standardise the inputs of
+# neural networks. Note also that the test loss follows the training loss down: a straight line has
+# too few parameters to overfit. In session 2 we will see a network whose two curves separate.
+
 # ✏️ **Exercise 4.1.** Fit a `LinearRegression` on **all six** descriptors (`X_train`) and report RMSE and
 # R² on the test set. Does it beat MLOGP alone?
 
-# In[ ]:
+# In[13]:
 
 
 lr_all = LinearRegression().fit(X_train, y_train)
@@ -269,7 +336,7 @@ print(f"all six:  RMSE = {root_mean_squared_error(y_test, pred_all):.3f}   R2 = 
 # Raw coefficients cannot be compared with each other (different units). Fitting on standardised
 # descriptors makes each coefficient mean "change in LC50 per one standard deviation of the descriptor".
 
-# In[ ]:
+# In[14]:
 
 
 from sklearn.pipeline import make_pipeline
@@ -300,14 +367,41 @@ plt.xlabel("standardised coefficient");
 # **5-fold cross-validation** splits the data in 5 parts, uses each part once as test set, and
 # averages the 5 scores.
 
-# In[ ]:
+# In[15]:
 
 
 from sklearn.model_selection import KFold, cross_val_score
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import RandomForestRegressor
 
 cv = KFold(n_splits=5, shuffle=True, random_state=RNG)
+
+# which chemicals are in the test set of each fold?
+fold_of = np.zeros(len(X), dtype=int)
+role = np.zeros((cv.get_n_splits(), len(X)))           # 1 = test, 0 = train
+for i, (train_idx, test_idx) in enumerate(cv.split(X)):
+    role[i, test_idx] = 1
+    fold_of[test_idx] = i
+
+from matplotlib.colors import ListedColormap
+cmap = ListedColormap(["#9ecae1", "#e6550d"])           # train = blue, test = orange
+fig, axes = plt.subplots(1, 2, figsize=(12, 2.8))
+axes[0].imshow(role, aspect="auto", cmap=cmap, interpolation="nearest")
+axes[0].set_title("chemicals in file order (shuffle=True picks the test set at random)")
+axes[1].imshow(role[:, np.argsort(fold_of, kind="stable")], aspect="auto", cmap=cmap, interpolation="nearest")
+axes[1].set_title("same, chemicals sorted by the fold they are tested in")
+for ax in axes:
+    ax.set_yticks(range(5), [f"fold {i + 1}" for i in range(5)])
+    ax.set_xlabel("chemical")
+from matplotlib.patches import Patch
+axes[1].legend(handles=[Patch(color="#9ecae1", label="train"), Patch(color="#e6550d", label="test")],
+               loc="center left", bbox_to_anchor=(1.01, 0.5))
+plt.tight_layout()
+
+
+# In[16]:
+
+
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 models = {
     "linear (MLOGP only)": ("MLOGP", LinearRegression()),
@@ -316,17 +410,60 @@ models = {
     "random forest":       (None, RandomForestRegressor(n_estimators=300, random_state=RNG, n_jobs=-1)),
 }
 
-results = {}
+results, fold_scores = {}, {}
 for name, (cols, model) in models.items():
     Xm = X[[cols]] if cols else X
     r2 = cross_val_score(model, Xm, y, cv=cv, scoring="r2")
     results[name] = (r2.mean(), r2.std())
+    fold_scores[name] = r2
     print(f"{name:22s} R2 = {r2.mean():.3f} +/- {r2.std():.3f}")
 
 
+# Each fold gives its own score. How different are they? And how unusual was the single split of
+# Part 4? Let us repeat that split with 200 different random seeds.
+
+# In[17]:
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+
+for i, (name, r2) in enumerate(fold_scores.items()):
+    ax1.plot(r2, np.full(5, i), "o", alpha=0.7)
+    ax1.plot(r2.mean(), i, "k|", ms=20, mew=2)
+ax1.set_yticks(range(len(fold_scores)), list(fold_scores))
+ax1.set_xlabel("R2 on each of the 5 folds (| = mean)")
+ax1.set_title("Cross-validation, fold by fold")
+
+split_r2 = []
+for seed in range(200):
+    Xa_, Xb_, ya_, yb_ = train_test_split(X, y, test_size=0.25, random_state=seed)
+    split_r2.append(r2_score(yb_, LinearRegression().fit(Xa_, ya_).predict(Xb_)))
+split_r2 = np.array(split_r2)
+
+ax2.hist(split_r2, bins=25, color="grey")
+ax2.axvline(r2_score(y_test, pred_all), color="r", lw=2, label="our split (Part 4)")
+ax2.axvline(fold_scores["linear (all)"].mean(), color="k", ls="--", lw=2, label="5-fold CV mean")
+ax2.set_xlabel("test R2, linear regression (all six)"); ax2.set_ylabel("number of splits")
+ax2.set_title("200 random 75/25 splits"); ax2.legend()
+plt.tight_layout()
+print(f"200 splits: R2 = {split_r2.mean():.3f} +/- {split_r2.std():.3f}, "
+      f"range {split_r2.min():.2f} - {split_r2.max():.2f}")
+print(f"splits worse than ours: {(split_r2 < r2_score(y_test, pred_all)).mean():.1%}")
+
+
+# ❓ Was the split of Part 4 representative? Which number would you report for the linear model, and
+# can you say that the random forest is better than kNN?
+# 
+# **Answer.** No, it was unlucky: R² ≈ 0.44 falls in the worst 2% of the 200 random splits, which
+# average ≈ 0.57 ± 0.05. Whatever we conclude from one split of 227 chemicals can be off by
+# ±0.1 in R². The cross-validated value (≈ 0.56) agrees with the average over many splits and is the
+# one to report. Fold to fold, R² varies by about ±0.05 for every model. That is as large as the
+# differences between kNN, RF and the linear model, so the ranking of the three non-trivial models is
+# *not* solid. Only "MLOGP alone is worse" is clear.
+
 # ✏️ **Exercise 5.1.** Add kNN **without** the `StandardScaler` to the comparison. What happens, and why?
 
-# In[ ]:
+# In[18]:
 
 
 knn_raw = KNeighborsRegressor(n_neighbors=10)
@@ -343,7 +480,7 @@ print(f"kNN unscaled R2 = {r2.mean():.3f}")
 # very large k averages over half the dataset and flattens everything towards the mean (underfitting).
 # The best is somewhere in between.
 
-# In[ ]:
+# In[19]:
 
 
 for k in [1, 3, 10, 30, 100]:
@@ -351,9 +488,46 @@ for k in [1, 3, 10, 30, 100]:
     print(f"k={k:3d}  R2 = {cross_val_score(m, X, y, cv=cv, scoring='r2').mean():.3f}")
 
 
+# The same question as a picture: the error on the **training** folds and on the **held-out** folds
+# as *k* changes. Small *k* = a flexible, "wiggly" model, large *k* = a smooth one.
+
+# In[20]:
+
+
+from sklearn.model_selection import cross_validate
+
+ks = [1, 2, 3, 5, 7, 10, 15, 20, 30, 50, 75, 100, 150, 200, 300]
+train_rmse, cv_rmse = [], []
+for k in ks:
+    m = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=k))
+    s = cross_validate(m, X, y, cv=cv, scoring="neg_root_mean_squared_error", return_train_score=True)
+    train_rmse.append(-s["train_score"].mean())
+    cv_rmse.append(-s["test_score"].mean())
+
+best = ks[int(np.argmin(cv_rmse))]
+plt.figure(figsize=(7, 4))
+plt.plot(ks, train_rmse, "o-", label="training folds")
+plt.plot(ks, cv_rmse, "o-", label="held-out folds (CV)")
+plt.axvline(best, color="grey", ls=":", label=f"best k = {best}")
+plt.xscale("log"); plt.gca().invert_xaxis()     # left: simple model, right: flexible model
+plt.xlabel("k (number of neighbours)  -  model becomes more flexible  ->")
+plt.ylabel("RMSE"); plt.legend()
+plt.title("kNN: underfitting (left) vs overfitting (right)");
+
+
+# ❓ Why is the training error at *k* = 1 not zero? Where does the gap between the two curves start
+# to open?
+# 
+# **Answer.** With *k* = 1 each training chemical is its own nearest neighbour, so the training error
+# should be zero. It is not, because some chemicals share **identical descriptors** but have different
+# LC50 (the model cannot tell them apart; the average gives the remaining error). On the left
+# (*k* ≥ 100) both errors are high and almost equal: underfitting. Going right, the training error keeps
+# falling, but the held-out error reaches its minimum around *k* ≈ 10 (RMSE ≈ 0.89) and then rises again:
+# overfitting. The growing gap between the two curves is the sign of a model that memorises.
+
 # Let us look at the predictions of the random forest on the held-out test set.
 
-# In[ ]:
+# In[21]:
 
 
 rf = RandomForestRegressor(n_estimators=300, random_state=RNG, n_jobs=-1).fit(X_train, y_train)
@@ -375,12 +549,42 @@ plt.xlabel("measured LC50"); plt.ylabel("predicted LC50"); plt.title("Random for
 # range of their training targets. The most toxic chemicals - the ones a regulator cares about -
 # are often those with a specific mode of action that six descriptors cannot capture.
 
+# Would **more data** help? A **learning curve** trains each model on bigger and bigger subsets and
+# measures the error on the training data and on held-out data.
+
+# In[22]:
+
+
+from sklearn.model_selection import learning_curve
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharey=True)
+for ax, (name, model) in zip(axes, {
+        "linear regression (all six)": LinearRegression(),
+        "random forest": RandomForestRegressor(n_estimators=100, random_state=RNG, n_jobs=-1)}.items()):
+    sizes, tr, te = learning_curve(model, X, y, cv=cv, train_sizes=np.linspace(0.1, 1, 6),
+                                   scoring="neg_root_mean_squared_error")
+    ax.plot(sizes, -tr.mean(axis=1), "o-", label="training data")
+    ax.plot(sizes, -te.mean(axis=1), "o-", label="held-out data")
+    ax.fill_between(sizes, -tr.mean(axis=1), -te.mean(axis=1), alpha=0.15, color="grey")
+    ax.set_title(name); ax.set_xlabel("number of training chemicals")
+axes[0].set_ylabel("RMSE"); axes[0].legend()
+plt.tight_layout()
+
+
+# ❓ For which model would testing more chemicals on fish be worth the money?
+# 
+# **Answer.** For the **linear model** the two curves have already met (RMSE ≈ 0.96 on both) after
+# a few hundred chemicals. It is limited by its own simplicity (high **bias**), and more data will not
+# help. The **random forest** fits its training data much better than new data (≈ 0.36 vs ≈ 0.91:
+# high **variance**), and its held-out error is still going down at 726 chemicals. More data would
+# probably still improve it. The shaded gap is how much the model has memorised.
+
 # ## Part 6 - What did the model learn?
 # 
 # **Permutation importance**: shuffle one descriptor in the test set and measure how much the score
 # drops. If the model relies on that descriptor, scrambling it hurts.
 
-# In[ ]:
+# In[23]:
 
 
 from sklearn.inspection import permutation_importance
@@ -404,6 +608,12 @@ plt.xlabel("drop in R2 when shuffled");
 # * Always compare to a **baseline** and evaluate on **unseen data**; prefer cross-validation.
 # * Non-linear models (kNN, RF) gain a little over linear regression (R² ≈ 0.56 → 0.60);
 #   distance-based models need **scaled** inputs.
+# * Fitting = **minimising a loss**. Linear regression does it with a formula, neural networks by
+#   gradient descent, walking down the loss landscape.
+# * One train/test split is a noisy estimate (R² 0.44 here vs ≈ 0.57 on average); cross-validation
+#   uses every chemical once as test data.
+# * Training error always goes down with model flexibility; held-out error does not. The gap between
+#   them (kNN with small *k*, random forest) is **overfitting**.
 # 
 # ## Part 7 - Your turn: water fleas (homework)
 # 
@@ -415,7 +625,7 @@ plt.xlabel("drop in R2 when shuffled");
 # regression, scaled kNN and random forest. Is lipophilicity still the top predictor?
 # Is this dataset easier or harder than the fish one? Does scaling matter more or less?
 
-# In[ ]:
+# In[24]:
 
 
 aq = load_aquatic()
