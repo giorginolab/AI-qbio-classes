@@ -48,6 +48,18 @@ Key numbers (`RNG = 0`):
   size^0.964, R² 0.98, 942 genes/Mb; that law predicts 2.3 M human genes, the forest 11 000
   (annotated 57 816). Eukaryotes: exponent 0.28, R² 0.60.
 
+## Optional session 4: a protein language model (`s04`)
+
+`s04_enzymes_esm2` (about 60 min, scikit-learn only) gives the same logistic regression two
+descriptions of the 2047 enzymes: amino-acid composition and precomputed ESM-2 embeddings
+(`data/enzymes_esm2.npz`, built by `data_prep/make_esm2_embeddings.py`, which needs PyTorch and
+`transformers` and uses a GPU if there is one). It reuses the family-grouped split of `t02`.
+
+Key numbers (`RNG = 0`), accuracy with a random split / with families held out (chance 0.17):
+composition 0.29 / 0.27; ESM-2 8M 0.65 / 0.53; 35M 0.76 / 0.61; 150M 0.77 / 0.61. Shuffled labels
+0.15. 1-NN on the 8M embeddings 0.70 / 0.54. Embeddings compressed to 100 columns by PCA, families
+held out: 0.53, 0.57, 0.54.
+
 ## Running
 
 ```bash
@@ -74,6 +86,9 @@ Colab, put `data/` in `MyDrive/AI_QBio/data`.
   genomes, no organism names) and 4685 eukaryotes, one row per species, from the NCBI genome
   reports. A few absurd eukaryote gene counts are left in on purpose (exercise 4.1 of `s02`).
   Both built by `data_prep/make_scaling_datasets.py`, downloaded on 2026-11-11.
+
+* `enzymes_esm2.npz`: mean-pooled ESM-2 embeddings (float16) of the enzymes in `enzymes.tsv`,
+  same row order, one array per model size.
 
 The enzyme and targeting datasets were downloaded from the UniProt REST API on 2026-11-10. Swiss-Prot changes at each
 release, so re-running the scripts gives a slightly different set. The committed TSVs are the

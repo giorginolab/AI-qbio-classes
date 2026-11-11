@@ -18,8 +18,8 @@ Output arrays (float16, rows in the order of enzymes.tsv):
     esm2_150M (n, 640)        facebook/esm2_t30_150M_UR50D
     esm2_650M (n, 1280)       facebook/esm2_t33_650M_UR50D
 
-CPU time on 8 cores for the 2047 enzymes: see the timings printed by the script (the 650M model
-is by far the slowest).
+A GPU is used if PyTorch finds one. On a 4-core CPU the 2047 enzymes took 6 min (8M), 22 min
+(35M) and 77 min (150M); use a GPU for the 650M model.
 """
 import sys
 import time
@@ -39,6 +39,7 @@ MODELS = {
 DATA = Path(__file__).resolve().parents[2] / "data"
 OUT = DATA / "enzymes_esm2.npz"
 MAX_RESIDUES_PER_BATCH = 6000
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"      # pick a GPU with CUDA_VISIBLE_DEVICES
 
 
 def batches_by_length(seqs):
@@ -58,20 +59,21 @@ def batches_by_length(seqs):
 @torch.no_grad()
 def embed(seqs, model_name):
     tok = AutoTokenizer.from_pretrained(model_name)
-    model = EsmModel.from_pretrained(model_name, add_pooling_layer=False).eval()
+    model = EsmModel.from_pretrained(model_name, add_pooling_layer=False).eval().to(DEVICE)
     out = np.zeros((len(seqs), model.config.hidden_size), dtype=np.float32)
     for idx in batches_by_length(seqs):
-        enc = tok([seqs[i] for i in idx], return_tensors="pt", padding=True)
+        enc = tok([seqs[i] for i in idx], return_tensors="pt", padding=True).to(DEVICE)
         hidden = model(**enc).last_hidden_state                  # (batch, tokens, dim)
         special = torch.tensor([tok.get_special_tokens_mask(ids, already_has_special_tokens=True)
-                                for ids in enc["input_ids"].tolist()], dtype=torch.bool)
+                                for ids in enc["input_ids"].tolist()], dtype=torch.bool, device=DEVICE)
         keep = (enc["attention_mask"].bool() & ~special).unsqueeze(-1)   # residues only
-        out[idx] = ((hidden * keep).sum(1) / keep.sum(1)).numpy()
+        out[idx] = ((hidden * keep).sum(1) / keep.sum(1)).cpu().numpy()
     return out
 
 
 if __name__ == "__main__":
     sizes = sys.argv[1:] or list(MODELS)
+    print("device:", DEVICE, flush=True)
     enz = pd.read_csv(DATA / "enzymes.tsv", sep="\t")
     seqs = enz["sequence"].tolist()                                # longest is 993 < 1022 residues
     arrays = dict(np.load(OUT)) if OUT.exists() else {}
@@ -80,5 +82,7 @@ if __name__ == "__main__":
         t0 = time.time()
         arrays[f"esm2_{size}"] = embed(seqs, MODELS[size]).astype(np.float16)
         print(f"esm2_{size}: {arrays[f'esm2_{size}'].shape}, {time.time() - t0:.0f} s", flush=True)
-        np.savez_compressed(OUT, **arrays)
+        tmp = OUT.with_name("enzymes_esm2.tmp.npz")                 # write, then rename: never a half-written file
+        np.savez_compressed(tmp, **arrays)
+        tmp.replace(OUT)
     print("wrote", OUT)
