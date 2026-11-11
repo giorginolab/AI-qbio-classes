@@ -291,6 +291,113 @@ plt.tight_layout()
 # it for the enzyme classifier below). With `alpha = 1` the training error falls much more slowly and the test error
 # flattens out at ≈ 0.87 instead of rising: the penalty on large weights stops the network from memorising, whenever we stop.
 
+# ### Playground: a neural network on a curve you can see
+# 
+# The same phenomena are much easier to *see* in one dimension. We use a toy problem where the true
+# curve is known: a few noisy "measurements" of a dose-response-like curve. `mlp_playground()` trains an
+# MLP on them one epoch at a time and draws:
+# * **left**: the network's curve at several moments during training (light = early, dark = late);
+# * **right**: training and test error at every epoch. The dotted line is the noise level (the error of
+#   the true curve itself): no model can do better than that on new data.
+# 
+# Parameters: `width` and `layers` (network size), `alpha` (L2 penalty), `n_train` (number of points),
+# `noise`, `epochs`, `seed`.
+
+# In[ ]:
+
+
+def true_curve(x):
+    """The 'truth' we pretend not to know: a smooth dose-response-like curve."""
+    return 1 / (1 + np.exp(-10 * (x - 0.5))) + 0.3 * np.sin(6 * x)
+
+def make_toy(n, noise, seed):
+    """n noisy measurements of true_curve at random x in [0, 1]."""
+    rng = np.random.default_rng(seed)
+    x = np.sort(rng.uniform(0, 1, n))
+    return x, true_curve(x) + rng.normal(0, noise, n)
+
+from sklearn.exceptions import ConvergenceWarning
+import warnings
+
+def mlp_playground(width=200, layers=2, alpha=1e-5, n_train=25, noise=0.2, epochs=3000, seed=0):
+    x_tr, y_tr = make_toy(n_train, noise, seed)
+    x_te, y_te = make_toy(500, noise, seed + 1000)
+    grid = np.linspace(0, 1, 400)[:, None]
+    net = MLPRegressor(hidden_layer_sizes=(width,) * layers, alpha=alpha,
+                       learning_rate_init=0.003, random_state=seed)
+    snap_epochs = sorted({int(e) for e in np.geomspace(10, epochs, 5)})
+    tr_mse, te_mse, snaps = [], [], {}
+    for epoch in range(1, epochs + 1):
+        net.partial_fit(x_tr[:, None], y_tr)
+        tr_mse.append(np.mean((net.predict(x_tr[:, None]) - y_tr) ** 2))
+        te_mse.append(np.mean((net.predict(x_te[:, None]) - y_te) ** 2))
+        if epoch in snap_epochs:
+            snaps[epoch] = net.predict(grid)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.2))
+    ax1.plot(grid, true_curve(grid), "k--", lw=1.5, label="true curve")
+    for i, (e, curve) in enumerate(snaps.items()):
+        ax1.plot(grid, curve, color=plt.cm.Reds(0.3 + 0.7 * i / max(1, len(snaps) - 1)), lw=2, label=f"epoch {e}")
+    ax1.scatter(x_tr, y_tr, color="k", s=20, zorder=3, label=f"{n_train} training points")
+    ax1.set_ylim(-1, 2); ax1.set_xlabel("dose"); ax1.set_ylabel("response"); ax1.legend(fontsize=7, loc="upper left")
+    ax1.set_title(f"MLP {(width,) * layers}, alpha = {alpha:g}")
+
+    best = int(np.argmin(te_mse))
+    ax2.plot(range(1, epochs + 1), tr_mse, label="training points")
+    ax2.plot(range(1, epochs + 1), te_mse, label="new points (test)")
+    ax2.axhline(noise ** 2, color="grey", ls=":", label="noise level")
+    ax2.axvline(best + 1, color="grey", alpha=0.5, label=f"best epoch ({best + 1})")
+    ax2.set_xscale("log"); ax2.set_yscale("log"); ax2.set_xlabel("epoch"); ax2.set_ylabel("MSE")
+    ax2.set_title(f"final: train {tr_mse[-1]:.3f}, test {te_mse[-1]:.3f} (best test {te_mse[best]:.3f})")
+    ax2.legend(fontsize=8)
+    plt.tight_layout(); plt.show()
+
+mlp_playground()
+mlp_playground(alpha=0.1)
+
+
+# *Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and redraws the figure when you release one. Without `ipywidgets`, just call the function with other values.
+
+# In[ ]:
+
+
+try:
+    from ipywidgets import interact, IntSlider, FloatSlider, FloatLogSlider
+    interact(mlp_playground,
+             width=IntSlider(value=200, min=2, max=500, step=2, continuous_update=False),
+             layers=IntSlider(value=2, min=1, max=4, continuous_update=False),
+             alpha=FloatLogSlider(value=1e-5, base=10, min=-6, max=1, continuous_update=False),
+             n_train=IntSlider(value=25, min=10, max=300, step=5, continuous_update=False),
+             noise=FloatSlider(value=0.2, min=0.0, max=0.6, step=0.05, continuous_update=False),
+             epochs=IntSlider(value=3000, min=100, max=6000, step=100, continuous_update=False),
+             seed=IntSlider(value=0, min=0, max=20, continuous_update=False))
+except ImportError:
+    print("ipywidgets is not installed: call mlp_playground(width=..., alpha=..., n_train=...) instead")
+
+
+# ✏️ **Exercise A.3.** Use the playground to answer:
+# 1. In the first figure, in what order does the network learn things? When does the test error start
+#    to rise?
+# 2. What changes with `alpha=0.1` (second figure)? And with `alpha=1`?
+# 3. Without regularisation, which helps more against overfitting: a smaller network (`width=8`) or
+#    more data (`n_train=200`)?
+# 4. Try `seed=1, 2, 3` with the default settings. Do you always get the same curve?
+# 
+# **Answer.**
+# 1. First the **coarse trend** (the rise from low to high dose), then the S shape, and only at the end
+#    the details of individual points. Test error falls while the network learns real structure, reaches
+#    its minimum, and then rises as the curve starts bending towards individual noisy points. The
+#    training error keeps falling. Early stopping would keep the network from the best epoch.
+# 2. With `alpha=0.1` the weights cannot grow large enough to make sharp bends: the final curve stays
+#    smooth, close to the true one, and the test error stays near its minimum however long we train.
+#    With `alpha=1` the penalty is too strong and the curve flattens: underfitting.
+# 3. Both reduce overfitting. More data is the more reliable cure: with 200 points even a big network
+#    follows the true curve. A small network cannot memorise 25 points, but it can also miss real
+#    structure if it is too small.
+# 4. No: different random initial weights (and a different sample of points) give different curves,
+#    especially between and outside the points. Neural networks are not unique solutions. Averaging
+#    several of them (an **ensemble**) is a common way to reduce this variance.
+
 # # Part B - Can we tell an enzyme's class from its sequence?
 # 
 # Enzymes are classified by the reaction they catalyse into **EC (Enzyme Commission) classes**:

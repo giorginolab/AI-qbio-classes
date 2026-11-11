@@ -579,12 +579,126 @@ plt.tight_layout()
 # high **variance**), and its held-out error is still going down at 726 chemicals. More data would
 # probably still improve it. The shaded gap is how much the model has memorised.
 
+# ### Playground: overfitting you can see
+# 
+# Six descriptors are hard to picture. Let us go down to **one dimension** with a toy problem where we
+# *know* the true curve: 20 noisy "measurements" of a dose-response-like curve. We fit polynomials
+# of increasing **degree** (degree 1 = straight line, degree 15 = very flexible curve), optionally with
+# a **ridge** penalty `alpha` on large coefficients (the same idea as `alpha` in the neural networks
+# of session 2).
+# 
+# `poly_playground()` draws two panels:
+# * **left**: the data, the true curve and the fitted polynomial. The faint red curves are the same
+#   model fitted on 20 *other* random samples of the same size: how much the fit changes from one
+#   dataset to the next is the **variance** of the model.
+# * **right**: training and test error for every degree 0-20, with the current degree marked. The
+#   dotted line is the noise level: no model can do better than that on new data.
+
+# In[23]:
+
+
+def true_curve(x):
+    """The 'truth' we pretend not to know: a smooth dose-response-like curve."""
+    return 1 / (1 + np.exp(-10 * (x - 0.5))) + 0.3 * np.sin(6 * x)
+
+def make_toy(n, noise, seed):
+    """n noisy measurements of true_curve at random x in [0, 1]."""
+    rng = np.random.default_rng(seed)
+    x = np.sort(rng.uniform(0, 1, n))
+    return x, true_curve(x) + rng.normal(0, noise, n)
+
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import Ridge
+
+def poly_model(degree, alpha):
+    reg = Ridge(alpha=alpha) if alpha > 0 else LinearRegression()
+    return make_pipeline(PolynomialFeatures(degree), StandardScaler(), reg)
+
+def poly_playground(degree=3, n_train=20, noise=0.2, alpha=0.0, seed=0, show_variance=True):
+    x_tr, y_tr = make_toy(n_train, noise, seed)
+    x_te, y_te = make_toy(500, noise, seed + 1000)            # fresh data from the same "experiment"
+    grid = np.linspace(0, 1, 400)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.2))
+
+    if show_variance:
+        for s in range(1, 21):
+            xs, ys = make_toy(n_train, noise, 100 * seed + s)
+            ax1.plot(grid, poly_model(degree, alpha).fit(xs[:, None], ys).predict(grid[:, None]),
+                     color="tab:red", alpha=0.12, lw=1)
+    model = poly_model(degree, alpha).fit(x_tr[:, None], y_tr)
+    ax1.plot(grid, true_curve(grid), "k--", lw=1.5, label="true curve")
+    ax1.plot(grid, model.predict(grid[:, None]), color="tab:red", lw=2.5, label=f"degree {degree} fit")
+    ax1.scatter(x_tr, y_tr, color="k", s=20, zorder=3, label=f"{n_train} training points")
+    ax1.set_ylim(-1, 2); ax1.set_xlabel("dose"); ax1.set_ylabel("response"); ax1.legend(fontsize=8, loc="upper left")
+
+    rmse = lambda m, x, y: np.sqrt(np.mean((m.predict(x[:, None]) - y) ** 2))
+    degrees = range(0, 21)
+    tr, te = [], []
+    for d in degrees:
+        m = poly_model(d, alpha).fit(x_tr[:, None], y_tr)
+        tr.append(rmse(m, x_tr, y_tr)); te.append(rmse(m, x_te, y_te))
+    ax2.plot(degrees, tr, "o-", label="training points")
+    ax2.plot(degrees, te, "o-", label="new points (test)")
+    ax2.axhline(noise, color="grey", ls=":", label="noise level")
+    ax2.axvline(degree, color="tab:red", alpha=0.4, lw=6)
+    ax2.set_yscale("log"); ax2.set_ylim(top=3); ax2.set_xlabel("polynomial degree"); ax2.set_ylabel("RMSE")
+    ax2.set_title(f"degree {degree}: train RMSE {tr[degree]:.3f}, test RMSE {te[degree]:.3f}")
+    ax2.legend(fontsize=8)
+    plt.tight_layout(); plt.show()
+
+poly_playground(degree=3)
+poly_playground(degree=15)
+
+
+# *Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and redraws the figure when you release one. Without `ipywidgets`, just call the function with other values.
+
+# In[24]:
+
+
+try:
+    from ipywidgets import interact, IntSlider, FloatSlider, FloatLogSlider, Checkbox
+    interact(poly_playground,
+             degree=IntSlider(value=3, min=0, max=20, continuous_update=False),
+             n_train=IntSlider(value=20, min=8, max=300, step=4, continuous_update=False),
+             noise=FloatSlider(value=0.2, min=0.0, max=0.8, step=0.05, continuous_update=False),
+             alpha=FloatLogSlider(value=1e-8, base=10, min=-8, max=2, continuous_update=False),
+             seed=IntSlider(value=0, min=0, max=20, continuous_update=False),
+             show_variance=Checkbox(value=True))
+except ImportError:
+    print("ipywidgets is not installed: call poly_playground(degree=..., n_train=..., noise=..., alpha=...) instead")
+
+
+# ✏️ **Exercise 5.3.** Play with the parameters and answer:
+# 1. With 20 points, which degrees **underfit** and which **overfit**? Look at both panels and at
+#    the faint red curves.
+# 2. Keep degree 15 and give it more data (`n_train=60`, then `200`). What happens to the faint curves
+#    and to the gap between training and test error?
+# 3. Keep degree 15 and 20 points, and add regularisation (`alpha=1e-4`, `1e-2`, `1`). Which value
+#    works best? What happens with `alpha=100`?
+# 4. Change `noise` to 0.05, then 0.5. Does the best degree change?
+# 
+# **Answer.**
+# 1. Degrees 0-2 **underfit**: the fit misses the S shape, and training and test errors are both high
+#    and close together (high **bias**). Degree 3 to about 8 follows the true curve. From about degree
+#    12 the fit wiggles through the training points: training error keeps falling, test error shoots up,
+#    and the faint curves fan out wildly, especially at the edges (high **variance**). A different
+#    sample of 20 points would give a completely different model. That is what overfitting means.
+# 2. More data tames the flexible model: with 200 points the degree-15 fit hugs the true curve, the faint
+#    curves collapse onto it, and test error comes down to the noise level. Overfitting is a property of
+#    the model *and* of the amount of data.
+# 3. A small penalty (≈ `1e-4` to `1e-2`) removes most of the wiggles while keeping the shape. With
+#    `alpha=100` the penalty dominates and the curve flattens towards the mean: we are back to underfitting.
+#    Regularisation lets us use a flexible model and turn its flexibility down.
+# 4. With little noise, high degrees do well because the points themselves describe the curve. With a lot
+#    of noise even moderate degrees start fitting noise, and the best degree drops. More noise means
+#    prefer simpler models.
+
 # ## Part 6 - What did the model learn?
 # 
 # **Permutation importance**: shuffle one descriptor in the test set and measure how much the score
 # drops. If the model relies on that descriptor, scrambling it hurts.
 
-# In[23]:
+# In[25]:
 
 
 from sklearn.inspection import permutation_importance
@@ -625,7 +739,7 @@ plt.xlabel("drop in R2 when shuffled");
 # regression, scaled kNN and random forest. Is lipophilicity still the top predictor?
 # Is this dataset easier or harder than the fish one? Does scaling matter more or less?
 
-# In[24]:
+# In[26]:
 
 
 aq = load_aquatic()

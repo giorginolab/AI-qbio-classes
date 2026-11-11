@@ -326,9 +326,9 @@ def mean_loss(model, X, Y):
     with torch.no_grad():
         return nn.functional.cross_entropy(model(X), Y).item()
 
-def train(model, X_tr, Y_tr, X_te, Y_te, epochs=15, lr=0.01, batch_size=64, seed=RNG):
+def train(model, X_tr, Y_tr, X_te, Y_te, epochs=15, lr=0.01, batch_size=64, seed=RNG, weight_decay=0.0):
     torch.manual_seed(seed)
-    optimiser = torch.optim.Adam(model.parameters(), lr=lr)
+    optimiser = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     loss_fn = nn.CrossEntropyLoss()
     history = []
     for epoch in range(1, epochs + 1):
@@ -422,6 +422,81 @@ for h, hist in sorted(hists.items()):
 # all the probability on the wrong class, and each of those costs a lot of loss. The loss notices
 # overfitting earlier than the accuracy does, so early stopping usually watches the *validation loss*.
 
+# ### Playground: make the GRU overfit
+# 
+# With 2700 training sequences our GRU hardly overfits. With fewer sequences it is a different
+# story. `gru_playground()` trains a fresh GRU on a random subset of `n_train` training sequences and
+# plots loss and accuracy per epoch on that subset and on the (always the same) test set.
+# `weight_decay` is the L2 penalty of PyTorch (the `alpha` of scikit-learn). Each run takes a few
+# seconds (more with large `hidden` or many epochs).
+
+# In[17]:
+
+
+def gru_playground(hidden=64, n_train=150, epochs=40, lr=0.01, weight_decay=0.0, seed=RNG):
+    rng = np.random.default_rng(seed)
+    sub = rng.choice(len(X_train), size=min(n_train, len(X_train)), replace=False)
+    torch.manual_seed(seed)
+    hist = train(TargetingRNN(hidden=hidden), X_train[sub], Y_train[sub], X_test, Y_test,
+                 epochs=epochs, lr=lr, weight_decay=weight_decay, seed=seed)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+    hist[["train loss", "test loss"]].plot(ax=ax1, marker=".")
+    ax1.set_yscale("log"); ax1.set_ylabel("cross-entropy loss")
+    ax1.axvline(hist["test loss"].idxmin(), color="grey", ls=":", label="lowest test loss")
+    ax1.legend(fontsize=8)
+    hist[["train accuracy", "test accuracy"]].plot(ax=ax2, marker=".")
+    ax2.set_ylabel("accuracy"); ax2.set_ylim(0.3, 1.02)
+    fig.suptitle(f"hidden={hidden}, n_train={len(sub)}, weight_decay={weight_decay:g}: "
+                 f"final test accuracy {hist['test accuracy'].iloc[-1]:.3f}, "
+                 f"best {hist['test accuracy'].max():.3f} (epoch {hist['test accuracy'].idxmax()})")
+    plt.tight_layout(); plt.show()
+
+gru_playground()
+gru_playground(weight_decay=1e-3)
+
+
+# *Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and redraws the figure when you release one. Without `ipywidgets`, just call the function with other values.
+
+# In[18]:
+
+
+try:
+    from ipywidgets import interact_manual, IntSlider, FloatLogSlider
+    # interact_manual: set the sliders, then press "Run Interact" (training takes a few seconds)
+    interact_manual(gru_playground,
+                    hidden=IntSlider(value=64, min=2, max=256, step=2),
+                    n_train=IntSlider(value=150, min=30, max=2700, step=30),
+                    epochs=IntSlider(value=40, min=5, max=100, step=5),
+                    lr=FloatLogSlider(value=0.01, base=10, min=-4, max=-1),
+                    weight_decay=FloatLogSlider(value=1e-6, base=10, min=-6, max=-1),
+                    seed=IntSlider(value=0, min=0, max=20))
+except ImportError:
+    print("ipywidgets is not installed: call gru_playground(hidden=..., n_train=..., weight_decay=...) instead")
+
+
+# ✏️ **Exercise 5.2.** With the playground:
+# 1. Describe the first figure (150 training sequences, no penalty). When would early stopping have
+#    stopped, and what would it have saved?
+# 2. What does `weight_decay=1e-3` change (second figure)? Try `1e-2`.
+# 3. How many training sequences does the GRU need to get within 0.02 of its full-data accuracy
+#    (≈ 0.94)? Try `n_train` = 300, 600, 1200.
+# 4. Try `lr=0.1` and `lr=0.0003`. What goes wrong in each case?
+# 
+# **Answer.**
+# 1. The training loss falls towards zero and the training accuracy reaches 1: the network has
+#    memorised 150 sequences. The test loss reaches a minimum after a few epochs and then rises steadily
+#    (over-confident mistakes), while the test accuracy plateaus well below the full-data value.
+#    Early stopping at the minimum of the test (in practice: validation) loss would keep the best model
+#    and save most of the training time.
+# 2. Weight decay keeps the weights small: the training loss no longer goes to zero, the test loss
+#    rises much less, and the gap between the curves shrinks. Too much (`1e-2`) and the network cannot
+#    learn the signals at all: underfitting.
+# 3. Accuracy grows quickly with data, then slowly: a few hundred sequences already give most of the
+#    performance, the last points cost thousands. This is the learning curve of session 1 again.
+# 4. `lr=0.1`: steps too big, the loss jumps around and training is unstable (as the too-large
+#    learning rate in session 1's loss landscape). `lr=0.0003`: steps too small, after 40 epochs the
+#    network is still learning. The learning rate is the most important knob in training a network.
+
 # ## Part 6 - Does the order matter?
 # 
 # A clean control experiment: **shuffle the residues within each sequence**. The composition of
@@ -431,7 +506,7 @@ for h, hist in sorted(hists.items()):
 # ✏️ **Exercise 6.1.** Complete the code: build the shuffled one-hot tensor, train a fresh
 # `TargetingRNN(hidden=32)` on it (same train/test indices), and compare.
 
-# In[17]:
+# In[19]:
 
 
 rng = np.random.default_rng(RNG)
@@ -460,7 +535,7 @@ plt.legend(["train", "test", "train (shuffled)", "test (shuffled)"]); plt.ylabel
 # Because the GRU produces a hidden state at every position, we can ask: *what would it predict if
 # the sequence stopped here?* `predict_along` applies the final layer to $h_1, h_2, \dots, h_{50}$.
 
-# In[18]:
+# In[20]:
 
 
 def plot_reading(i):
@@ -483,7 +558,7 @@ plot_reading(int(np.flatnonzero(Y_test.numpy() == LABELS.index("SP"))[0]))
 # **misclassified** test protein (`pred_test != Y_test`), look at its name, and plot it. Can you
 # guess why the model got it wrong?
 
-# In[19]:
+# In[21]:
 
 
 fig = plt.figure(figsize=(12, 3.5))
@@ -508,7 +583,7 @@ plt.figure(figsize=(6, 3.5)); plot_reading(int(wrong[0]))
 # absence of a signal can only be concluded after reading past the place where one would be.
 # The network has rediscovered, by itself, the features that biologists described from experiments.
 
-# In[20]:
+# In[22]:
 
 
 # average probability of the true class vs. number of residues read, per class
@@ -528,7 +603,7 @@ plt.xlabel("residues read"); plt.ylabel("mean P(true class)"); plt.legend();
 # $h_{50}$ of the test proteins onto 2 dimensions with PCA, and follow a few proteins as they are read
 # (one point per residue).
 
-# In[21]:
+# In[23]:
 
 
 from sklearn.decomposition import PCA
@@ -574,7 +649,7 @@ plt.legend(markerscale=3, fontsize=8); plt.title("Hidden states (dots: residues 
 # the value of the residue that is actually there. Averaged over the test proteins of each class, this gives a
 # profile along the sequence.
 
-# In[22]:
+# In[24]:
 
 
 model.eval()
@@ -620,7 +695,7 @@ ax.legend(fontsize=8);
 # ✏️ Train on all organisms **except human** and test on the human proteins. Compare with the
 # random split. Then try training on *Arabidopsis* only and testing on yeast.
 
-# In[23]:
+# In[25]:
 
 
 is_human = torch.tensor((tp["organism"] == "Homo sapiens").values)
