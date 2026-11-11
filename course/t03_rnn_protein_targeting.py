@@ -433,7 +433,7 @@ for h, hist in sorted(hists.items()):
 # In[17]:
 
 
-def gru_playground(hidden=64, n_train=150, epochs=40, lr=0.01, weight_decay=0.0, seed=RNG):
+def gru_playground(hidden=32, n_train=300, epochs=60, lr=0.01, weight_decay=0.0, seed=RNG):
     rng = np.random.default_rng(seed)
     sub = rng.choice(len(X_train), size=min(n_train, len(X_train)), replace=False)
     torch.manual_seed(seed)
@@ -452,7 +452,7 @@ def gru_playground(hidden=64, n_train=150, epochs=40, lr=0.01, weight_decay=0.0,
     plt.tight_layout(); plt.show()
 
 gru_playground()
-gru_playground(weight_decay=1e-3)
+gru_playground(n_train=1200)
 
 
 # *Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and redraws the figure when you release one. Without `ipywidgets`, just call the function with other values.
@@ -464,9 +464,9 @@ try:
     from ipywidgets import interact_manual, IntSlider, FloatLogSlider
     # interact_manual: set the sliders, then press "Run Interact" (training takes a few seconds)
     interact_manual(gru_playground,
-                    hidden=IntSlider(value=64, min=2, max=256, step=2),
-                    n_train=IntSlider(value=150, min=30, max=2700, step=30),
-                    epochs=IntSlider(value=40, min=5, max=100, step=5),
+                    hidden=IntSlider(value=32, min=2, max=256, step=2),
+                    n_train=IntSlider(value=300, min=30, max=2700, step=30),
+                    epochs=IntSlider(value=60, min=5, max=100, step=5),
                     lr=FloatLogSlider(value=0.01, base=10, min=-4, max=-1),
                     weight_decay=FloatLogSlider(value=1e-6, base=10, min=-6, max=-1),
                     seed=IntSlider(value=0, min=0, max=20))
@@ -475,27 +475,29 @@ except ImportError:
 
 
 # ✏️ **Exercise 5.2.** With the playground:
-# 1. Describe the first figure (150 training sequences, no penalty). When would early stopping have
+# 1. Describe the first figure (300 training sequences, 60 epochs). When would early stopping have
 #    stopped, and what would it have saved?
-# 2. What does `weight_decay=1e-3` change (second figure)? Try `1e-2`.
-# 3. How many training sequences does the GRU need to get within 0.02 of its full-data accuracy
-#    (≈ 0.94)? Try `n_train` = 300, 600, 1200.
+# 2. The second figure uses 1200 training sequences. What improves, and what does not?
+# 3. Go back to 300 sequences and add `weight_decay=1e-3`, then `1e-2`. What happens?
 # 4. Try `lr=0.1` and `lr=0.0003`. What goes wrong in each case?
 # 
 # **Answer.**
-# 1. The training loss falls towards zero and the training accuracy reaches 1: the network has
-#    memorised 150 sequences. The test loss reaches a minimum after a few epochs and then rises steadily
-#    (over-confident mistakes), while the test accuracy plateaus well below the full-data value.
-#    Early stopping at the minimum of the test (in practice: validation) loss would keep the best model
-#    and save most of the training time.
-# 2. Weight decay keeps the weights small: the training loss no longer goes to zero, the test loss
-#    rises much less, and the gap between the curves shrinks. Too much (`1e-2`) and the network cannot
-#    learn the signals at all: underfitting.
-# 3. Accuracy grows quickly with data, then slowly: a few hundred sequences already give most of the
-#    performance, the last points cost thousands. This is the learning curve of session 1 again.
-# 4. `lr=0.1`: steps too big, the loss jumps around and training is unstable (as the too-large
-#    learning rate in session 1's loss landscape). `lr=0.0003`: steps too small, after 40 epochs the
-#    network is still learning. The learning rate is the most important knob in training a network.
+# 1. The training accuracy reaches 1.0 and the training loss falls to below 0.01: the network has
+#    memorised the 300 sequences. The test loss is lowest at epoch 30 (≈ 0.35) and afterwards is noisier and
+#    higher (≈ 0.40), while the test accuracy plateaus at ≈ 0.92, below the ≈ 0.94 of the full training
+#    set. Early stopping at epoch 30 would give the same accuracy in half the time. (The spike around
+#    epoch 33 is the optimiser taking one bad step on a tiny dataset and recovering.)
+# 2. More data raises the ceiling: test accuracy reaches 0.95 (epoch 22). But it does not remove
+#    overfitting: the test loss is lowest at epoch 14 (≈ 0.17) and then triples (≈ 0.53 at epoch 60)
+#    while the training loss falls to 0.0003. The network becomes more and more over-confident, so early
+#    stopping is still needed.
+# 3. `weight_decay=1e-3` helps a little: test accuracy ≈ 0.93 and a final test loss of ≈ 0.32 instead of
+#    0.40. `1e-2` is too strong: the weights are pushed to zero faster than the network can learn the
+#    signals, and it stays at ≈ 0.64 (underfitting).
+# 4. `lr=0.1`: the steps are so big that the network never settles (accuracy stays at chance, ≈ 0.34).
+#    `lr=0.0003`: the steps are tiny, and after 60 epochs the network has hardly started (≈ 0.39). Too
+#    big and too small fail in opposite ways, like the learning rate on the loss landscape of session 1.
+#    The learning rate is usually the first knob to tune.
 
 # ## Part 6 - Does the order matter?
 # 

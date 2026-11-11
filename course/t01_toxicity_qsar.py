@@ -591,7 +591,8 @@ plt.tight_layout()
 # * **left**: the data, the true curve and the fitted polynomial. The faint red curves are the same
 #   model fitted on 20 *other* random samples of the same size: how much the fit changes from one
 #   dataset to the next is the **variance** of the model.
-# * **right**: training and test error for every degree 0-20, with the current degree marked. The
+# * **right**: training and test error for every degree 0-20 (median over the 21 training sets),
+#   with the current degree marked. The
 #   dotted line is the noise level: no model can do better than that on new data.
 
 # In[23]:
@@ -599,7 +600,7 @@ plt.tight_layout()
 
 def true_curve(x):
     """The 'truth' we pretend not to know: a smooth dose-response-like curve."""
-    return 1 / (1 + np.exp(-10 * (x - 0.5))) + 0.3 * np.sin(6 * x)
+    return 1 / (1 + np.exp(-15 * (x - 0.45))) + 0.25 * np.sin(10 * x)
 
 def make_toy(n, noise, seed):
     """n noisy measurements of true_curve at random x in [0, 1]."""
@@ -620,9 +621,10 @@ def poly_playground(degree=3, n_train=20, noise=0.2, alpha=0.0, seed=0, show_var
     grid = np.linspace(0, 1, 400)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.2))
 
+    # 20 other training sets of the same size, from the same "experiment"
+    resamples = [make_toy(n_train, noise, 100 * seed + s) for s in range(1, 21)]
     if show_variance:
-        for s in range(1, 21):
-            xs, ys = make_toy(n_train, noise, 100 * seed + s)
+        for xs, ys in resamples:
             ax1.plot(grid, poly_model(degree, alpha).fit(xs[:, None], ys).predict(grid[:, None]),
                      color="tab:red", alpha=0.12, lw=1)
     model = poly_model(degree, alpha).fit(x_tr[:, None], y_tr)
@@ -631,12 +633,14 @@ def poly_playground(degree=3, n_train=20, noise=0.2, alpha=0.0, seed=0, show_var
     ax1.scatter(x_tr, y_tr, color="k", s=20, zorder=3, label=f"{n_train} training points")
     ax1.set_ylim(-1, 2); ax1.set_xlabel("dose"); ax1.set_ylabel("response"); ax1.legend(fontsize=8, loc="upper left")
 
+    # error for every degree: median over the training sets (one set alone gives a bumpy curve)
     rmse = lambda m, x, y: np.sqrt(np.mean((m.predict(x[:, None]) - y) ** 2))
     degrees = range(0, 21)
     tr, te = [], []
     for d in degrees:
-        m = poly_model(d, alpha).fit(x_tr[:, None], y_tr)
-        tr.append(rmse(m, x_tr, y_tr)); te.append(rmse(m, x_te, y_te))
+        fits = [(poly_model(d, alpha).fit(xs[:, None], ys), xs, ys) for xs, ys in [(x_tr, y_tr)] + resamples]
+        tr.append(np.median([rmse(m, xs, ys) for m, xs, ys in fits]))
+        te.append(np.median([rmse(m, x_te, y_te) for m, xs, ys in fits]))
     ax2.plot(degrees, tr, "o-", label="training points")
     ax2.plot(degrees, te, "o-", label="new points (test)")
     ax2.axhline(noise, color="grey", ls=":", label="noise level")
@@ -678,20 +682,21 @@ except ImportError:
 # 4. Change `noise` to 0.05, then 0.5. Does the best degree change?
 # 
 # **Answer.**
-# 1. Degrees 0-2 **underfit**: the fit misses the S shape, and training and test errors are both high
-#    and close together (high **bias**). Degree 3 to about 8 follows the true curve. From about degree
-#    12 the fit wiggles through the training points: training error keeps falling, test error shoots up,
-#    and the faint curves fan out wildly, especially at the edges (high **variance**). A different
-#    sample of 20 points would give a completely different model. That is what overfitting means.
-# 2. More data tames the flexible model: with 200 points the degree-15 fit hugs the true curve, the faint
-#    curves collapse onto it, and test error comes down to the noise level. Overfitting is a property of
-#    the model *and* of the amount of data.
-# 3. A small penalty (≈ `1e-4` to `1e-2`) removes most of the wiggles while keeping the shape. With
-#    `alpha=100` the penalty dominates and the curve flattens towards the mean: we are back to underfitting.
-#    Regularisation lets us use a flexible model and turn its flexibility down.
-# 4. With little noise, high degrees do well because the points themselves describe the curve. With a lot
-#    of noise even moderate degrees start fitting noise, and the best degree drops. More noise means
-#    prefer simpler models.
+# 1. Degrees 0-3 **underfit**: degree 3 misses the small bump around dose 0.2, and training and test
+#    errors are both well above the noise level (high **bias**). Degrees 4-5 are best (test RMSE ≈ 0.24,
+#    close to the noise level 0.2). From about degree 7 the test error climbs: degree 15 has a training
+#    RMSE of 0.13, *below* the noise level (it is fitting the noise), and a test RMSE of 0.8. Its faint
+#    curves fan out wildly, especially at the edges where there are few points (high **variance**): a
+#    different sample of 20 points gives a completely different model. That is what overfitting means.
+# 2. More data tames the flexible model: with 60 points the degree-15 test RMSE drops from 0.8 to ≈ 0.22,
+#    with 200 points to ≈ 0.20 (the noise level), and the faint curves collapse onto the true one.
+#    Overfitting is a property of the model *and* of the amount of data.
+# 3. Any penalty removes the wild swings (test RMSE ≈ 0.27 with `alpha=1e-4` or `1e-2`, ≈ 0.25 with
+#    `alpha=1`, the best here). With `alpha=100` the curve flattens towards the mean (≈ 0.38): we are
+#    back to underfitting. Regularisation lets us use a flexible model and turn its flexibility down.
+# 4. Yes. With little noise (0.05) the points themselves describe the curve, and the best degree is
+#    ≈ 7. With a lot of noise (0.5) even a cubic fits noise and the best "model" is a straight line
+#    (degree 1). The noisier the data, the simpler the model it can support.
 
 # ## Part 6 - What did the model learn?
 # 

@@ -303,12 +303,12 @@ plt.tight_layout()
 # Parameters: `width` and `layers` (network size), `alpha` (L2 penalty), `n_train` (number of points),
 # `noise`, `epochs`, `seed`.
 
-# In[ ]:
+# In[9]:
 
 
 def true_curve(x):
     """The 'truth' we pretend not to know: a smooth dose-response-like curve."""
-    return 1 / (1 + np.exp(-10 * (x - 0.5))) + 0.3 * np.sin(6 * x)
+    return 1 / (1 + np.exp(-15 * (x - 0.45))) + 0.25 * np.sin(10 * x)
 
 def make_toy(n, noise, seed):
     """n noisy measurements of true_curve at random x in [0, 1]."""
@@ -319,7 +319,7 @@ def make_toy(n, noise, seed):
 from sklearn.exceptions import ConvergenceWarning
 import warnings
 
-def mlp_playground(width=200, layers=2, alpha=1e-5, n_train=25, noise=0.2, epochs=3000, seed=0):
+def mlp_playground(width=200, layers=2, alpha=1e-5, n_train=20, noise=0.2, epochs=3000, seed=0):
     x_tr, y_tr = make_toy(n_train, noise, seed)
     x_te, y_te = make_toy(500, noise, seed + 1000)
     grid = np.linspace(0, 1, 400)[:, None]
@@ -358,7 +358,7 @@ mlp_playground(alpha=0.1)
 
 # *Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and redraws the figure when you release one. Without `ipywidgets`, just call the function with other values.
 
-# In[ ]:
+# In[10]:
 
 
 try:
@@ -367,7 +367,7 @@ try:
              width=IntSlider(value=200, min=2, max=500, step=2, continuous_update=False),
              layers=IntSlider(value=2, min=1, max=4, continuous_update=False),
              alpha=FloatLogSlider(value=1e-5, base=10, min=-6, max=1, continuous_update=False),
-             n_train=IntSlider(value=25, min=10, max=300, step=5, continuous_update=False),
+             n_train=IntSlider(value=20, min=10, max=300, step=5, continuous_update=False),
              noise=FloatSlider(value=0.2, min=0.0, max=0.6, step=0.05, continuous_update=False),
              epochs=IntSlider(value=3000, min=100, max=6000, step=100, continuous_update=False),
              seed=IntSlider(value=0, min=0, max=20, continuous_update=False))
@@ -384,19 +384,23 @@ except ImportError:
 # 4. Try `seed=1, 2, 3` with the default settings. Do you always get the same curve?
 # 
 # **Answer.**
-# 1. First the **coarse trend** (the rise from low to high dose), then the S shape, and only at the end
-#    the details of individual points. Test error falls while the network learns real structure, reaches
-#    its minimum, and then rises as the curve starts bending towards individual noisy points. The
-#    training error keeps falling. Early stopping would keep the network from the best epoch.
-# 2. With `alpha=0.1` the weights cannot grow large enough to make sharp bends: the final curve stays
-#    smooth, close to the true one, and the test error stays near its minimum however long we train.
-#    With `alpha=1` the penalty is too strong and the curve flattens: underfitting.
-# 3. Both reduce overfitting. More data is the more reliable cure: with 200 points even a big network
-#    follows the true curve. A small network cannot memorise 25 points, but it can also miss real
-#    structure if it is too small.
-# 4. No: different random initial weights (and a different sample of points) give different curves,
-#    especially between and outside the points. Neural networks are not unique solutions. Averaging
-#    several of them (an **ensemble**) is a common way to reduce this variance.
+# 1. First the **coarse trend** (epoch 10: almost a straight line), then the S shape (≈ epoch 170), and
+#    finally the details of individual points: by epoch 3000 the curve dips too deep around dose 0.35
+#    and keeps rising at the right edge where the true curve comes down. The test error is lowest at
+#    epoch ≈ 380 (MSE 0.048, close to the noise level 0.04) and then rises to 0.061, while the training
+#    error keeps falling to 0.007, far *below* the noise level: the network is memorising noise.
+#    Early stopping at epoch ≈ 380 would keep the best network.
+# 2. With `alpha=0.1` the weights cannot grow large enough for sharp bends: the curve stays smooth
+#    (it even smooths away the small bump at dose 0.2), and the test error keeps going *down* until the
+#    end (0.049): no early stopping needed. With `alpha=1` the penalty is too strong and the curve is
+#    too stiff to follow the S shape (test MSE ≈ 0.09): underfitting.
+# 3. Both work here. `width=8` cannot memorise 20 points and ends at test MSE 0.048, like the best epoch
+#    of the big network. `n_train=200` reaches the noise level (0.040) with training and test error equal.
+#    More data is the more reliable cure: a network that is too small can also miss real structure.
+# 4. No. Different random initial weights and a different sample of points give different curves,
+#    especially between and outside the points, and the best epoch moves too (≈ 135-380 for seeds 0-3).
+#    Neural networks do not have a unique solution; averaging several of them (an **ensemble**) is a
+#    common way to reduce this variance.
 
 # # Part B - Can we tell an enzyme's class from its sequence?
 # 
@@ -417,7 +421,7 @@ except ImportError:
 # 
 # ## B1 - Meet the data
 
-# In[9]:
+# In[11]:
 
 
 enz = load_enzymes()
@@ -425,14 +429,14 @@ print(enz.shape)
 enz.head()
 
 
-# In[10]:
+# In[12]:
 
 
 print(enz["ec_name"].value_counts(), "\n")
 pd.crosstab(enz["organism"], enz["ec_name"])
 
 
-# In[11]:
+# In[13]:
 
 
 classes = sorted(enz["ec_name"].unique())
@@ -443,7 +447,7 @@ plt.suptitle(""); plt.title("sequence length by class"); plt.ylabel("residues");
 # ✏️ **Exercise B1.1.** Print one example sequence and its protein name. How many proteins come from
 # the largest protein family, and what is that family? *Hint:* `value_counts()` on `family`.
 
-# In[12]:
+# In[14]:
 
 
 row = enz.iloc[0]
@@ -458,7 +462,7 @@ print(enz["family"].value_counts().head(5))
 # The simplest way to turn a sequence of any length into a fixed-size vector: the **fraction of
 # each of the 20 amino acids**. This forgets the order completely.
 
-# In[13]:
+# In[15]:
 
 
 comp = pd.DataFrame(np.vstack(enz["sequence"].map(aa_composition)), columns=list(AA))
@@ -468,7 +472,7 @@ comp.head()
 # Is any amino acid enriched in a class? We compare each class's mean composition with the overall
 # mean, on a $\log_2$ scale (+1 = twice as frequent).
 
-# In[14]:
+# In[16]:
 
 
 class_mean = comp.groupby(enz["ec_name"]).mean()
@@ -480,7 +484,7 @@ plt.colorbar(label="log2 enrichment")
 plt.xticks(range(20), AA); plt.yticks(range(len(classes)), enrichment.index);
 
 
-# In[15]:
+# In[17]:
 
 
 from sklearn.decomposition import PCA
@@ -508,7 +512,7 @@ plt.legend(markerscale=3, fontsize=8); plt.xlabel("PC1"); plt.ylabel("PC2");
 # correct predictions) with stratified 5-fold cross-validation (each fold keeps the class
 # proportions). With 6 balanced classes, **random guessing gives about 1/6 = 0.17**.
 
-# In[16]:
+# In[18]:
 
 
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
@@ -537,7 +541,7 @@ for name, clf in classifiers.items():
 # how the predictions are distributed (columns). `cross_val_predict` gives one out-of-fold prediction
 # per enzyme.
 
-# In[17]:
+# In[19]:
 
 
 pred_rf = cross_val_predict(classifiers["random forest"], Xe, ye, cv=skf)
@@ -562,7 +566,7 @@ plot_confusion(ye, pred_rf, classes, title="random forest, random 5-fold CV");
 # A fairer test for a *new* kind of enzyme: keep **whole families** out of the training set.
 # `StratifiedGroupKFold` does this - all members of a group end up in the same fold.
 
-# In[18]:
+# In[20]:
 
 
 from sklearn.model_selection import StratifiedGroupKFold
@@ -576,7 +580,7 @@ groups = enz["family"]
 # `groups=groups` (pass it as `cross_val_score(..., groups=groups)`), and print both accuracies
 # side by side.
 
-# In[19]:
+# In[21]:
 
 
 for name, clf in classifiers.items():
@@ -598,7 +602,7 @@ for name, clf in classifiers.items():
 # members of its family were in the **training folds** when it was predicted (in the random 5-fold CV
 # of B3), and compare the accuracy of the random forest across these groups.
 
-# In[20]:
+# In[22]:
 
 
 fold = np.zeros(len(enz), dtype=int)
@@ -649,7 +653,7 @@ ax.legend(fontsize=8);
 # ✏️ Replace composition by **dipeptide** frequencies (400 features: AA, AC, ..., YY) and redo the
 # random vs family comparison for the random forest. Does the gap grow or shrink?
 
-# In[21]:
+# In[23]:
 
 
 import itertools
