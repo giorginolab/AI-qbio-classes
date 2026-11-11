@@ -35,7 +35,7 @@
 # On Google Colab, upload the `data/` folder to your Drive in `MyDrive/AI_QBio/data` and run the
 # cell below: it mounts the Drive and finds it there.
 
-# In[ ]:
+# In[1]:
 
 
 import sys
@@ -87,7 +87,7 @@ def plot_confusion(y_true, y_pred, labels, title=None):
     """Confusion matrix as a heatmap: rows = true class, normalised per row."""
     from sklearn.metrics import confusion_matrix
     cm = confusion_matrix(y_true, y_pred, labels=labels, normalize="true")
-    fig, ax = plt.subplots(figsize=(len(labels) + 2, len(labels) + 1))
+    ax = plt.subplots(figsize=(len(labels) + 2, len(labels) + 1))[1]
     ax.imshow(cm, cmap="Blues", vmin=0, vmax=1)
     for i in range(len(labels)):
         for j in range(len(labels)):
@@ -100,7 +100,7 @@ def plot_confusion(y_true, y_pred, labels, title=None):
         ax.set_title(title)
 
 
-# In[ ]:
+# In[2]:
 
 
 import torch
@@ -116,7 +116,7 @@ print("PyTorch", torch.__version__)
 # the annotated signal length (`signal_len`, 0 for *other*). We only keep the **first 50 residues**
 # (`nterm`).
 
-# In[ ]:
+# In[3]:
 
 
 tp = load_targeting()
@@ -124,7 +124,7 @@ LABELS = ["other", "SP", "mTP"]
 tp.head()
 
 
-# In[ ]:
+# In[4]:
 
 
 pd.crosstab(tp["organism"], tp["label"])
@@ -135,7 +135,7 @@ pd.crosstab(tp["organism"], tp["label"])
 # ✏️ **Exercise 1.1.** Plot a histogram of `signal_len` for SP and for mTP (overlaid, `bins=range(0, 80, 2)`).
 # Which signal is longer and more variable?
 
-# In[ ]:
+# In[5]:
 
 
 for lab in ["SP", "mTP"]:
@@ -153,7 +153,7 @@ print(tp.groupby("label")["signal_len"].median())
 # Let us average some residue properties **position by position** within each class.
 # First, hydrophobicity on the Kyte-Doolittle scale (positive = hydrophobic).
 
-# In[ ]:
+# In[6]:
 
 
 def position_profile(seqs, value):
@@ -172,7 +172,7 @@ plt.xlabel("position from N-terminus"); plt.ylabel("mean hydropathy"); plt.legen
 # in a second panel, of negative residues (D, E). *Hint:* `value = lambda a: a in "RK"` works because
 # `True` counts as 1.
 
-# In[ ]:
+# In[7]:
 
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 3.5), sharey=True)
@@ -198,7 +198,7 @@ axes[0].set_ylabel("fraction of residues"); axes[0].legend();
 # Before the neural network, a simple baseline: the amino-acid composition of the first *n* residues,
 # fed to logistic regression. We keep a fixed 25% test set for the whole session.
 
-# In[ ]:
+# In[8]:
 
 
 from sklearn.model_selection import train_test_split
@@ -220,7 +220,7 @@ print(f"composition of the first 50 residues: accuracy = {composition_baseline(5
 # ✏️ **Exercise 3.1.** Try n = 10, 15, 20, 25, 30, 40, 50. Which window works best? Does this agree
 # with Part 2?
 
-# In[ ]:
+# In[9]:
 
 
 for n in [10, 15, 20, 25, 30, 40, 50]:
@@ -237,7 +237,7 @@ for n in [10, 15, 20, 25, 30, 40, 50]:
 # a single 1 at the position of that amino acid. A 50-residue N-terminus becomes a 50 x 20 matrix,
 # and the whole dataset a 3-dimensional array (proteins x positions x amino acids) - a **tensor**.
 
-# In[ ]:
+# In[10]:
 
 
 aa_index = {a: i for i, a in enumerate(AA)}
@@ -253,7 +253,7 @@ plt.imshow(one_hot(example).T, cmap="Greys", aspect="auto")
 plt.yticks(range(20), AA); plt.xlabel("position"); plt.title(example);
 
 
-# In[ ]:
+# In[11]:
 
 
 X_all = torch.tensor(np.stack(tp["nterm"].map(one_hot)))   # (3600, 50, 20)
@@ -282,7 +282,7 @@ print(X_train.shape, X_test.shape)
 #  A -> [GRU] -> h50 -> [linear] -> scores for other / SP / mTP
 # ```
 
-# In[ ]:
+# In[12]:
 
 
 class TargetingRNN(nn.Module):
@@ -313,13 +313,18 @@ print(sum(p.numel() for p in model.parameters()), "trainable parameters")
 # (We watch the test accuracy here for teaching purposes only. In a real project you would choose
 # the number of epochs on a separate *validation* set and touch the test set once at the very end.)
 
-# In[ ]:
+# In[13]:
 
 
 def accuracy(model, X, Y):
     model.eval()
     with torch.no_grad():
         return (model(X).argmax(dim=1) == Y).float().mean().item()
+
+def mean_loss(model, X, Y):
+    model.eval()
+    with torch.no_grad():
+        return nn.functional.cross_entropy(model(X), Y).item()
 
 def train(model, X_tr, Y_tr, X_te, Y_te, epochs=15, lr=0.01, batch_size=64, seed=RNG):
     torch.manual_seed(seed)
@@ -337,15 +342,18 @@ def train(model, X_tr, Y_tr, X_te, Y_te, epochs=15, lr=0.01, batch_size=64, seed
             optimiser.step()                 # update the weights
         history.append({"epoch": epoch,
                         "train accuracy": accuracy(model, X_tr, Y_tr),
-                        "test accuracy": accuracy(model, X_te, Y_te)})
+                        "test accuracy": accuracy(model, X_te, Y_te),
+                        "train loss": mean_loss(model, X_tr, Y_tr),
+                        "test loss": mean_loss(model, X_te, Y_te)})
     return pd.DataFrame(history).set_index("epoch")
 
 history = train(model, X_train, Y_train, X_test, Y_test, epochs=15)
-history.plot(marker="o"); plt.ylabel("accuracy");
+ACC = ["train accuracy", "test accuracy"]
+history[ACC].plot(marker="o"); plt.ylabel("accuracy");
 history.tail(3)
 
 
-# In[ ]:
+# In[14]:
 
 
 model.eval()
@@ -364,12 +372,13 @@ plot_confusion(names[Y_test.numpy()], names[pred_test], LABELS, title="GRU, test
 # `torch.manual_seed(RNG)` before creating each. Compare training and test accuracy curves. Does
 # the big one overfit? (The bigger one takes ~30 s.)
 
-# In[ ]:
+# In[15]:
 
 
+hists = {32: history}
 for h in [4, 128]:
     torch.manual_seed(RNG)
-    hist_h = train(TargetingRNN(hidden=h), X_train, Y_train, X_test, Y_test, epochs=15)
+    hists[h] = hist_h = train(TargetingRNN(hidden=h), X_train, Y_train, X_test, Y_test, epochs=15)
     print(f"hidden={h:3d}: final train acc = {hist_h['train accuracy'].iloc[-1]:.3f}, "
           f"test acc = {hist_h['test accuracy'].iloc[-1]:.3f}, best test = {hist_h['test accuracy'].max():.3f}")
 
@@ -378,6 +387,40 @@ for h in [4, 128]:
 # reading the residues *in order* helps. SP is recognised best (precision and recall ≈ 0.97); most remaining errors are "other" proteins
 # predicted as mTP (weak transit-like N-termini, or perhaps unannotated dual-targeted proteins). With 4 hidden units the network is still decent but lower; with
 # 128 the training accuracy approaches 1 while the test accuracy stalls or dips - overfitting.
+
+# ### Loss versus accuracy
+# 
+# `train()` also records the **cross-entropy loss**, the quantity the optimiser actually minimises.
+# Accuracy only asks "is the top class right?"; the loss also asks "how confident was the network?",
+# and it punishes a confident wrong answer very hard ($-\log p$ of the true class).
+
+# In[16]:
+
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+for (h, hist), colour in zip(sorted(hists.items()), ["tab:green", "tab:blue", "tab:red"]):
+    for split, style in [("train", "--"), ("test", "-")]:
+        axes[0].plot(hist[f"{split} loss"], style, color=colour, label=f"hidden={h}, {split}")
+        axes[1].plot(hist[f"{split} accuracy"], style, color=colour, label=f"hidden={h}, {split}")
+axes[0].set_ylabel("cross-entropy loss"); axes[0].set_yscale("log")
+axes[1].set_ylabel("accuracy")
+for ax in axes:
+    ax.set_xlabel("epoch")
+axes[0].legend(fontsize=7, ncol=3)
+plt.tight_layout()
+for h, hist in sorted(hists.items()):
+    print(f"hidden={h:3d}: lowest test loss at epoch {hist['test loss'].idxmin()}, "
+          f"test loss {hist['test loss'].min():.3f} -> {hist['test loss'].iloc[-1]:.3f} at epoch 15")
+
+
+# ❓ Look at the big network (red). Do the test loss and the test accuracy tell the same story?
+# Which one would you watch to decide when to stop training?
+# 
+# **Answer.** No. For `hidden=128` the training loss keeps falling, but the **test loss turns upward**
+# after epoch 10 (0.16 → 0.23) while the test accuracy barely moves (0.95 → 0.94). The network still gets roughly the same
+# proteins right, but it becomes **over-confident**: on the proteins it gets wrong it now puts almost
+# all the probability on the wrong class, and each of those costs a lot of loss. The loss notices
+# overfitting earlier than the accuracy does, so early stopping usually watches the *validation loss*.
 
 # ## Part 6 - Does the order matter?
 # 
@@ -388,7 +431,7 @@ for h in [4, 128]:
 # ✏️ **Exercise 6.1.** Complete the code: build the shuffled one-hot tensor, train a fresh
 # `TargetingRNN(hidden=32)` on it (same train/test indices), and compare.
 
-# In[ ]:
+# In[17]:
 
 
 rng = np.random.default_rng(RNG)
@@ -403,8 +446,8 @@ print(f"real sequences:     final test accuracy = {history['test accuracy'].iloc
 print(f"shuffled sequences: final test accuracy = {history_shuf['test accuracy'].iloc[-1]:.3f}, "
       f"train = {history_shuf['train accuracy'].iloc[-1]:.3f}")
 
-ax = history.plot(marker="o")
-history_shuf.plot(marker="o", style="--", ax=ax)
+ax = history[ACC].plot(marker="o")
+history_shuf[ACC].plot(marker="o", style="--", ax=ax)
 plt.legend(["train", "test", "train (shuffled)", "test (shuffled)"]); plt.ylabel("accuracy");
 
 
@@ -417,7 +460,7 @@ plt.legend(["train", "test", "train (shuffled)", "test (shuffled)"]); plt.ylabel
 # Because the GRU produces a hidden state at every position, we can ask: *what would it predict if
 # the sequence stopped here?* `predict_along` applies the final layer to $h_1, h_2, \dots, h_{50}$.
 
-# In[ ]:
+# In[18]:
 
 
 def plot_reading(i):
@@ -440,7 +483,7 @@ plot_reading(int(np.flatnonzero(Y_test.numpy() == LABELS.index("SP"))[0]))
 # **misclassified** test protein (`pred_test != Y_test`), look at its name, and plot it. Can you
 # guess why the model got it wrong?
 
-# In[ ]:
+# In[19]:
 
 
 fig = plt.figure(figsize=(12, 3.5))
@@ -465,7 +508,7 @@ plt.figure(figsize=(6, 3.5)); plot_reading(int(wrong[0]))
 # absence of a signal can only be concluded after reading past the place where one would be.
 # The network has rediscovered, by itself, the features that biologists described from experiments.
 
-# In[ ]:
+# In[20]:
 
 
 # average probability of the true class vs. number of residues read, per class
@@ -479,13 +522,96 @@ for k, lab in enumerate(LABELS):
 plt.xlabel("residues read"); plt.ylabel("mean P(true class)"); plt.legend();
 
 
+# ### What is in the hidden state?
+# 
+# The GRU compresses everything it has read into 32 numbers, $h_t$. Let us project the final states
+# $h_{50}$ of the test proteins onto 2 dimensions with PCA, and follow a few proteins as they are read
+# (one point per residue).
+
+# In[21]:
+
+
+from sklearn.decomposition import PCA
+
+model.eval()
+with torch.no_grad():
+    states, _ = model.gru(X_test)                      # (n_test, 50, 32)
+states = states.numpy()
+pca_h = PCA(n_components=2).fit(states[:, -1])
+final = pca_h.transform(states[:, -1])
+y_te = Y_test.numpy()
+
+colours = {"other": "tab:blue", "SP": "tab:orange", "mTP": "tab:green"}
+plt.figure(figsize=(7, 6))
+for k, lab in enumerate(LABELS):
+    sel = y_te == k
+    plt.scatter(final[sel, 0], final[sel, 1], s=5, alpha=0.3, color=colours[lab], label=f"{lab} (after 50 residues)")
+for k, lab in enumerate(LABELS):
+    i = int(np.flatnonzero(y_te == k)[1])
+    path = pca_h.transform(states[i])                  # (50, 2): one point per residue read
+    plt.plot(path[:, 0], path[:, 1], "-", color=colours[lab], lw=2)
+    plt.scatter(path[:, 0], path[:, 1], c=np.arange(50), cmap="Greys", s=12, edgecolors=colours[lab], zorder=3)
+    plt.annotate("start", path[0], fontsize=8)
+plt.xlabel("PC1 of hidden state"); plt.ylabel("PC2 of hidden state")
+plt.legend(markerscale=3, fontsize=8); plt.title("Hidden states (dots: residues 1 → 50, light → dark)");
+
+
+# ❓ How are the three classes arranged? What do the trajectories do?
+# 
+# **Answer.** After 50 residues the classes sit in three separate regions (with some mixing between
+# *other* and mTP, the pair the confusion matrix confuses). The hidden state is a learned **map** in
+# which a linear layer can draw the class boundaries. Every trajectory starts at the same point
+# (nothing read yet), and the SP and mTP paths move quickly while the signal is being read (first ~20-30 residues),
+# then stay in their region: the GRU has decided and holds that decision. The *other* path keeps
+# drifting until late, because the absence of a signal can only be concluded after reading past it
+# (compare with the reading curves above: ≈ 32 residues).
+
+# ### Which residues does the network look at?
+# 
+# **Saliency**: how much does the score of the true class change if a residue changes? We take the
+# gradient of the score with respect to the one-hot input (the same `backward()` used in training,
+# but with respect to the input instead of the weights) and multiply it by the input, which keeps
+# the value of the residue that is actually there. Averaged over the test proteins of each class, this gives a
+# profile along the sequence.
+
+# In[22]:
+
+
+model.eval()
+X_in = X_test.clone().requires_grad_(True)
+scores = model(X_in)                                    # (n_test, 3)
+scores.gather(1, Y_test[:, None]).sum().backward()      # d(true-class score) / d(input)
+saliency = (X_in.grad * X_test).sum(dim=2).abs().numpy()   # (n_test, 50): one value per residue
+
+fig, ax = plt.subplots(figsize=(9, 4))
+for k, lab in enumerate(LABELS):
+    ax.plot(pos, saliency[y_te == k].mean(axis=0), color=colours[lab], label=lab)
+for lab in ["SP", "mTP"]:
+    med = tp.loc[tp["label"] == lab, "signal_len"].median()
+    ax.axvline(med, color=colours[lab], ls=":", label=f"median {lab} cleavage site")
+ax.set_xlabel("position from N-terminus"); ax.set_ylabel("mean |gradient x input|")
+ax.legend(fontsize=8);
+
+
+# ❓ Which positions matter for each class? Compare with the hydropathy and charge profiles of Part 2.
+# 
+# **Answer.** The saliency is concentrated in the first ~25-30 residues, where the signals are, and
+# falls off towards the cleavage sites; residues far beyond them hardly influence the decision. This
+# is what the profiles of Part 2 and the best composition window of Part 3 suggested, but here the
+# network found it without being told. Saliency maps are a simple form of **explainable AI**: they say
+# *where* the model looks, not *why*. The spike at position 50 is an artefact of reading left to right:
+# the last residue enters the final state directly, without passing through the gates many times.
+# A bidirectional RNN (as in TargetP) reads the sequence in both directions and avoids this.
+
 # ## Summary
 # 
 # * Positional **data mining** (profiles along the sequence) revealed the signals before any model.
 # * A composition baseline reaches ≈ 0.80-0.87; a small **GRU** reading one-hot residues in order
 #   reaches ≈ 0.94, with ~5000 parameters and a few seconds of CPU.
 # * The **shuffled-sequence control** proves that the gain comes from residue order.
-# * RNNs give a prediction after every residue, so we can watch *where* the decision is made.
+# * RNNs give a prediction after every residue, so we can watch *where* the decision is made; the
+#   hidden states and saliency maps show what the network has learned.
+# * The **loss** is more sensitive than accuracy: it rises when a network becomes over-confident.
 # * Real tools (SignalP 6, TargetP 2, DeepLoc 2) use bidirectional LSTMs, attention, or **protein
 #   language models** (transformers pre-trained on millions of sequences) - the same ideas, scaled up.
 # 
@@ -494,7 +620,7 @@ plt.xlabel("residues read"); plt.ylabel("mean P(true class)"); plt.legend();
 # ✏️ Train on all organisms **except human** and test on the human proteins. Compare with the
 # random split. Then try training on *Arabidopsis* only and testing on yeast.
 
-# In[ ]:
+# In[23]:
 
 
 is_human = torch.tensor((tp["organism"] == "Homo sapiens").values)

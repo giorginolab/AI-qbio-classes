@@ -22,7 +22,7 @@
 # On Google Colab, upload the `data/` folder to your Drive in `MyDrive/AI_QBio/data` and run the
 # cell below: it mounts the Drive and finds it there.
 
-# In[ ]:
+# In[1]:
 
 
 import sys
@@ -73,7 +73,7 @@ def plot_confusion(y_true, y_pred, labels, title=None):
     """Confusion matrix as a heatmap: rows = true class, normalised per row."""
     from sklearn.metrics import confusion_matrix
     cm = confusion_matrix(y_true, y_pred, labels=labels, normalize="true")
-    fig, ax = plt.subplots(figsize=(len(labels) + 2, len(labels) + 1))
+    ax = plt.subplots(figsize=(len(labels) + 2, len(labels) + 1))[1]
     ax.imshow(cm, cmap="Blues", vmin=0, vmax=1)
     for i in range(len(labels)):
         for j in range(len(labels)):
@@ -101,7 +101,7 @@ def plot_confusion(y_true, y_pred, labels, title=None):
 #  6 descriptors  ->  [32 hidden neurons, ReLU]  ->  1 output (LC50)
 # ```
 
-# In[ ]:
+# In[2]:
 
 
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
@@ -126,7 +126,7 @@ print(f"MLP test R2 = {r2_score(y_test, mlp.predict(X_test)):.3f}")
 # The network was trained iteratively. `loss_curve_` stores the training loss after each pass over
 # the data (*epoch*).
 
-# In[ ]:
+# In[3]:
 
 
 net = mlp[-1]
@@ -139,7 +139,7 @@ plt.title(f"{net.n_iter_} epochs");
 # ✏️ **Exercise A.1.** Compare the MLP with the random forest of session 1 using the same 5-fold
 # cross-validation (`cv` below). Which one wins?
 
-# In[ ]:
+# In[4]:
 
 
 cv = KFold(n_splits=5, shuffle=True, random_state=RNG)
@@ -150,12 +150,59 @@ r2_rf = cross_val_score(rf, X, y, cv=cv, scoring="r2")
 print(f"MLP R2 = {r2_mlp.mean():.3f}   RF R2 = {r2_rf.mean():.3f}")
 
 
+# ### What function did each model learn?
+# 
+# The models live in 6 dimensions, so we cannot draw them. We can take a **slice**: vary `MLOGP` and
+# keep the other five descriptors fixed at their median. Each curve is the predicted LC50 along that slice.
+
+# In[5]:
+
+
+from sklearn.linear_model import LinearRegression
+
+line = pd.DataFrame(np.tile(X_train.median().values, (300, 1)), columns=X.columns)
+line["MLOGP"] = np.linspace(X["MLOGP"].min() - 1, X["MLOGP"].max() + 1, 300)
+
+wide_mlp = make_pipeline(StandardScaler(),
+                         MLPRegressor(hidden_layer_sizes=(512, 512), alpha=1e-4,
+                                      max_iter=2000, random_state=RNG))
+fitted = {
+    "linear regression": LinearRegression(),
+    "random forest": RandomForestRegressor(n_estimators=300, random_state=RNG, n_jobs=-1),
+    "MLP (32)": mlp,                                   # already trained above
+    "MLP (512, 512), no regularisation": wide_mlp,
+}
+plt.figure(figsize=(8, 5))
+plt.scatter(X_train["MLOGP"], y_train, s=6, c="lightgrey", label="training chemicals")
+for name, m in fitted.items():
+    if m is not mlp:
+        m.fit(X_train, y_train)
+    plt.plot(line["MLOGP"], m.predict(line), lw=2, label=name)
+plt.axvspan(line["MLOGP"].min(), X["MLOGP"].min(), color="k", alpha=0.07)
+plt.axvspan(X["MLOGP"].max(), line["MLOGP"].max(), color="k", alpha=0.07, label="outside the data")
+plt.xlabel("MLOGP (other descriptors at their median)"); plt.ylabel("predicted LC50")
+plt.legend(fontsize=8);
+
+
+# ❓ Describe the shape of each curve. What happens outside the range of the data (grey bands)?
+# 
+# **Answer.** Linear regression is a straight line everywhere. The random forest is a **staircase**:
+# each tree cuts the axis into intervals and predicts a constant in each, and beyond the data it goes
+# **flat** (it can never predict outside the range of the training LC50). The MLP is made of ReLUs,
+# so it is **piecewise linear**: smooth bends inside the data, then it continues as a straight line
+# outside, extrapolating in whatever direction the last piece pointed. Both MLPs bend **upwards** at low MLOGP,
+# predicting that very hydrophilic chemicals are *more* toxic: there are few training chemicals there,
+# the curve is not constrained, and the result is biologically implausible. The big unregularised
+# network bends more and has small wiggles where it follows individual chemicals: overfitting, seen directly.
+# None of the models can be trusted in the grey bands; QSAR guidelines call the region where a
+# model is valid its **applicability domain**.
+
 # ### How big should the network be?
 # 
 # We train networks with two hidden layers of increasing width and compare the R² on the
 # **training** set with the R² on the **test** set.
 
-# In[ ]:
+# In[6]:
 
 
 sizes = [1, 2, 4, 8, 32, 128, 512]
@@ -182,7 +229,7 @@ sweep
 # ✏️ **Exercise A.2.** `alpha` adds a penalty on large weights (*L2 regularisation*, "weight decay").
 # Run `size_sweep(alpha=1.0)` and compare with the plot above.
 
-# In[ ]:
+# In[7]:
 
 
 sweep_reg = size_sweep(alpha=1.0)
@@ -200,6 +247,49 @@ sweep_reg
 # On a small table of 6 descriptors, an MLP does **not** beat a random forest (≈ 0.58 vs ≈ 0.60
 # in cross-validation). Neural networks shine with large data and with raw, structured inputs such as
 # sequences and images - which is where we go next.
+
+# ### Overfitting, epoch by epoch
+# 
+# `loss_curve_` only shows the *training* loss, which always goes down. Let us train the big
+# (512, 512) network one epoch at a time (`partial_fit`) and measure the error on the test chemicals
+# after each epoch as well.
+
+# In[8]:
+
+
+from sklearn.metrics import mean_squared_error
+
+scaler = StandardScaler().fit(X_train)
+Xtr_s, Xte_s = scaler.transform(X_train), scaler.transform(X_test)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharey=True)
+for ax, alpha in zip(axes, [1e-4, 1.0]):
+    net_e = MLPRegressor(hidden_layer_sizes=(512, 512), alpha=alpha, random_state=RNG)
+    tr_mse, te_mse = [], []
+    for epoch in range(300):
+        net_e.partial_fit(Xtr_s, y_train)          # one more pass over the training data
+        tr_mse.append(mean_squared_error(y_train, net_e.predict(Xtr_s)))
+        te_mse.append(mean_squared_error(y_test, net_e.predict(Xte_s)))
+    best = int(np.argmin(te_mse))
+    ax.plot(tr_mse, label="training set")
+    ax.plot(te_mse, label="test set")
+    ax.axvline(best, color="grey", ls=":", label=f"lowest test error (epoch {best + 1})")
+    ax.set_yscale("log"); ax.set_xlabel("epoch"); ax.set_title(f"MLP (512, 512), alpha = {alpha:g}")
+    print(f"alpha={alpha:g}: best test MSE {min(te_mse):.3f} at epoch {best + 1}, "
+          f"after 300 epochs train {tr_mse[-1]:.3f} / test {te_mse[-1]:.3f}")
+axes[0].set_ylabel("mean squared error"); axes[0].legend(); axes[1].legend()
+plt.tight_layout()
+
+
+# ❓ When should we have stopped training the unregularised network? What does regularisation change?
+# 
+# **Answer.** Without regularisation the training error keeps falling towards zero, while the test
+# error reaches its minimum (here around epoch 110, MSE ≈ 0.86) and then **climbs** again (≈ 1.0 after
+# 300 epochs, while the training MSE is down to 0.14): from there on, every epoch spent memorising the training chemicals makes predictions on new ones worse. Stopping at the
+# minimum is called **early stopping**. Since we must not choose it by looking at the test set, it is
+# done on a validation set carved out of the training data (`MLPRegressor(early_stopping=True)`; we use
+# it for the enzyme classifier below). With `alpha = 1` the training error falls much more slowly and the test error
+# flattens out at ≈ 0.87 instead of rising: the penalty on large weights stops the network from memorising, whenever we stop.
 
 # # Part B - Can we tell an enzyme's class from its sequence?
 # 
@@ -220,7 +310,7 @@ sweep_reg
 # 
 # ## B1 - Meet the data
 
-# In[ ]:
+# In[9]:
 
 
 enz = load_enzymes()
@@ -228,14 +318,14 @@ print(enz.shape)
 enz.head()
 
 
-# In[ ]:
+# In[10]:
 
 
 print(enz["ec_name"].value_counts(), "\n")
 pd.crosstab(enz["organism"], enz["ec_name"])
 
 
-# In[ ]:
+# In[11]:
 
 
 classes = sorted(enz["ec_name"].unique())
@@ -246,7 +336,7 @@ plt.suptitle(""); plt.title("sequence length by class"); plt.ylabel("residues");
 # ✏️ **Exercise B1.1.** Print one example sequence and its protein name. How many proteins come from
 # the largest protein family, and what is that family? *Hint:* `value_counts()` on `family`.
 
-# In[ ]:
+# In[12]:
 
 
 row = enz.iloc[0]
@@ -261,7 +351,7 @@ print(enz["family"].value_counts().head(5))
 # The simplest way to turn a sequence of any length into a fixed-size vector: the **fraction of
 # each of the 20 amino acids**. This forgets the order completely.
 
-# In[ ]:
+# In[13]:
 
 
 comp = pd.DataFrame(np.vstack(enz["sequence"].map(aa_composition)), columns=list(AA))
@@ -271,7 +361,7 @@ comp.head()
 # Is any amino acid enriched in a class? We compare each class's mean composition with the overall
 # mean, on a $\log_2$ scale (+1 = twice as frequent).
 
-# In[ ]:
+# In[14]:
 
 
 class_mean = comp.groupby(enz["ec_name"]).mean()
@@ -283,7 +373,7 @@ plt.colorbar(label="log2 enrichment")
 plt.xticks(range(20), AA); plt.yticks(range(len(classes)), enrichment.index);
 
 
-# In[ ]:
+# In[15]:
 
 
 from sklearn.decomposition import PCA
@@ -311,7 +401,7 @@ plt.legend(markerscale=3, fontsize=8); plt.xlabel("PC1"); plt.ylabel("PC2");
 # correct predictions) with stratified 5-fold cross-validation (each fold keeps the class
 # proportions). With 6 balanced classes, **random guessing gives about 1/6 = 0.17**.
 
-# In[ ]:
+# In[16]:
 
 
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
@@ -340,7 +430,7 @@ for name, clf in classifiers.items():
 # how the predictions are distributed (columns). `cross_val_predict` gives one out-of-fold prediction
 # per enzyme.
 
-# In[ ]:
+# In[17]:
 
 
 pred_rf = cross_val_predict(classifiers["random forest"], Xe, ye, cv=skf)
@@ -365,7 +455,7 @@ plot_confusion(ye, pred_rf, classes, title="random forest, random 5-fold CV");
 # A fairer test for a *new* kind of enzyme: keep **whole families** out of the training set.
 # `StratifiedGroupKFold` does this - all members of a group end up in the same fold.
 
-# In[ ]:
+# In[18]:
 
 
 from sklearn.model_selection import StratifiedGroupKFold
@@ -379,7 +469,7 @@ groups = enz["family"]
 # `groups=groups` (pass it as `cross_val_score(..., groups=groups)`), and print both accuracies
 # side by side.
 
-# In[ ]:
+# In[19]:
 
 
 for name, clf in classifiers.items():
@@ -397,10 +487,48 @@ for name, clf in classifiers.items():
 # ("can I annotate a new member of a family I already know?") - for which a BLAST search against
 # annotated sequences would beat all of these models.
 
+# Where exactly does the inflated random-split accuracy come from? For each enzyme, count how many
+# members of its family were in the **training folds** when it was predicted (in the random 5-fold CV
+# of B3), and compare the accuracy of the random forest across these groups.
+
+# In[20]:
+
+
+fold = np.zeros(len(enz), dtype=int)
+for i, (_, test_idx) in enumerate(skf.split(Xe, ye)):
+    fold[test_idx] = i
+fam = enz["family"].fillna("").values
+n_relatives = np.array([0 if fam[j] == "" else ((fam == fam[j]) & (fold != fold[j])).sum()
+                        for j in range(len(enz))])
+correct = (pred_rf == ye.values)
+
+bins = pd.cut(n_relatives, [-1, 0, 1, 3, 100], labels=["0", "1", "2-3", "4+"])
+by_rel = pd.DataFrame({"relatives in training": bins, "correct": correct}) \
+           .groupby("relatives in training", observed=True)["correct"].agg(["mean", "size"])
+print(by_rel)
+
+ax = by_rel["mean"].plot.bar(rot=0, color="tab:blue", figsize=(6, 4), label="accuracy")
+for i, (acc, n) in enumerate(zip(by_rel["mean"], by_rel["size"])):
+    ax.text(i, acc + 0.01, f"n = {n}", ha="center", fontsize=8)
+ax.axhline(1 / 6, color="grey", ls=":", label="chance")
+ax.axhline(acc_random["random forest"], color="k", ls="--", label="overall (random split)")
+ax.set_ylabel("random forest accuracy"); ax.set_xlabel("family members in the training folds")
+ax.legend(fontsize=8);
+
+
+# ❓ What does this plot say about the random-split accuracy?
+# 
+# **Answer.** Accuracy grows with the number of relatives in the training set. Enzymes with no relative
+# in training get ≈ 0.33, close to the family-split number (≈ 0.31), while those with 4 or more
+# relatives get ≈ 0.55: the random forest is largely recognising the family.
+# The random-split accuracy is an average over these groups, so it depends on how many relatives the
+# dataset happens to contain, not only on how good the model is.
+
 # ## Summary
 # 
 # * An MLP is a flexible function approximator; on a small table it overfits easily, needs scaled
-#   inputs and regularisation, and does not beat a random forest.
+#   inputs and regularisation, and does not beat a random forest. Watching the **test loss epoch by
+#   epoch** shows when it starts memorising (early stopping).
 # * **Data mining before modelling** told us what to expect: the enzyme classes barely differ in
 #   composition, and models got 0.25-0.40 accuracy (chance: 0.17).
 # * **How you split matters as much as which model you use.** Related sequences across the
@@ -414,7 +542,7 @@ for name, clf in classifiers.items():
 # ✏️ Replace composition by **dipeptide** frequencies (400 features: AA, AC, ..., YY) and redo the
 # random vs family comparison for the random forest. Does the gap grow or shrink?
 
-# In[ ]:
+# In[21]:
 
 
 import itertools
