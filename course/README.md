@@ -23,6 +23,31 @@ Everything runs on a laptop CPU in about 2 minutes per notebook.
 
 Changing seeds, splits or models shifts these values and the answers written in the notebooks.
 
+## Alternative sessions 1 and 2: scaling laws (`s01`, `s02`)
+
+Two newer notebooks that can replace `t01` and `t02` (which are kept unchanged). They contain no
+toxicity material and are built around one contrast: a two-parameter law against flexible models.
+They run in under a minute and need no PyTorch. `t03` follows them as session 3.
+
+| | notebook | biology | ML |
+|---|---|---|---|
+| 1 | `s01_scaling_laws` | metabolic rate and lifespan against body mass (AnAge); homework on other traits | log-log axes, least squares, bootstrap interval, residuals, a categorical variable, Simpson's paradox |
+| 2 | `s02_laws_vs_flexible_models` | same data; genes against genome size in prokaryotes and eukaryotes | linear, kNN, RF, MLP; cross-validation; extrapolation; **order-grouped CV vs random CV**; dirty data |
+
+Key numbers (`RNG = 0`):
+
+* **s01** mammal metabolic rate: exponent 0.709 (bootstrap 95% 0.688 - 0.728, excluding both 2/3
+  and 3/4), R² 0.95; by size 0.60 / 0.71 / 0.82. Birds 0.655 (0.635 - 0.674). Mammal longevity:
+  exponent 0.159, R² 0.50; human 4.5x and Brandt's bat 6.4x the predicted lifespan. All classes
+  pooled R² 0.82; with one intercept per class 0.96 (reptiles at 6% of a mammal). "Careless"
+  dataset slope 1.11.
+* **s02** 5-fold CV R²: linear 0.949, kNN 0.947, RF 0.928, MLP 0.953. Trained below 1 kg, R² above:
+  0.79 / -1.06 / -1.04 / 0.83; elephant (2336 W measured) 415 / 3 / 3 / 402 W, and 16 - 402 W over
+  five MLP seeds. Longevity from four traits, random CV vs orders held out: linear 0.78 / 0.59,
+  kNN 0.79 / 0.50, RF 0.80 / 0.48; bats held out are predicted 20% too short. Prokaryotes: genes ∝
+  size^0.964, R² 0.98, 942 genes/Mb; that law predicts 2.3 M human genes, the forest 11 000
+  (annotated 57 816). Eukaryotes: exponent 0.28, R² 0.60.
+
 ## Running
 
 ```bash
@@ -43,7 +68,14 @@ Colab, put `data/` in `MyDrive/AI_QBio/data`.
 * `targeting.tsv`: 3600 N-termini (50 aa) from the same organisms, 1200 each SP / mTP / other.
   Built by `data_prep/make_targeting_dataset.py`.
 
-Both datasets were downloaded from the UniProt REST API on 2026-11-10. Swiss-Prot changes at each
+* `anage.tsv`: 3663 animal species from AnAge build 15 (Tacutu et al. 2018): taxonomy, adult mass,
+  maximum longevity, basal metabolic rate (627 species) and a few reproductive traits.
+* `genomes.tsv`: genome size and number of annotated genes for 13 751 prokaryotes (complete
+  genomes, no organism names) and 4685 eukaryotes, one row per species, from the NCBI genome
+  reports. A few absurd eukaryote gene counts are left in on purpose (exercise 4.1 of `s02`).
+  Both built by `data_prep/make_scaling_datasets.py`, downloaded on 2026-11-11.
+
+The enzyme and targeting datasets were downloaded from the UniProt REST API on 2026-11-10. Swiss-Prot changes at each
 release, so re-running the scripts gives a slightly different set. The committed TSVs are the
 reference for the numbers above.
 
