@@ -52,7 +52,7 @@ featurization.* Data: 908 chemicals, 6 molecular descriptors, fathead-minnow LC5
   "learned nothing" looks like.
 - Homework: the *Daphnia magna* dataset (546 × 8; linear CV R² ≈ 0.46).
 
-## Class 2 — Advanced architectures  (~50 s to run)
+## Class 2 — Advanced architectures  (~55 s to run)
 
 *Slides 27–46: deep networks, CNNs, RNNs, autoencoders, and a first look at transformers and protein
 language models.* Data: 3600 protein N-termini (50 residues) labelled signal peptide / mitochondrial
@@ -60,6 +60,10 @@ transit peptide / other.
 
 - **Featurization** (slide 25): one-hot encoding shown as an image, why integer coding of residues is
   wrong, and a hand-crafted baseline — amino-acid composition + logistic regression, **0.802**.
+- **PyTorch in ten minutes** (an interlude, slide 26): tensors and the float32/int64 rule, autograd
+  checked against the derivative we did by hand in class 1, `nn.Linear` shown to *be* the 63-parameter
+  logistic regression, and the three-line training loop — including what silently goes wrong if you
+  forget `zero_grad()`.
 - **Dense vs convolutional** (slides 29–32): a dense net on the flattened one-hot (32 131 parameters,
   0.857) against a 1-D CNN (**2 947** parameters, **0.912**) — ten times smaller and better, because
   convolution + global max-pooling *is* a learned, translation-invariant featurization. Filter-width
@@ -73,7 +77,7 @@ transit peptide / other.
 - **Control**: shuffling residues within each sequence costs the GRU 0.149 and the CNN 0.220, dropping
   the CNN *below* the bag-of-counts baseline. An inductive bias is a bet that costs you when it is wrong.
 - **Autoencoder** (slide 34): a 2-D bottleneck trained only to reconstruct, labels never used, supports
-  15-NN accuracy **0.761** against **0.658** for PCA. The same trick on enzyme composition fails (0.232
+  15-NN accuracy **0.761** against **0.650** for PCA. The same trick on enzyme composition fails (0.232
   for 6 EC classes) — the explicit hand-off to class 3's pretrained embeddings.
 - Transformers are a text-only teaser here (slides 36–46); class 3 does the experiment.
 
