@@ -579,5 +579,25 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## References and data sources
+
+    **Data**
+
+    * `anage.tsv`: AnAge, the animal ageing and longevity database of the Human Ageing Genomic Resources (build 15; Tacutu et al. 2018), https://genomics.senescence.info/species/
+    * `genomes.tsv`: NCBI genome reports for prokaryotes and eukaryotes (Sayers et al. 2022), https://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/, downloaded 2026-11-11 and reduced to one row per species by `data_prep/make_scaling_datasets.py`.
+
+    **Further reading**
+
+    * Felsenstein J (1985). Phylogenies and the comparative method. *Am Nat* 125:1–15. [doi:10.1086/284325](https://doi.org/10.1086/284325) — why related species are not independent data points (Part 3)
+    * Kapoor S, Narayanan A (2023). Leakage and the reproducibility crisis in machine-learning-based science. *Patterns* 4:100804. [doi:10.1016/j.patter.2023.100804](https://doi.org/10.1016/j.patter.2023.100804) — a taxonomy of data leakage
+    * West GB, Brown JH, Enquist BJ (1997). A general model for the origin of allometric scaling laws in biology. *Science* 276:122–126. [doi:10.1126/science.276.5309.122](https://doi.org/10.1126/science.276.5309.122) — the scaling-law model
+    * Kleiber M (1932). Body size and metabolism. *Hilgardia* 6:315–353. [doi:10.3733/hilg.v06n11p315](https://doi.org/10.3733/hilg.v06n11p315)
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()

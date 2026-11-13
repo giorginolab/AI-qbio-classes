@@ -10,9 +10,9 @@ speaker notes or on the slide after the question.
 
 | Class | Slides | Link |
 |---|---|---|
-| s01 Scaling laws | 21 | https://claude.ai/artifact/YR4QpeRQUazdDuCfvKixbh |
-| s02 Laws vs flexible models | 25 | https://claude.ai/artifact/EAx5uHHwShFgC7thyZpmLh |
-| s04 ESM-2 (optional) | 17 | https://claude.ai/artifact/2PghMjCiZQQy76Fwn8hKAZ |
+| extra01 Scaling laws | 21 | https://claude.ai/artifact/YR4QpeRQUazdDuCfvKixbh |
+| extra02 Laws vs flexible models | 25 | https://claude.ai/artifact/EAx5uHHwShFgC7thyZpmLh |
+| extra03 ESM-2 (optional) | 17 | https://claude.ai/artifact/2PghMjCiZQQy76Fwn8hKAZ |
 | t01 Fish toxicity QSAR | 26 | https://claude.ai/artifact/KDPjKpBCnYpuDxyswV8d8E |
 | t02 Neural networks and enzymes | 25 | https://claude.ai/artifact/GUPrqBKVWK9u2psBdrkXnN |
 | t03 RNN protein targeting | 26 | https://claude.ai/artifact/BwFcYJUuEkahfJVfQ9X5KM |
@@ -24,9 +24,9 @@ evidence, and a "The general idea" takeaway.
 
 | Class | Slides | Link |
 |---|---|---|
-| s01 Scaling laws | 27 | https://claude.ai/artifact/XUP7U7XiwMwaz1weXdT6Fs |
-| s02 Laws against flexible models | 28 | https://claude.ai/artifact/GjrnJg6Fc2Ag8sJyPwjAEi |
-| s04 A protein language model | 25 | https://claude.ai/artifact/WmQ5ub2ZrfDK9Mwa1RsZ6s |
+| extra01 Scaling laws | 27 | https://claude.ai/artifact/XUP7U7XiwMwaz1weXdT6Fs |
+| extra02 Laws against flexible models | 28 | https://claude.ai/artifact/GjrnJg6Fc2Ag8sJyPwjAEi |
+| extra03 A protein language model | 25 | https://claude.ai/artifact/WmQ5ub2ZrfDK9Mwa1RsZ6s |
 | t01 Fish toxicity QSAR | 29 | https://claude.ai/artifact/1YuLnTJWQg7t9eZriS1FFZ |
 | t02 Neural networks and enzymes | 27 | https://claude.ai/artifact/QgC4ZoFvFMhR8Guc8aPHjf |
 | t03 Recurrent networks and protein targeting | 30 | https://claude.ai/artifact/JJRE7jLbS3LNR81d1g9aVD |

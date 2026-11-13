@@ -1,8 +1,8 @@
 # AI in Quantitative Biology - practicals
 
-`course/` has six notebooks. t01–t03 are the original three 90-minute sessions. s01 and s02 are
-toxicity-free replacements for t01 and t02 (t03 stays as session 3), and s04 is an optional fourth
-session. Each notebook has its exercise (✏️) and question (❓) solutions inline, and all of them run
+`course/` has six notebooks. t01–t03 are the original three 90-minute sessions. extra01 and extra02 are
+toxicity-free replacements for t01 and t02 (t03 stays as session 3), and extra03 is an optional extra
+practical (homework). Each notebook has its exercise (✏️) and question (❓) solutions inline, and all of them run
 on a laptop CPU.
 
 ## Main track
@@ -53,7 +53,7 @@ mitochondrial transit peptide / other, from the first 50 residues)
 
 Both are built around one contrast: a two-parameter law against flexible models.
 
-**s01 – Scaling laws**
+**extra01 – Scaling laws**
 - **Fitting the law:** metabolic rate against body mass in 422 mammals, using log-log axes and
   least squares. The exponent is 0.709, and its bootstrap interval rules out both 2/3 and 3/4.
 - **Residuals:** they show the slope changing with body size.
@@ -63,7 +63,7 @@ Both are built around one contrast: a two-parameter law against flexible models.
   gives 0.96 (Simpson's paradox).
 - **Homework:** other traits.
 
-**s02 – What a flexible model cannot do**
+**extra02 – What a flexible model cannot do**
 - **Within the data**, linear, kNN, RF and MLP are tied (CV R² about 0.95).
 - **Extrapolation** (trained below 1 kg): the law and the MLP predict the elephant at 415 / 402 W
   (measured 2336), kNN and RF at 3 W. Five MLP seeds range from 16 to 402 W.
@@ -74,7 +74,7 @@ Both are built around one contrast: a two-parameter law against flexible models.
 
 ## Optional session 4
 
-**s04 – What a protein language model knows about enzymes** (about 60 min, scikit-learn only,
+**extra03 – What a protein language model knows about enzymes** (about 60 min, scikit-learn only,
 with precomputed ESM-2 embeddings)
 - **Same classifier, different input:** the t02 enzyme task with the same logistic regression.
   Composition gives 0.29 / 0.27 (random / families held out). ESM-2 embeddings give
@@ -85,8 +85,8 @@ with precomputed ESM-2 embeddings)
 
 ## Threads running through the course
 
-- **Leakage and grouped validation** come back three times: homology in t02 and s04, taxonomic
-  orders in s02, and species in t03.
+- **Leakage and grouped validation** come back three times: homology in t02 and extra03, taxonomic
+  orders in extra02, and species in t03.
 - **Overfitting** gets a hands-on playground in t01, t02 and t03.
 - **Interpretation** runs from permutation importance to residuals to RNN saliency.
 
@@ -96,14 +96,14 @@ All numbers use fixed seeds (`RNG = 0`). Changing seeds, splits or models shifts
 the answers written in the notebooks.
 
 * **t01** *Daphnia* homework: linear 0.46, RF 0.51, kNN 0.48 scaled vs 0.24 unscaled.
-* **s01** exponent 0.709, bootstrap 95% 0.688 - 0.728, R² 0.95; by size 0.60 / 0.71 / 0.82.
+* **extra01** exponent 0.709, bootstrap 95% 0.688 - 0.728, R² 0.95; by size 0.60 / 0.71 / 0.82.
   Birds 0.655 (0.635 - 0.674). Mammal longevity: exponent 0.159, R² 0.50. Reptiles at 6% of a
   mammal (one intercept per class). "Careless" dataset slope 1.11.
-* **s02** 5-fold CV R²: linear 0.949, kNN 0.947, RF 0.928, MLP 0.953. Trained below 1 kg, R² above:
+* **extra02** 5-fold CV R²: linear 0.949, kNN 0.947, RF 0.928, MLP 0.953. Trained below 1 kg, R² above:
   0.79 / -1.06 / -1.04 / 0.83. Longevity from four traits, random CV vs orders held out: linear
   0.78 / 0.59, kNN 0.79 / 0.50, RF 0.80 / 0.48. Prokaryotes: genes ∝ size^0.964, 942 genes/Mb; the
   forest predicts 11 000 human genes (annotated 57 816). Eukaryotes: exponent 0.28, R² 0.60.
-* **s04** accuracy, random split / families held out: ESM-2 8M 0.65 / 0.53; 35M 0.76 / 0.61; 150M
+* **extra03** accuracy, random split / families held out: ESM-2 8M 0.65 / 0.53; 35M 0.76 / 0.61; 150M
   0.77 / 0.61. 1-NN on the 8M embeddings 0.70 / 0.54. Embeddings compressed to 100 columns by PCA,
   families held out: 0.53, 0.57, 0.54. The embeddings (`data/enzymes_esm2.npz`) are built by
   `data_prep/make_esm2_embeddings.py`, which needs PyTorch and `transformers` and uses a GPU if
@@ -130,8 +130,8 @@ become marimo forms). Script exports (`jupyter nbconvert --to script`) are not k
 
 ## Data (`../data/`)
 
-* `qsar_fish_toxicity.csv`, `qsar_aquatic_toxicity.csv`: UCI QSAR datasets (Cassotti et al. 2015),
-  headerless, `;`-separated. `LC50` is `-log10(mol/L)` (larger = more toxic).
+* `qsar_fish_toxicity.csv`, `qsar_aquatic_toxicity.csv`: UCI QSAR datasets (fish: Cassotti et al. 2015;
+  *Daphnia*: Cassotti et al. 2014), headerless, `;`-separated. `LC50` is `-log10(mol/L)` (larger = more toxic).
 * `enzymes.tsv`: 2047 reviewed UniProt/Swiss-Prot enzymes from human, *E. coli* K-12, yeast,
   *Arabidopsis* and *B. subtilis*, EC classes 1-6 (~350 each), at most 8 per protein family.
   Built by `data_prep/make_enzyme_dataset.py`.
@@ -142,7 +142,7 @@ become marimo forms). Script exports (`jupyter nbconvert --to script`) are not k
   maximum longevity, basal metabolic rate (627 species) and a few reproductive traits.
 * `genomes.tsv`: genome size and number of annotated genes for 13 751 prokaryotes (complete
   genomes, no organism names) and 4685 eukaryotes, one row per species, from the NCBI genome
-  reports. A few absurd eukaryote gene counts are left in on purpose (exercise 4.1 of `s02`).
+  reports. A few absurd eukaryote gene counts are left in on purpose (exercise 4.1 of `extra02`).
   Both built by `data_prep/make_scaling_datasets.py`, downloaded on 2026-11-11.
 
 * `enzymes_esm2.npz`: mean-pooled ESM-2 embeddings (float16) of the enzymes in `enzymes.tsv`,

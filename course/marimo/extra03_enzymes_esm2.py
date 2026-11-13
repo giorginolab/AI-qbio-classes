@@ -26,7 +26,7 @@ def _(mo):
     classifier**:
 
     * **composition**: the fraction of each of the 20 amino acids (and the length). No learning involved.
-    * **ESM-2**: a neural network trained on about 65 million protein sequences to guess hidden
+    * **ESM-2** (Lin et al. 2023): a neural network trained on about 65 million protein sequences to guess hidden
       residues from their context, like a language model guessing a missing word. It has never been
       shown an enzyme class, or any other annotation.
 
@@ -439,6 +439,25 @@ def _(mo):
     * The language model itself has seen everything. A held-out family is unseen by our classifier,
       not by ESM-2.
     * **Bigger is not automatically better.** Going from 8 to 35 million parameters helps; going to 150 million does not, on this task. Three points are not a law.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## References and data sources
+
+    **Data**
+
+    * Enzyme and targeting tables: reviewed entries of UniProtKB/Swiss-Prot (UniProt Consortium 2023), downloaded with the UniProt REST API on 2026-11-10 from human, *E. coli* K-12, yeast, *Arabidopsis* and *B. subtilis*; Swiss-Prot changes at every release, so the committed TSVs are the reference. See `course/README.md` and `data_prep/`. `enzymes_esm2.npz`: mean-pooled ESM-2 embeddings of the same proteins, computed with `data_prep/make_esm2_embeddings.py`.
+
+    **Further reading**
+
+    * Lin Z, Akin H, Rao R, et al. (2023). Evolutionary-scale prediction of atomic-level protein structure with a language model. *Science* 379:1123–1130. [doi:10.1126/science.ade2574](https://doi.org/10.1126/science.ade2574) — ESM-2
+    * Rives A, Meier J, Sercu T, et al. (2021). Biological structure and function emerge from scaling unsupervised learning to 250 million protein sequences. *PNAS* 118:e2016239118. [doi:10.1073/pnas.2016239118](https://doi.org/10.1073/pnas.2016239118) — the ESM-1b model that preceded it
+    * Yu T, Cui H, Li JC, et al. (2023). Enzyme function prediction using contrastive learning. *Science* 379:1358–1363. [doi:10.1126/science.adf2465](https://doi.org/10.1126/science.adf2465) — a contrastive-learning EC predictor, for comparison
+    * Kapoor S, Narayanan A (2023). Leakage and the reproducibility crisis in machine-learning-based science. *Patterns* 4:100804. [doi:10.1016/j.patter.2023.100804](https://doi.org/10.1016/j.patter.2023.100804) — a taxonomy of data leakage
     """)
     return
 

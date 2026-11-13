@@ -647,5 +647,24 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## References and data sources
+
+    **Data**
+
+    * `anage.tsv`: AnAge, the animal ageing and longevity database of the Human Ageing Genomic Resources (build 15; Tacutu et al. 2018), https://genomics.senescence.info/species/
+
+    **Further reading**
+
+    * Kleiber M (1932). Body size and metabolism. *Hilgardia* 6:315–353. [doi:10.3733/hilg.v06n11p315](https://doi.org/10.3733/hilg.v06n11p315) — the original observation of the 3/4 exponent
+    * White CR, Seymour RS (2003). Mammalian basal metabolic rate is proportional to body mass<sup>2/3</sup>. *PNAS* 100:4046–4049. [doi:10.1073/pnas.0436428100](https://doi.org/10.1073/pnas.0436428100) — the case for 2/3
+    * West GB, Brown JH, Enquist BJ (1997). A general model for the origin of allometric scaling laws in biology. *Science* 276:122–126. [doi:10.1126/science.276.5309.122](https://doi.org/10.1126/science.276.5309.122) — a network model that predicts 3/4
+    * Savage VM, Gillooly JF, Woodruff WH, et al. (2004). The predominance of quarter-power scaling in biology. *Funct Ecol* 18:257–282. [doi:10.1111/j.0269-8463.2004.00856.x](https://doi.org/10.1111/j.0269-8463.2004.00856.x) — a survey of exponents, and of how far quarter-powers hold
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()

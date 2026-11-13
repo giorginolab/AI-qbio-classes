@@ -1,4 +1,4 @@
-"""Build data/anage.tsv and data/genomes.tsv for the scaling-law practicals (s01, s02).
+"""Build data/anage.tsv and data/genomes.tsv for the scaling-law practicals (extra01, extra02).
 
 Run once by the instructor (needs internet); students only use the TSVs.
 
@@ -107,7 +107,7 @@ def make_genomes(cache):
     })
 
     # No upper filter on purpose: a few eukaryote annotations report absurd gene counts,
-    # and finding them is an exercise in s02.
+    # and finding them is an exercise in extra02.
     df = pd.concat([pro, euk]).sort_values(["domain", "group", "subgroup", "size_mb", "genes"])
     df.to_csv(OUT / "genomes.tsv", sep="\t", index=False, float_format="%.6g")
     print("genomes.tsv", df.shape, df["domain"].value_counts().to_dict())

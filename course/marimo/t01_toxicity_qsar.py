@@ -1060,5 +1060,24 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## References and data sources
+
+    **Data**
+
+    * `qsar_fish_toxicity.csv`: 908 compounds, 96-h LC50 for the fathead minnow (*Pimephales promelas*) with six molecular descriptors (UCI Machine Learning Repository, "QSAR fish toxicity"; Cassotti et al. 2015).
+    * `qsar_aquatic_toxicity.csv`: 546 compounds, acute toxicity to *Daphnia magna* with eight descriptors (UCI "QSAR aquatic toxicity"; Cassotti et al. 2014).
+
+    **Further reading**
+
+    * Walsh I, Fishman D, Garcia-Gasulla D, et al. (2021). DOME: recommendations for supervised machine learning validation in biology. *Nat Methods* 18:1122–1127. [doi:10.1038/s41592-021-01205-4](https://doi.org/10.1038/s41592-021-01205-4) — a checklist for reporting ML in biology; try filling it in for this notebook
+    * Dietterich TG (1998). Approximate statistical tests for comparing supervised classification learning algorithms. *Neural Comput* 10:1895–1923. [doi:10.1162/089976698300017197](https://doi.org/10.1162/089976698300017197) — comparing classifiers statistically
+    * Demšar J (2006). Statistical comparisons of classifiers over multiple data sets. *J Mach Learn Res* 7:1–30. <https://jmlr.org/papers/v7/demsar06a.html> — comparing classifiers over several data sets
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()

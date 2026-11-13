@@ -28,7 +28,7 @@ def _(mo):
 
     Both signals are cut off after delivery, and neither has a fixed sequence motif - they are
     recognised by their physico-chemical *pattern along the chain*. This is exactly what tools like
-    **SignalP** and **TargetP** predict; TargetP 2.0 is a recurrent neural network (a bidirectional
+    **SignalP** (Teufel et al. 2022) and **TargetP** (Almagro Armenteros et al. 2019) predict; TargetP 2.0 is a recurrent neural network (a bidirectional
     LSTM). Today we build a small version.
 
     | Part | Topic | Time |
@@ -989,6 +989,25 @@ def _(mo):
     signals are conserved across eukaryotes, because the import machineries (SRP/Sec61, TOM/TIM) are.
     Testing on a group the model has never seen (here a species, in t02 a protein family) is the
     honest way to measure generalisation.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## References and data sources
+
+    **Data**
+
+    * Enzyme and targeting tables: reviewed entries of UniProtKB/Swiss-Prot (UniProt Consortium 2023), downloaded with the UniProt REST API on 2026-11-10 from human, *E. coli* K-12, yeast, *Arabidopsis* and *B. subtilis*; Swiss-Prot changes at every release, so the committed TSVs are the reference. See `course/README.md` and `data_prep/`. Labels come from the `SIGNAL` and `TRANSIT` feature annotations.
+
+    **Further reading**
+
+    * Almagro Armenteros JJ, Salvatore M, Emanuelsson O, et al. (2019). Detecting sequence signals in targeting peptides using deep learning. *Life Sci Alliance* 2:e201900429. [doi:10.26508/lsa.201900429](https://doi.org/10.26508/lsa.201900429) — TargetP 2.0, a bidirectional LSTM for the same three classes
+    * Teufel F, Almagro Armenteros JJ, Johansen AR, et al. (2022). SignalP 6.0 predicts all five types of signal peptides using protein language models. *Nat Biotechnol* 40:1023–1025. [doi:10.1038/s41587-021-01156-3](https://doi.org/10.1038/s41587-021-01156-3) — SignalP 6.0, signal peptides with a protein language model
+    * Cho K, van Merriënboer B, Gulcehre C, et al. (2014). Learning phrase representations using RNN encoder–decoder for statistical machine translation. *Proc EMNLP* 1724–1734. [doi:10.3115/v1/D14-1179](https://doi.org/10.3115/v1/D14-1179) — the GRU
+    * Kapoor S, Narayanan A (2023). Leakage and the reproducibility crisis in machine-learning-based science. *Patterns* 4:100804. [doi:10.1016/j.patter.2023.100804](https://doi.org/10.1016/j.patter.2023.100804) — leakage; here, why we test on held-out species
     """)
     return
 
