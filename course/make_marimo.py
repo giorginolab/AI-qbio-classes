@@ -10,7 +10,9 @@ On top of `marimo convert` it
   collapsed in the notebooks), and
 - replaces the ipywidgets slider cells of the playgrounds with marimo slider forms.
 """
+import ast
 import re
+import textwrap
 import subprocess
 import sys
 from pathlib import Path
@@ -111,6 +113,56 @@ def replace_display(src):
     return re.sub(r"def _\(([^)]*)\):\n(.*?\n    return[^\n]*\n)", fix, src, flags=re.S)
 
 
+PLOT_NAMES = re.compile(r"^_?(plt|fig|figure|ax\d*|axes|cs)$")
+PLOT_METHODS = re.compile(r"^(plot|hist|bar|barh|scatter|imshow|legend|colorbar|text|annotate|title|"
+                          r"tight_layout|axhline|axvline|axvspan|fill_between|set_\w+|x\w*|y\w*|grid)$")
+DRAWS = re.compile(r"\bplt\.|\bplot\w*\(|\.(plot|hist|bar)\b|\bax\d*\b|\baxes\b")
+
+
+def _is_plot_call(node):
+    """Is this expression a matplotlib call (plt.legend(), ax.set_xlabel(...), df.plot(...))?"""
+    if not isinstance(node, ast.Call):
+        return False
+    f = node.func
+    while isinstance(f, ast.Attribute):
+        if PLOT_METHODS.match(f.attr):
+            return True
+        f = f.value
+        if isinstance(f, ast.Call):
+            f = f.func
+    # plt.*, ax.*, fig.*, or a plotting helper of the notebook (plot_confusion, plot_reading, ...)
+    return isinstance(f, ast.Name) and bool(PLOT_NAMES.match(f.id) or "plot" in f.id)
+
+
+def show_figures(src):
+    """marimo shows only a cell's last expression, not every figure the cell drew as Jupyter does.
+
+    Add plt.show() to each cell that draws: after the last statement, or just before it when the
+    cell ends with a value to display (a table), so that both appear."""
+    def fix(m):
+        head, args, body = m.group(1), m.group(2), m.group(3)
+        lines = body.split("\n")
+        code = textwrap.dedent("\n".join(lines[:-2]))           # drop "    return ..." and ""
+        if not DRAWS.search(code) or "mo.ui." in code or code.lstrip().startswith("mo.md("):
+            return m.group(0)
+        stmts = ast.parse(code).body
+        if not stmts or (isinstance(stmts[-1], ast.Expr) and "plt.show()" in ast.unparse(stmts[-1])):
+            return m.group(0)
+        last = stmts[-1]
+        if isinstance(last, (ast.FunctionDef, ast.ClassDef)):
+            return m.group(0)                                    # only defines a helper
+        before = isinstance(last, ast.Expr) and not _is_plot_call(last.value)
+        at = last.lineno - 1 if before else last.end_lineno
+        lines.insert(at, "    plt.show()")
+        names = [a.strip() for a in args.split(",") if a.strip()]
+        if "plt" in names:
+            signature = f"def _({args}):\n"
+        else:
+            signature = f"def _({', '.join(sorted(names + ['plt']))}):\n"
+        return head + signature + "\n".join(lines)
+    return re.sub(r"(@app\.cell[^\n]*\n)def _\(([^)]*)\):\n(.*?\n    return[^\n]*\n)", fix, src, flags=re.S)
+
+
 def build(nb):
     OUT.mkdir(exist_ok=True)
     out = OUT / (nb.stem + ".py")
@@ -118,7 +170,7 @@ def build(nb):
     src = out.read_text()
     if nb.stem in PLAYGROUNDS:
         src = replace_sliders(src, nb.stem)
-    src = hide_titled_cells(replace_display(src))
+    src = hide_titled_cells(show_figures(replace_display(src)))
     out.write_text(src)
     print(f"{nb.name} -> {out.relative_to(HERE)} ({src.count('# @title')} support cells with hidden code)")
 

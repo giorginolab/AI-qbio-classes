@@ -194,6 +194,7 @@ def _(mlp, plt):
     plt.yscale("log")
     plt.xlabel("epoch"); plt.ylabel("training loss (squared error / 2)")
     plt.title(f"{net.n_iter_} epochs");
+    plt.show()
     return
 
 
@@ -259,6 +260,7 @@ def _(
     plt.xlabel('MLOGP (other descriptors at their median)')
     plt.ylabel('predicted LC50')
     plt.legend(fontsize=8)
+    plt.show()
     return
 
 
@@ -322,6 +324,7 @@ def _(
     sweep = size_sweep(alpha=1e-4)          # almost no regularisation
     sweep.plot(logx=True, marker="o")
     plt.ylabel("R2"); plt.title("alpha = 0.0001");
+    plt.show()
     sweep
     return size_sweep, sweep
 
@@ -344,6 +347,7 @@ def _(plt, size_sweep, sweep):
     sweep_reg.plot(logx=True, marker='o', ax=_ax)
     plt.legend(['train, alpha=1e-4', 'test, alpha=1e-4', 'train, alpha=1', 'test, alpha=1'])
     plt.ylabel('R2')
+    plt.show()
     sweep_reg
     return
 
@@ -409,6 +413,7 @@ def _(
     axes[0].legend()
     axes[1].legend()
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -496,6 +501,7 @@ def _(MLPRegressor, np, plt):
         plt.tight_layout(); plt.show()
 
     mlp_playground()
+    plt.show()
     mlp_playground(alpha=0.1)
     return (mlp_playground,)
 
@@ -610,6 +616,7 @@ def _(enz, plt):
     classes = sorted(enz["ec_name"].unique())
     enz.boxplot(column="length", by="ec_name", figsize=(8, 4), rot=30)
     plt.suptitle(""); plt.title("sequence length by class"); plt.ylabel("residues");
+    plt.show()
     return (classes,)
 
 
@@ -668,6 +675,7 @@ def _(AA, classes, comp, enz, np, plt):
     plt.imshow(enrichment, cmap="RdBu_r", vmin=-0.3, vmax=0.3, aspect="auto")
     plt.colorbar(label="log2 enrichment")
     plt.xticks(range(20), AA); plt.yticks(range(len(classes)), enrichment.index);
+    plt.show()
     return
 
 
@@ -681,6 +689,7 @@ def _(StandardScaler, classes, comp, enz, plt):
         sel = (enz["ec_name"] == c).values
         plt.scatter(Z[sel, 0], Z[sel, 1], s=6, alpha=0.5, label=c)
     plt.legend(markerscale=3, fontsize=8); plt.xlabel("PC1"); plt.ylabel("PC2");
+    plt.show()
     return
 
 
@@ -739,9 +748,10 @@ def _(mo):
 
 
 @app.cell
-def _(Xe, classes, classifiers, cross_val_predict, plot_confusion, skf, ye):
+def _(Xe, classes, classifiers, cross_val_predict, plot_confusion, plt, skf, ye):
     pred_rf = cross_val_predict(classifiers["random forest"], Xe, ye, cv=skf)
     plot_confusion(ye, pred_rf, classes, title="random forest, random 5-fold CV");
+    plt.show()
     return (pred_rf,)
 
 
@@ -830,7 +840,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(Xe, acc_random, enz, np, pd, pred_rf, skf, ye):
+def _(Xe, acc_random, enz, np, pd, plt, pred_rf, skf, ye):
     # @title Support code: accuracy vs number of relatives in training (figure)
     fold = np.zeros(len(enz), dtype=int)
     for i, (_, test_idx) in enumerate(skf.split(Xe, ye)):
@@ -849,6 +859,7 @@ def _(Xe, acc_random, enz, np, pd, pred_rf, skf, ye):
     _ax.set_ylabel('random forest accuracy')
     _ax.set_xlabel('family members in the training folds')
     _ax.legend(fontsize=8)
+    plt.show()
     return
 
 

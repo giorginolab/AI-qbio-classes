@@ -373,6 +373,7 @@ def _(acc_family, plt, scaling):
     plt.axhline(acc_family["composition"], color="grey", ls=":", label="composition, families held out")
     plt.xscale("log"); plt.ylim(0, 1)
     plt.xlabel("parameters of the language model"); plt.ylabel("accuracy"); plt.legend();
+    plt.show()
     return
 
 

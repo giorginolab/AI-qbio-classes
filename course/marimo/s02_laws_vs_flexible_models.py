@@ -171,6 +171,7 @@ def _(X, make_models, np, plt, y):
         _ax.set_xlabel('log10 body mass (g)')
     _axes[0].set_ylabel('log10 metabolic rate (W)')
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -222,6 +223,7 @@ def _(X, make_models, np, pd, plt, r2_score, y):
     plt.tight_layout()
     print('measured elephant: 2336 W')
     pd.DataFrame(_rows).set_index('model')
+    plt.show()
     return elephant, grid_1, small
 
 
@@ -258,6 +260,7 @@ def _(X, elephant, grid_1, make_models, plt, small, y):
     plt.xlabel('log10 body mass (g)')
     plt.ylabel('log10 metabolic rate (W)')
     plt.legend()
+    plt.show()
     return
 
 
@@ -505,6 +508,7 @@ def _(RNG, RandomForestRegressor, Xe, Xp, euk, law, np, plt, r2_score, ye, yp):
     plt.xlabel('log10 genome size (Mb)')
     plt.ylabel('log10 number of genes')
     plt.legend()
+    plt.show()
     print(f'\nR2 on eukaryotes: law {r2_score(ye, law.predict(Xe)):.1f}, forest {r2_score(ye, forest.predict(Xe)):.2f}')
     return
 

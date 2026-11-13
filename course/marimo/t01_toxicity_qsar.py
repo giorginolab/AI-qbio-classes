@@ -141,6 +141,7 @@ def _(fish):
 def _(fish, plt):
     fish.hist(bins=30, figsize=(10, 6))
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -200,6 +201,7 @@ def _(fish, plt):
         for j in range(len(corr)):
             plt.text(j, _i, f'{corr.iloc[_i, j]:.2f}', ha='center', va='center', fontsize=8)
     plt.title('Correlation matrix')
+    plt.show()
     return (corr,)
 
 
@@ -219,6 +221,7 @@ def _(corr, fish, plt):
     plt.scatter(fish["MLOGP"], fish["LC50"], s=8, alpha=0.5)
     plt.xlabel("MLOGP (lipophilicity)")
     plt.ylabel("LC50  [-log10 mol/L]");
+    plt.show()
     return
 
 
@@ -266,6 +269,7 @@ def _(fish, plt):
     plt.scatter(Z[:, 0], Z[:, 1], c=y, cmap="viridis", s=10)
     plt.colorbar(label="LC50")
     plt.xlabel("PC1"); plt.ylabel("PC2");
+    plt.show()
     return StandardScaler, X, pca, y
 
 
@@ -351,6 +355,7 @@ def _(
     plt.scatter(X_test["MLOGP"], y_test, s=10, alpha=0.6, label="test chemicals")
     plt.plot(xs, lr1.predict(pd.DataFrame({"MLOGP": xs})), "r", label="fit")
     plt.xlabel("MLOGP"); plt.ylabel("LC50"); plt.legend();
+    plt.show()
     return (lr1,)
 
 
@@ -413,6 +418,7 @@ def _(X_test, X_train, lr1, np, plt, y_test, y_train):
     _ax2.set_title('Loss during training')
     _ax2.legend()
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -478,6 +484,7 @@ def _(LinearRegression, StandardScaler, X, X_train, pd, plt, y_train):
     print(coefs)
     coefs.plot.barh()
     plt.xlabel("standardised coefficient");
+    plt.show()
     return (make_pipeline,)
 
 
@@ -535,6 +542,7 @@ def _(RNG, X, np, plt):
     from matplotlib.patches import Patch
     _axes[1].legend(handles=[Patch(color='#9ecae1', label='train'), Patch(color='#e6550d', label='test')], loc='center left', bbox_to_anchor=(1.01, 0.5))
     plt.tight_layout()
+    plt.show()
     return cross_val_score, cv
 
 
@@ -606,6 +614,7 @@ def _(
     _ax2.legend()
     plt.tight_layout()
     print(f'200 splits: R2 = {split_r2.mean():.3f} +/- {split_r2.std():.3f}, range {split_r2.min():.2f} - {split_r2.max():.2f}')
+    plt.show()
     print(f'splits worse than ours: {(split_r2 < r2_score(y_test, pred_all)).mean():.1%}')
     return
 
@@ -704,6 +713,7 @@ def _(KNeighborsRegressor, StandardScaler, X, cv, make_pipeline, np, plt, y):
     plt.ylabel('RMSE')
     plt.legend()
     plt.title('kNN: underfitting (left) vs overfitting (right)')
+    plt.show()
     return
 
 
@@ -753,6 +763,7 @@ def _(
     lims = [y.min(), y.max()]
     plt.plot(lims, lims, "k--", lw=1)
     plt.xlabel("measured LC50"); plt.ylabel("predicted LC50"); plt.title("Random forest, test set");
+    plt.show()
     return (rf,)
 
 
@@ -794,6 +805,7 @@ def _(LinearRegression, RNG, RandomForestRegressor, X, cv, np, plt, y):
     _axes[0].set_ylabel('RMSE')
     _axes[0].legend()
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -889,6 +901,7 @@ def _(LinearRegression, StandardScaler, make_pipeline, np, plt):
         plt.tight_layout(); plt.show()
 
     poly_playground(degree=3)
+    plt.show()
     poly_playground(degree=15)
     return (poly_playground,)
 
@@ -976,6 +989,7 @@ def _(RNG, X, X_test, pd, plt, rf, y_test):
     print(importance)
     importance.plot.barh()
     plt.xlabel("drop in R2 when shuffled");
+    plt.show()
     return
 
 

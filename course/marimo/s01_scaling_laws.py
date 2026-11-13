@@ -193,6 +193,7 @@ def _(mam, plt):
     _ax2.set_ylabel('metabolic rate (W)')
     _ax2.set_title('logarithmic axes')
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -242,6 +243,7 @@ def _(mam, np, plt):
     plt.scatter(x, y, s=10)
     plt.plot(xx, log_a + b * xx, "r", lw=2, label=f"slope {b:.2f}")
     plt.xlabel("log10 body mass (g)"); plt.ylabel("log10 metabolic rate (W)"); plt.legend();
+    plt.show()
     return b, log_a, x, y
 
 
@@ -319,6 +321,7 @@ def _(RNG, b, np, plt, x, y):
     plt.axvline(3 / 4, color='C3', lw=2, label='3/4 (networks)')
     plt.xlabel('slope in 2000 bootstrap samples')
     plt.legend()
+    plt.show()
     return (rng,)
 
 
@@ -358,6 +361,7 @@ def _(b, log_a, np, plt, x, y):
     _ax2.set_title('separate fits by size')
     _ax2.legend()
     plt.tight_layout()
+    plt.show()
     return
 
 
@@ -426,6 +430,7 @@ def _(anage, np, plt):
     plt.scatter(xl, yl, s=8)
     plt.plot([xl.min(), xl.max()], [cl + bl * xl.min(), cl + bl * xl.max()], "r", lw=2)
     plt.xlabel("log10 adult mass (g)"); plt.ylabel("log10 maximum longevity (yr)");
+    plt.show()
     return (life,)
 
 
@@ -457,6 +462,7 @@ def _(life, plt):
     plt.axhline(0, color="r")
     plt.xticks(range(1, len(order_rank) + 1), order_rank, rotation=45, ha="right")
     plt.ylabel("longevity residual (log10)"); plt.title("lifespan relative to body size, by order");
+    plt.show()
     return
 
 
@@ -524,6 +530,7 @@ def _(anage, np, plt):
     plt.xlabel('log10 body mass (g)')
     plt.ylabel('log10 metabolic rate (W)')
     plt.legend()
+    plt.show()
     return allb, xa, ya
 
 

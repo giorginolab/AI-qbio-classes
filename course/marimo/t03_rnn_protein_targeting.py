@@ -188,6 +188,7 @@ def _(plt, tp):
     plt.xlabel('annotated signal length (residues)')
     plt.ylabel('proteins')
     plt.legend()
+    plt.show()
     print(tp.groupby('label')['signal_len'].median())
     return
 
@@ -226,6 +227,7 @@ def _(KYTE_DOOLITTLE, LABELS, np, plt, tp):
     plt.xlabel('position from N-terminus')
     plt.ylabel('mean hydropathy')
     plt.legend()
+    plt.show()
     return pos, position_profile
 
 
@@ -250,6 +252,7 @@ def _(LABELS, plt, pos, position_profile, tp):
         _ax.set_xlabel('position')
     _axes[0].set_ylabel('fraction of residues')
     _axes[0].legend()
+    plt.show()
     return
 
 
@@ -349,6 +352,7 @@ def _(AA, np, plt, tp):
     plt.figure(figsize=(10, 3.5))
     plt.imshow(one_hot(example).T, cmap="Greys", aspect="auto")
     plt.yticks(range(20), AA); plt.xlabel("position"); plt.title(example);
+    plt.show()
     return (one_hot,)
 
 
@@ -460,21 +464,13 @@ def _(RNG, X_test, X_train, Y_test, Y_train, model, nn, pd, plt, torch):
     history = train(model, X_train, Y_train, X_test, Y_test, epochs=15)
     ACC = ["train accuracy", "test accuracy"]
     history[ACC].plot(marker="o"); plt.ylabel("accuracy");
+    plt.show()
     history.tail(3)
     return ACC, history, train
 
 
 @app.cell
-def _(
-    LABELS,
-    X_test,
-    Y_test,
-    accuracy_score,
-    model,
-    np,
-    plot_confusion,
-    torch,
-):
+def _(LABELS, X_test, Y_test, accuracy_score, model, np, plot_confusion, plt, torch):
     model.eval()
     with torch.no_grad():
         pred_test = model(X_test).argmax(dim=1).numpy()
@@ -483,6 +479,7 @@ def _(
     from sklearn.metrics import classification_report
     print(classification_report(names[Y_test.numpy()], names[pred_test], digits=3))
     plot_confusion(names[Y_test.numpy()], names[pred_test], LABELS, title="GRU, test set");
+    plt.show()
     return names, pred_test
 
 
@@ -558,6 +555,7 @@ def _(hists, plt):
     plt.tight_layout()
     for _h, hist in sorted(hists.items()):
         print(f"hidden={_h:3d}: lowest test loss at epoch {hist['test loss'].idxmin()}, test loss {hist['test loss'].min():.3f} -> {hist['test loss'].iloc[-1]:.3f} at epoch 15")
+    plt.show()
     return
 
 
@@ -623,6 +621,7 @@ def _(
         plt.tight_layout(); plt.show()
 
     gru_playground()
+    plt.show()
     gru_playground(n_train=1200)
     return (gru_playground,)
 
@@ -734,6 +733,7 @@ def _(
     history_shuf[ACC].plot(marker='o', style='--', ax=_ax)
     plt.legend(['train', 'test', 'train (shuffled)', 'test (shuffled)'])
     plt.ylabel('accuracy')
+    plt.show()
     return
 
 
@@ -774,6 +774,7 @@ def _(LABELS, X_test, Y_test, idx_test, model, np, plt, pos, torch, tp):
         plt.legend(fontsize=8)
 
     plot_reading(int(np.flatnonzero(Y_test.numpy() == LABELS.index("SP"))[0]))
+    plt.show()
     return (plot_reading,)
 
 
@@ -801,6 +802,7 @@ def _(LABELS, Y_test, idx_test, mo, names, np, plot_reading, plt, pred_test, tp)
     mo.output.append(table.head(10))
     plt.figure(figsize=(6, 3.5))
     plot_reading(int(wrong[0]))
+    plt.show()
     return
 
 
@@ -831,6 +833,7 @@ def _(LABELS, X_test, Y_test, model, np, plt, pos, torch):
     plt.xlabel('residues read')
     plt.ylabel('mean P(true class)')
     plt.legend()
+    plt.show()
     return
 
 
@@ -872,6 +875,7 @@ def _(LABELS, X_test, Y_test, model, np, plt, torch):
     plt.ylabel('PC2 of hidden state')
     plt.legend(markerscale=3, fontsize=8)
     plt.title('Hidden states (dots: residues 1 → 50, light → dark)')
+    plt.show()
     return colours, y_te
 
 
@@ -921,6 +925,7 @@ def _(LABELS, X_test, Y_test, colours, model, plt, pos, tp, y_te):
     _ax.set_xlabel('position from N-terminus')
     _ax.set_ylabel('mean |gradient x input|')
     _ax.legend(fontsize=8)
+    plt.show()
     return
 
 
