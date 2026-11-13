@@ -130,16 +130,31 @@ which estimator wins.
 
 ## 4. Literature worth citing
 
-Short and assignable. **Verify each before use — quoted from memory, not looked up.**
+Short and assignable. Checked against Crossref (DOIs) and JMLR on 2026-11-13.
 
-- **Walsh, Fishman et al. 2021, "DOME recommendations"**, *Nat Methods* — a checklist for
-  reporting ML in biology. Ideal as a homework frame: fill the DOME items for your own notebook.
-- **Kapoor & Narayanan 2023, "Leakage and the reproducibility crisis in ML-based science"**,
-  *Patterns* — canonical reference for t02 Part B; gives a taxonomy and the vocabulary.
-- **Lin et al. 2023 (ESM-2)**, *Science* — the model used in `s04`, which does not cite it yet.
-- **CLEAN / recent EC-number prediction work** — context for why t02's negative result is a
-  *correct* negative: composition alone genuinely cannot do this.
-- For the statistics habit: **Dietterich 1998** or **Demšar 2006** on comparing classifiers.
+- **Walsh I, Fishman D, Garcia-Gasulla D, et al. (2021).** DOME: recommendations for supervised
+  machine learning validation in biology. *Nat Methods* 18:1122–1127.
+  doi:[10.1038/s41592-021-01205-4](https://doi.org/10.1038/s41592-021-01205-4)
+  — a checklist for reporting ML in biology. Ideal as a homework frame: fill the DOME items for
+  your own notebook.
+- **Kapoor S, Narayanan A (2023).** Leakage and the reproducibility crisis in machine-learning-based
+  science. *Patterns* 4:100804.
+  doi:[10.1016/j.patter.2023.100804](https://doi.org/10.1016/j.patter.2023.100804)
+  — canonical reference for t02 Part B; gives a taxonomy and the vocabulary.
+- **Lin Z, Akin H, Rao R, et al. (2023).** Evolutionary-scale prediction of atomic-level protein
+  structure with a language model. *Science* 379:1123–1130.
+  doi:[10.1126/science.ade2574](https://doi.org/10.1126/science.ade2574)
+  — ESM-2, the model used in `s04`, which does not cite it yet.
+- **Yu T, Cui H, Li JC, et al. (2023).** Enzyme function prediction using contrastive learning.
+  *Science* 379:1358–1363. doi:[10.1126/science.adf2465](https://doi.org/10.1126/science.adf2465)
+  — CLEAN, a recent EC-number predictor: context for why t02's negative result is a *correct*
+  negative (composition alone genuinely cannot do this).
+- For the statistics habit, on comparing classifiers:
+  - **Dietterich TG (1998).** Approximate statistical tests for comparing supervised
+    classification learning algorithms. *Neural Comput* 10:1895–1923.
+    doi:[10.1162/089976698300017197](https://doi.org/10.1162/089976698300017197)
+  - **Demšar J (2006).** Statistical comparisons of classifiers over multiple data sets.
+    *J Mach Learn Res* 7:1–30. No DOI; <https://jmlr.org/papers/v7/demsar06a.html>
 
 ---
 
