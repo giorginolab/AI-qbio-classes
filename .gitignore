@@ -15,5 +15,8 @@ data/proteinbert_model/
 # Office lock files
 ~$*
 
-# 75 MB source deck (and its copies): kept locally, too big for git history
-ai-qbio-unimi_2026_r1*.pptx
+# New PowerPoint sources are not tracked by default: the big decks live in the working
+# copy only. The six teaching-notes decks under slides/ were added before this rule and
+# stay tracked (git ignores .gitignore for files it already tracks); use `git add -f` for
+# any other .pptx you really want in the repository.
+*.pptx
