@@ -1,0 +1,8 @@
+<section id="firstfit" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t01_04.png" alt="Linear fit of LC50 on MLOGP with training and test points" style="width:1025px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A first model: LC50 = 2.57 + 0.70 · MLOGP</h2>
+<p style="font-size:32px;line-height:1.4">25% held out as a test set (681 train, 227 test). Baseline RMSE 1.40; MLOGP alone RMSE 1.20, R² = 0.26.</p>
+</div>
+<aside>To know whether a model is any good, test it on chemicals it has not seen. RMSE = typical error in LC50 units. R² = fraction of variance explained: 0 = no better than predicting the mean, 1 = perfect.</aside>
+</section>

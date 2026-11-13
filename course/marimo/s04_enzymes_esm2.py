@@ -78,18 +78,15 @@ def _():
     from pathlib import Path
 
     def find_data_dir():
-        "$QBIO_DATA if set, else a `data/` folder here or above, else Google Drive on Colab."
+        "$QBIO_DATA if set, else the `data/` folder of the course repository (here or above)."
         if os.environ.get("QBIO_DATA"):
             return Path(os.environ["QBIO_DATA"])
         here = Path.cwd().resolve()
         for p in [here, *here.parents]:
             if (p / "data" / "enzymes_esm2.npz").exists():
                 return p / "data"
-        if "google.colab" in sys.modules:
-            from google.colab import drive
-            drive.mount("/content/drive")
-            return Path("/content/drive/MyDrive/AI_QBio/data")
-        raise FileNotFoundError("Cannot find the data/ folder: set QBIO_DATA to its path")
+        raise FileNotFoundError("Cannot find data/: run the notebook inside the course repository, "
+                                "or set QBIO_DATA to the path of its data/ folder")
 
     DATA_DIR = find_data_dir()
     print("data from", DATA_DIR)

@@ -1,0 +1,8 @@
+<section id="playground" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t01_12.png" alt="Polynomial of degree 15 fitted to 20 points, and training and test error against degree" style="width:1664px;height:572px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">Playground: overfitting you can see</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">20 noisy points of a known dose-response curve, polynomials of degree 0 – 20, optional ridge penalty alpha. Faint curves: the same model on 20 other samples, i.e. its variance.</p>
+</div>
+<aside>poly_playground(): left, data, true curve, fit and refits on other samples; right, training and test error per degree, dotted line = noise level. Degree 15 shown: training RMSE 0.13 below the noise, test 0.8. Sliders work with ipywidgets.</aside>
+</section>

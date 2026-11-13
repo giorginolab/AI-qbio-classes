@@ -1,0 +1,8 @@
+<section id="saliency" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t03_15.png" alt="Mean saliency along the sequence for SP, mTP and other proteins" style="width:1100px;height:525px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Saliency: which positions change the decision?</h2>
+<p style="font-size:32px;line-height:1.4">The gradient of the true-class score with respect to each input residue, times the input, averaged per class. It concentrates in the first ~25–30 residues. Saliency says where the model looks, not why.</p>
+</div>
+<aside>Saliency maps are a simple form of explainable AI. The spike at position 50 is an artefact of reading left to right: the last residue enters the final state directly. A bidirectional RNN (as in TargetP) reads in both directions and avoids this. Same backward() as training, but with respect to the input instead of the weights.</aside>
+</section>

@@ -1,0 +1,6 @@
+<section id="nn" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Exercise 3.1</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:64px;width:1500px">Replace the logistic regression by a 1-nearest-neighbour classifier on the embeddings.</h2>
+<p style="font-size:44px;line-height:1.35;width:1500px">Each enzyme gets the class of the most similar enzyme in training. Compare the two splits. What does this model do, in biological terms?</p>
+<aside>Answer: 1-NN gets 0.698 with a random split, beating the logistic regression, and 0.541 with families held out. It is a search for the closest relative and a transfer of its annotation, which is how most proteins in databases are annotated in practice. It works as long as a relative exists.</aside>
+</section>

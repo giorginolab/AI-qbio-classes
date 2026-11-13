@@ -1,0 +1,8 @@
+<section id="loss" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t03_06.png" alt="Loss and accuracy curves for GRUs with 4, 32 and 128 hidden units" style="width:1664px;height:545px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">The loss notices overfitting before the accuracy does</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">hidden = 128: the test loss turns upward after epoch 10 (0.16 → 0.23) while the test accuracy barely moves (0.95 → 0.94). The network becomes over-confident.</p>
+</div>
+<aside>Accuracy only asks whether the top class is right; the loss also asks how confident the network was, and punishes a confident wrong answer hard (minus log p of the true class). Ask: do test loss and test accuracy tell the same story? Which would you watch to stop training? Early stopping usually watches the validation loss. Lowest test loss: hidden 4 at epoch 15 (0.200); hidden 32 at epoch 9 (0.147, 0.149 at 15); hidden 128 at epoch 10 (0.163, 0.232 at 15).</aside>
+</section>

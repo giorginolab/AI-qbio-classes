@@ -1,0 +1,12 @@
+<section id="gates" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Model · gated recurrent unit</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Gates let the network decide what to keep and what to forget</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">A plain RNN multiplies the hidden state by the same matrix at every step. Over many steps the training signal (the gradient) shrinks or explodes, so long-range information is hard to learn.</p>
+<p style="font-size:32px;line-height:1.4">A <b>GRU</b> adds two gates, numbers between 0 and 1 computed from the input and the state. The <b>update gate</b> sets how much of the old state to keep; the <b>reset gate</b> sets how much of the past to use when proposing new content.</p>
+<p style="font-size:32px;line-height:1.4">With the update gate near “keep”, information can pass unchanged across many residues.</p>
+</div>
+<aside>LSTMs (used by TargetP 2.0) follow the same principle with three gates and a separate memory cell. GRUs are a lighter variant and usually perform similarly. The gates are learned from data like all other weights; nobody tells the network which residues to remember.</aside>
+</section>

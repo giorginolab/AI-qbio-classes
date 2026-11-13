@@ -1,0 +1,8 @@
+<section id="results" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t03_04.png" alt="Training and test accuracy of the GRU over 15 epochs" style="width:1050px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">0.944 test accuracy with 5283 parameters</h2>
+<p style="font-size:32px;line-height:1.4">Against 0.873 for the best composition window. Signal peptides are recognised best (precision and recall ≈ 0.97); most remaining errors are other proteins predicted as mTP. Training takes seconds on a laptop CPU.</p>
+</div>
+<aside>Errors: weak transit-like N-termini, or perhaps unannotated dual-targeted proteins. Train and test accuracy stay close: with 2700 sequences this small network hardly overfits.</aside>
+</section>

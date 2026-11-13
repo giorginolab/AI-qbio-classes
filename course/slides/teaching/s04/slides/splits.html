@@ -1,0 +1,30 @@
+<section id="splits" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Random split against grouped split</p>
+<div style="display:flex;flex-direction:row;gap:96px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Random</h3>
+<p style="font-size:32px">Train</p>
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#ADB0B8;font-size:32px;text-align:center;color:#002060">B</p><p style="width:64px;background:#F99D27;font-size:32px;text-align:center;color:#002060">C</p><p style="width:64px;background:#F99D27;font-size:32px;text-align:center;color:#002060">C</p><p style="width:64px;background:#96AE21;font-size:32px;text-align:center;color:#002060">D</p>
+</div>
+<p style="font-size:32px">Test</p>
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#ADB0B8;font-size:32px;text-align:center;color:#002060">B</p><p style="width:64px;background:#96AE21;font-size:32px;text-align:center;color:#002060">D</p>
+</div>
+<p style="font-size:32px;line-height:1.4">Every test family also appears in training.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Families held out</h3>
+<p style="font-size:32px">Train</p>
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#78B3E0;font-size:32px;text-align:center;color:#002060">A</p><p style="width:64px;background:#F99D27;font-size:32px;text-align:center;color:#002060">C</p><p style="width:64px;background:#F99D27;font-size:32px;text-align:center;color:#002060">C</p><p style="width:64px;background:#96AE21;font-size:32px;text-align:center;color:#002060">D</p>
+</div>
+<p style="font-size:32px">Test</p>
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="width:64px;background:#ADB0B8;font-size:32px;text-align:center;color:#002060">B</p><p style="width:64px;background:#ADB0B8;font-size:32px;text-align:center;color:#002060">B</p><p style="width:64px;background:#8779B6;font-size:32px;text-align:center;color:#FFFFFF">E</p>
+</div>
+<p style="font-size:32px;line-height:1.4">Each family is entirely in training or entirely in test.</p>
+</div>
+</div>
+<aside>Letters are protein families. In scikit-learn the grouped split is StratifiedGroupKFold with the family as group; stratified keeps the six classes balanced in each fold. Ask: which split matches the question you want to answer? To annotate a new protein from a known family, the random split is fine; to predict function for a new family, only the grouped split is honest.</aside>
+</section>

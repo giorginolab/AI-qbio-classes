@@ -1,0 +1,8 @@
+<section id="sweepreg" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t02_03.png" alt="Training and test R² against network width with alpha = 1" style="width:1044px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">With alpha = 1: train ≈ 0.8, test up to 0.56</h2>
+<p style="font-size:32px;line-height:1.4">Exercise A.2. alpha adds a penalty on large weights (L2 regularisation, weight decay). The gap shrinks, and now the large networks generalise best.</p>
+</div>
+<aside>Width 512 with alpha=1: train 0.773, test 0.559. Still, in 5-fold CV an MLP does not beat a random forest on 6 descriptors (0.58 vs 0.60). Neural networks shine with large data and raw structured inputs such as sequences and images.</aside>
+</section>

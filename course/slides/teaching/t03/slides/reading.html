@@ -1,0 +1,11 @@
+<section id="reading" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Interpretation · reading curves</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">An RNN gives a prediction after every residue, so we can watch it decide</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">Apply the final layer to h_1, h_2, …, h_50 instead of only h_50: what would the network predict if the sequence stopped here?</p>
+<p style="font-size:32px;line-height:1.4">The curve of the probability of the true class against residues read shows <b>where</b> the decision is made. We can then compare that place with what we know about the biology.</p>
+</div>
+<aside>This is a property of reading left to right: the hidden state at position t only depends on residues 1 to t. Exercise 7.1 asks students to look at misclassified proteins and guess why; encourage them to look at the protein names.</aside>
+</section>

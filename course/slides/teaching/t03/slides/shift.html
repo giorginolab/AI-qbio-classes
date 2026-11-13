@@ -1,0 +1,11 @@
+<section id="shift" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Evaluation · distribution shift</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Test on a group the model has never seen</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">A random split puts close relatives in both training and test sets. Real use is harder: a new species, a new protein family, a new lab.</p>
+<p style="font-size:32px;line-height:1.4">Trained without human proteins, the GRU reaches 0.885 on human; trained on <i>Arabidopsis</i> alone, 0.915 on yeast. Lower than the random split (0.944) but close, because the import machineries, and so the signals, are conserved across eukaryotes.</p>
+</div>
+<aside>SRP/Sec61 for signal peptides and TOM/TIM for transit peptides are ancient. The same honest-evaluation idea appeared in t02 with protein families held out, where the drop was much larger. The size of the drop tells you how much the model relies on things specific to the training groups.</aside>
+</section>

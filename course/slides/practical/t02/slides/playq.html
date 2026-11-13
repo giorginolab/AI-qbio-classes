@@ -1,0 +1,10 @@
+<section id="playq" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Exercise A.3 · playground</p>
+<ol style="font-size:40px;line-height:1.35;width:1550px">
+<li>In what order does the network learn things? When does the test error start to rise?</li>
+<li>What changes with alpha = 0.1? And with alpha = 1?</li>
+<li>Without regularisation, which helps more: a smaller network (width = 8) or more data (n_train = 200)?</li>
+<li>Try seed = 1, 2, 3. Do you always get the same curve?</li>
+</ol>
+<aside>1. Coarse trend first (epoch 10, almost straight), then the S shape (about epoch 170), then details of single points. Test error lowest around epoch 380 (MSE 0.048, noise level 0.04), then rises to 0.061 while training error falls to 0.007, below the noise level: memorising noise. 2. alpha=0.1: smooth curve, test error keeps going down (0.049), no early stopping needed. alpha=1: too stiff for the S shape (test MSE about 0.09), underfitting. 3. Both work here: width=8 ends at 0.048; n_train=200 reaches the noise level 0.040 with train = test. More data is the more reliable cure. 4. No: initial weights and samples differ, the best epoch moves (about 135-380 for seeds 0-3). Averaging several networks (an ensemble) reduces this variance.</aside>
+</section>

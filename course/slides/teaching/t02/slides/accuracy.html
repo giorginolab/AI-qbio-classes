@@ -1,0 +1,16 @@
+<section id="accuracy" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:row;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Measuring a classifier</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Accuracy only means something next to chance</h2>
+</div>
+<div style="flex:1;font-size:32px;line-height:1.4"><p>Accuracy is the fraction of correct predictions. With six balanced classes, guessing gets 1/6. Stratified cross-validation keeps the class proportions in every fold, so each fold is a fair copy of the problem.</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;border-top:3px solid #ADB0B8;padding:24px 0px 0px 0px;display:flex;flex-direction:column;gap:8px"><p style="font-size:96px;font-weight:700;line-height:1;color:#5A6170">0.17</p><p style="font-size:28px">chance</p></div>
+<div style="flex:1;border-top:3px solid #78B3E0;padding:24px 0px 0px 0px;display:flex;flex-direction:column;gap:8px"><p style="font-size:96px;font-weight:700;line-height:1;color:#002060">0.29</p><p style="font-size:28px">logistic regression</p></div>
+<div style="flex:1;border-top:3px solid #417F45;padding:24px 0px 0px 0px;display:flex;flex-direction:column;gap:8px"><p style="font-size:96px;font-weight:700;line-height:1;color:#002060">0.40</p><p style="font-size:28px">random forest</p></div>
+<div style="flex:1;border-top:3px solid #8779B6;padding:24px 0px 0px 0px;display:flex;flex-direction:column;gap:8px"><p style="font-size:96px;font-weight:700;line-height:1;color:#002060">0.29</p><p style="font-size:28px">MLP (64)</p></div>
+</div>
+<aside>Features: 20 composition values plus log length; stratified 5-fold CV. Exact values: 0.291, 0.398, 0.294. With unbalanced classes, accuracy can mislead (always predicting the majority class scores high); balanced accuracy or per-class recall are then better.</aside>
+</section>

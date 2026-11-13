@@ -1,0 +1,6 @@
+<section id="valley" style="background:#002060;color:#FFFFFF;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:32px;font-weight:600;color:#78B3E0;letter-spacing:2px;text-transform:uppercase">Question</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-size:80px;font-weight:700;line-height:1.05;color:#FFFFFF;width:1500px">The valley is long, narrow and tilted. Why?</h2>
+<p style="font-size:44px;color:rgba(255,255,255,0.78);width:1500px">Gradient descent drops in fast, then crawls along it. Try lr = 0.15: what happens?</p>
+<aside>Intercept and slope trade off: all MLOGP values are around 2, so a steeper slope is almost compensated by a lower intercept. Big steps across steep walls, tiny steps along the flat floor: most of the 300 steps are spent creeping. With lr = 0.15 the steps overshoot wall to wall and the loss explodes; any learning rate above about 0.14 diverges. Centring MLOGP makes the valley round: one reason we standardise inputs of neural networks. Test loss follows training loss down: a straight line has too few parameters to overfit.</aside>
+</section>

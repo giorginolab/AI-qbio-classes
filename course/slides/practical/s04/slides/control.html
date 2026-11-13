@@ -1,0 +1,6 @@
+<section id="control" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Exercise 4.1</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:64px;width:1500px">Bigger models also give longer embeddings: 320, 480, 640 numbers.</h2>
+<p style="font-size:44px;line-height:1.35;width:1500px">Maybe the classifier just benefits from more columns. Design a control and run it. Hint: PCA can compress every embedding to the same number of columns.</p>
+<aside>Answer: compressed to 100 columns, families held out: 8M 0.534, 35M 0.567, 150M 0.537. The middle model is still best, by less, and the largest loses its advantage over the smallest. Part of what looked like a better model was a longer vector. Which model is best depends on a detail of the analysis: the differences between the two larger models are not solid.</aside>
+</section>

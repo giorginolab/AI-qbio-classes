@@ -1,0 +1,18 @@
+<section id="features" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:32px">
+<div style="flex:1;background:#F6F7F9;padding:32px"><p style="font-size:36px;font-family:'Courier New', monospace;color:#002060">MKTAYIAKQRQISFVKSHFSRQ…</p><p style="font-size:28px">a sequence of any length</p></div>
+<x-connector style="width:96px;color:#002060;border-width:4px"></x-connector>
+<div style="flex:1;background:#F6F7F9;padding:32px"><p style="font-size:36px;font-family:'Courier New', monospace;color:#002060">A 0.08 · C 0.02 · … · Y 0.03</p><p style="font-size:28px">20 fractions, one per amino acid</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Features</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Most models need a fixed-size vector</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;font-size:32px;line-height:1.4">
+<p>Amino-acid composition is the simplest encoding: every protein becomes 20 numbers, plus log length. It is easy and robust.</p>
+<p>It also forgets the order completely: a protein and its scrambled copy look identical. A model can only use what its features keep.</p>
+</div>
+</div>
+<aside>The sequence shown is an illustration, not a protein from the dataset. Other encodings keep more: dipeptide frequencies (400 features), one-hot encoding of each position (session 3), embeddings from protein language models (session 4).</aside>
+</section>

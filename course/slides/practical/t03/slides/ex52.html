@@ -1,0 +1,10 @@
+<section id="ex52" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Exercise 5.2 · with the playground</p>
+<ol style="font-size:40px;line-height:1.35;width:1500px">
+<li>300 sequences, 60 epochs: when would early stopping have stopped, and what would it have saved?</li>
+<li>With 1200 sequences: what improves, and what does not?</li>
+<li>Back to 300, add weight_decay = 1e-3, then 1e-2. What happens?</li>
+<li>Try lr = 0.1 and lr = 0.0003. What goes wrong in each case?</li>
+</ol>
+<aside>1. Stop at epoch 30 (test loss about 0.35): same accuracy in half the time. The spike near epoch 33 is one bad optimiser step on a tiny dataset. 2. More data raises the ceiling (test accuracy 0.95 at epoch 22) but does not remove overfitting: test loss lowest at epoch 14 (about 0.17), then triples (about 0.53 at epoch 60) while training loss falls to 0.0003. Early stopping still needed. 3. 1e-3 helps a little: test accuracy about 0.93, final test loss about 0.32 instead of 0.40. 1e-2 is too strong: stays at about 0.64, underfitting. 4. lr = 0.1: steps too big, never settles, accuracy at chance (about 0.34). lr = 0.0003: steps tiny, after 60 epochs about 0.39. The learning rate is usually the first knob to tune.</aside>
+</section>

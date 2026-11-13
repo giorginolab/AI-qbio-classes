@@ -1,0 +1,9 @@
+<section id="confusion" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t02_10.png" alt="Confusion matrix of the random forest under random 5-fold cross-validation" style="width:800px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Confusion matrix</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Which classes get confused with which</h2>
+<p style="font-size:32px;line-height:1.4">Rows are true classes, columns predictions; the diagonal is what the model gets right. No class is easy: recall 0.30–0.45 each, errors spread over all columns. Oxidoreductases are hardest.</p>
+</div>
+<aside>Oxidoreductases are a huge and chemically diverse class (NAD-, FAD-, heme-, metal-dependent enzymes in many unrelated folds) with no common composition. EC classes describe the chemistry of the reaction, which evolution has invented many times in unrelated folds, so composition is a weak proxy for it. Recall of a class = correct predictions of that class / members of that class.</aside>
+</section>

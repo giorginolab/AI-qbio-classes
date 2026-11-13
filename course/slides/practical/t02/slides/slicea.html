@@ -1,0 +1,19 @@
+<section id="slicea" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Answer</p>
+<div style="display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:3px solid #78B3E0;padding:32px 0px 0px 0px">
+<h3 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Linear</h3>
+<p style="font-size:32px;line-height:1.4">A straight line everywhere.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:3px solid #417F45;padding:32px 0px 0px 0px">
+<h3 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Random forest</h3>
+<p style="font-size:32px;line-height:1.4">A staircase. Flat beyond the data: it never predicts outside the training range.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-top:3px solid #F99D27;padding:32px 0px 0px 0px">
+<h3 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">MLP</h3>
+<p style="font-size:32px;line-height:1.4">Piecewise linear (ReLU). Outside the data it keeps going in whatever direction the last piece pointed.</p>
+</div>
+</div>
+<p style="font-size:44px;line-height:1.3;width:1500px">No model can be trusted in the grey bands. QSAR guidelines call the region where a model is valid its <b>applicability domain</b>.</p>
+<aside>Both MLPs bend upwards at low MLOGP, predicting that very hydrophilic chemicals are more toxic: few training chemicals there, the curve is unconstrained, the result biologically implausible. The big unregularised network bends more and has small wiggles where it follows individual chemicals: overfitting, seen directly.</aside>
+</section>

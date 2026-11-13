@@ -1,0 +1,12 @@
+<section id="cv" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Cross-validation</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Score a model on data it did not see during training.</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">Training error rewards memorisation, so it cannot compare a two-parameter law with a model of thousands of weights. In <b>k-fold cross-validation</b> the data are split into k groups; each group is predicted by a model trained on the others.</p>
+<p style="font-size:32px;line-height:1.4">R² = 1 − (squared error of the model) / (squared error of always predicting the mean). 1 is perfect, 0 is no better than the mean, negative is worse.</p>
+<p style="font-size:32px;line-height:1.4">Cross-validation estimates performance on new data <i>drawn like the training data</i>. Keep that condition in mind.</p>
+</div>
+<aside>The notebook uses 5 folds and cross_val_score, which returns one R² per fold; the spread across folds tells how much of a difference between models is noise. The condition in the last line is the thread of Parts 2 and 3: both break it, in two different ways.</aside>
+</section>

@@ -1,0 +1,11 @@
+<section id="earlystop" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t02_04.png" alt="Training and test error against epoch for an unregularised and a regularised network" style="width:1664px;height:544px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<div style="width:700px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Early stopping</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Watch the error on unseen data, epoch by epoch</h2>
+</div>
+<p style="flex:1;font-size:32px;line-height:1.4">Unregularised, the test error is lowest near epoch 110 and then climbs, while training error falls to 0.14. Stop at the minimum, chosen on a validation set carved from the training data, never on the test set. With alpha = 1 the test error flattens instead of rising.</p>
+</div>
+<aside>Unregularised (512, 512): best test MSE 0.855 at epoch 109; after 300 epochs train 0.140, test 0.998. alpha = 1: best 0.868 at epoch 286, test 0.869 after 300. Early stopping is a form of regularisation: it limits how far the weights can travel from their small random start.</aside>
+</section>

@@ -1,0 +1,10 @@
+<section id="metrics" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Scoring</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A score means nothing without a baseline</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>The simplest model predicts the mean LC50 for every chemical. Its RMSE, 1.40, is the baseline.</p><p><b>RMSE</b>, root mean squared error, is the typical error in LC50 units. <b>R²</b> is the fraction of variance explained: 0 is no better than the mean, 1 is perfect, and it can be negative.</p><p>A line on MLOGP alone: RMSE 1.20, R² 0.26 on the test set.</p>
+</div>
+<aside>R² = 1 − MSE(model) / MSE(mean). Report both: RMSE in the units of the problem, R² to compare across datasets.</aside>
+</section>

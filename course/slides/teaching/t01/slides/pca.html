@@ -1,0 +1,10 @@
+<section id="pca" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Unsupervised learning</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">PCA draws a map of many variables in two dimensions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>Principal component analysis finds the directions along which the data vary most. Projecting on the first two gives a 2D map where nearby points have similar descriptors.</p><p>It never sees the target: we colour by LC50 afterwards. Variables are first <b>standardised</b> (mean 0, standard deviation 1), or the one with the largest units dominates.</p><p>The same tool maps expression profiles, sequences or species traits.</p>
+</div>
+<aside>Each component is a weighted sum of standardised descriptors; the weights are the loadings. Variance explained says how much of the spread the map shows.</aside>
+</section>

@@ -1,0 +1,19 @@
+<section id="result" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Part 2 · same classifier, different input</p>
+<div style="display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:3px solid #ADB0B8;padding:24px 0px 0px 0px">
+<p style="font-size:120px;font-weight:700;line-height:1;color:#002060">0.17</p>
+<p style="font-size:32px">chance, six classes</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:3px solid #F99D27;padding:24px 0px 0px 0px">
+<p style="font-size:120px;font-weight:700;line-height:1;color:#002060">0.29</p>
+<p style="font-size:32px">amino-acid composition</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:3px solid #78B3E0;padding:24px 0px 0px 0px">
+<p style="font-size:120px;font-weight:700;line-height:1;color:#002060">0.65</p>
+<p style="font-size:32px">ESM-2 embedding, 8M parameters</p>
+</div>
+</div>
+<p style="font-size:36px;line-height:1.35;width:1500px">The classifier and the labels are the same. The extra knowledge was already in the embedding, put there by a network that only ever played “guess the hidden residue”.</p>
+<aside>Exact values: composition 0.291, ESM-2 (8M) 0.646, 5-fold cross-validation. Compare with the guesses from the start.</aside>
+</section>

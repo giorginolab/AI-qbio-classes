@@ -1,0 +1,10 @@
+<section id="confound" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Confounders</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A bigger model also gives a longer vector</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>The three models produce 320, 480 and 640 numbers. Maybe the classifier benefits from more columns, not from a better model. Two explanations, one observation: we need a <b>control</b> that separates them.</p><p>Compress every embedding to the same 100 columns with <b>PCA</b> (principal component analysis keeps the directions of largest variance). With families held out: 0.53, 0.57, 0.54.</p><p>The middle model still leads, by less; the largest loses its edge.</p>
+</div>
+<aside>Exercise 4.1. When the ranking of models depends on a detail of the analysis, the differences between them are not solid. Good habit: whenever two things change together (model size and embedding length), design a comparison where only one changes.</aside>
+</section>

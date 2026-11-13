@@ -1,0 +1,33 @@
+<section id="neuron" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">The artificial neuron</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A weighted sum, then a bend</h2>
+<p style="font-size:32px;line-height:1.4">Each input is multiplied by a weight, the products are added with a bias b, and the total z goes through a non-linear activation. Here ReLU: max(0, z).</p>
+</div>
+<div style="position:relative;width:1008px;height:600px">
+<svg aria-label="Three inputs x1, x2, x3 joined by weighted lines to a summing node, followed by a ReLU unit giving the output h" width="1008" height="600" viewBox="0 0 1008 600">
+<line x1="150" y1="120" x2="440" y2="300" stroke="#ADB0B8" stroke-width="4"/>
+<line x1="150" y1="300" x2="440" y2="300" stroke="#ADB0B8" stroke-width="4"/>
+<line x1="150" y1="480" x2="440" y2="300" stroke="#ADB0B8" stroke-width="4"/>
+<circle cx="100" cy="120" r="56" fill="#F6F7F9" stroke="#002060" stroke-width="3"/>
+<circle cx="100" cy="300" r="56" fill="#F6F7F9" stroke="#002060" stroke-width="3"/>
+<circle cx="100" cy="480" r="56" fill="#F6F7F9" stroke="#002060" stroke-width="3"/>
+<circle cx="520" cy="300" r="90" fill="#002060"/>
+<line x1="610" y1="300" x2="700" y2="300" stroke="#002060" stroke-width="4"/>
+<rect x="700" y="220" width="160" height="160" fill="#F6F7F9" stroke="#002060" stroke-width="3"/>
+<polyline points="720,340 780,340 840,250" fill="none" stroke="#F99D27" stroke-width="6"/>
+<line x1="860" y1="300" x2="960" y2="300" stroke="#002060" stroke-width="4"/>
+<polygon points="960,286 990,300 960,314" fill="#002060"/>
+</svg>
+<p style="position:absolute;left:60px;top:96px;width:80px;font-size:36px;text-align:center;color:#002060">x₁</p>
+<p style="position:absolute;left:60px;top:276px;width:80px;font-size:36px;text-align:center;color:#002060">x₂</p>
+<p style="position:absolute;left:60px;top:456px;width:80px;font-size:36px;text-align:center;color:#002060">x₃</p>
+<p style="position:absolute;left:250px;top:150px;width:80px;font-size:32px;color:#5A6170">w₁</p>
+<p style="position:absolute;left:250px;top:250px;width:80px;font-size:32px;color:#5A6170">w₂</p>
+<p style="position:absolute;left:250px;top:400px;width:80px;font-size:32px;color:#5A6170">w₃</p>
+<p style="position:absolute;left:440px;top:268px;width:160px;font-size:40px;text-align:center;color:#FFFFFF">Σ + b</p>
+<p style="position:absolute;left:690px;top:400px;width:180px;font-size:28px;text-align:center;color:#2D3340">ReLU</p>
+<p style="position:absolute;left:900px;top:236px;width:100px;font-size:36px;text-align:center;color:#002060">h</p>
+</div>
+<aside>h = ReLU(w1·x1 + w2·x2 + w3·x3 + b). Without the non-linearity, stacking neurons would only ever give a linear function: a sum of linear functions is linear. The bend is what lets a network represent curves. ReLU is the simplest bend: zero for negative input, identity for positive input.</aside>
+</section>

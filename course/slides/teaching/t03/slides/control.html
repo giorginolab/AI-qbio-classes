@@ -1,0 +1,11 @@
+<section id="control" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Method · controls</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">To learn what a model uses, take that thing away and see what breaks</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">Shuffle the residues <b>within each sequence</b>. Composition is unchanged; order is destroyed. If the network used only composition, its accuracy would not change.</p>
+<p style="font-size:32px;line-height:1.4">This is an <b>ablation</b> or control experiment, the same logic as a knockout in genetics: remove one ingredient, keep everything else fixed, measure the effect.</p>
+</div>
+<aside>Other controls of the same family: shuffle the labels (the model should drop to chance; anything above reveals leakage), remove one input feature at a time, or train on a deliberately simpler representation. A high score alone never says what the model learned.</aside>
+</section>

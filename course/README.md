@@ -1,71 +1,113 @@
-# AI in Quantitative Biology - three practicals (3 x 90 min)
+# AI in Quantitative Biology - practicals
 
-Self-contained notebooks, solutions included (exercises ✏️ and questions ❓ are followed by their
-solution). Everything runs on a laptop CPU in about 2 minutes per notebook.
+`course/` has six notebooks. t01–t03 are the original three 90-minute sessions. s01 and s02 are
+toxicity-free replacements for t01 and t02 (t03 stays as session 3), and s04 is an optional fourth
+session. Each notebook has its exercise (✏️) and question (❓) solutions inline, and all of them run
+on a laptop CPU.
 
-Support code that students need not read (setup, figure-only cells, playgrounds and their sliders)
-is collapsed: such cells start with `# @title ...` and have `jupyter.source_hidden` and
-`cellView: form` set, so JupyterLab, VS Code and Colab show them folded.
+## Main track
 
-The `.ipynb` notebooks are the source. `marimo/` holds marimo versions built from them by
-`uv run python course/make_marimo.py` (re-run after editing a notebook; the playground sliders
-become marimo forms). Script exports (`jupyter nbconvert --to script`) are not kept in git.
+**t01 – Mining a toxicity dataset** (fish LC50 of 908 chemicals, 6 molecular descriptors)
+- **Exploring the data:** distributions, correlations with toxicity, and PCA.
+- **Linear regression:** a one-descriptor model first, then the loss landscape and gradient descent
+  drawn by hand, to show what "fitting" means.
+- **Comparing models:** kNN (with and without scaling) and random forest, compared with 5-fold
+  cross-validation. Part 5 then covers:
+  - how much a single train/test split varies;
+  - kNN underfitting versus overfitting;
+  - learning curves;
+  - a polynomial overfitting playground with sliders.
+- **Interpretation:** permutation importance.
+- **Homework:** the *Daphnia* (water flea) dataset.
+- **Key numbers (5-fold CV R²):** MLOGP alone 0.41, linear 0.56, kNN 0.62 (0.57 unscaled), RF 0.60.
 
-| | notebook | biology | data mining | ML |
-|---|---|---|---|---|
-| 1 | `t01_toxicity_qsar` | toxicity of 908 chemicals to fish (QSAR); homework on *Daphnia* | distributions, correlations, PCA | linear regression, kNN, random forest, cross-validation, permutation importance |
-| 2 | `t02_neural_networks_enzymes` | A: same fish data. B: EC class of 2047 enzymes from sequence | class/length/organism tables, amino-acid enrichment heatmap, PCA | MLP (overfitting, regularisation); logistic regression, RF, MLP classifiers; confusion matrix; **family-grouped CV vs random CV** |
-| 3 | `t03_rnn_protein_targeting` | signal peptide / mitochondrial transit peptide / none, from the first 50 residues (mini-TargetP) | positional profiles of hydropathy and charge | composition baseline, one-hot encoding, **GRU in PyTorch**, shuffled-order control, per-residue predictions, cross-species test |
+**t02 – Neural networks, and classifying enzymes**
+- **Part A, MLPs on the fish data:**
+  - The MLP (0.58) doesn't beat the random forest (0.60) on a small table.
+  - What function each model learns, and how they extrapolate.
+  - The effect of network width, overfitting epoch by epoch, and L2 regularisation: a wide MLP
+    reaches train 0.93 / test 0.47, and `alpha=1` brings test back to 0.56.
+  - A slider playground.
+- **Part B, predicting the EC class of 2047 enzymes from amino-acid composition:**
+  - Enrichment heatmap and PCA, then logistic regression, RF and MLP classifiers with confusion
+    matrices.
+  - **The homology trap:** with random CV, accuracy is LR 0.29, RF 0.40, MLP 0.29 (chance 0.17).
+    With protein families held out it drops to 0.27 / 0.31 / 0.27, because related sequences
+    inflate the scores.
 
-## Key numbers (fixed seeds, `RNG = 0`)
+**t03 – A recurrent network reads protein N-termini** (a mini-TargetP: signal peptide /
+mitochondrial transit peptide / other, from the first 50 residues)
+- **Data mining along the sequence:** hydropathy and charge profiles by position.
+- **Composition baseline:** 0.80 with all 50 residues, 0.87 with the best 25-residue window.
+- **The GRU:** one-hot encoding, then a GRU in PyTorch (5k parameters, about 5 s to train)
+  reaching **0.94**. Also covered:
+  - loss versus accuracy;
+  - a playground for making the GRU overfit;
+  - a control with shuffled residues, which falls back to 0.80, so the gain comes from residue
+    order.
+- **Interpretation:** per-residue predictions as the network reads, PCA of the hidden states,
+  gradient × input saliency.
+- **Extra:** a cross-species test (trained on non-human, tested on human: 0.89).
 
-* **t01** (5-fold CV R²): MLOGP alone 0.41, linear 0.56, kNN 0.62 (unscaled 0.57), RF 0.60.
-  *Daphnia*: linear 0.46, RF 0.51, kNN 0.48 scaled vs 0.24 unscaled.
-* **t02** MLP 0.58 vs RF 0.60 (an MLP does not beat RF on a small table); a wide MLP reaches train
-  R² 0.93 / test 0.47, and with `alpha=1` the test R² is 0.56.
-  Enzymes (chance 0.17): LR 0.29, RF 0.40, MLP 0.29 with random CV; 0.27 / 0.31 / 0.27 with protein
-  families held out. Composition is a weak signal, and homology inflates the scores.
-* **t03** composition baseline 0.80 (50 aa) / 0.87 (best window, 25 aa); GRU 0.94 (5k parameters,
-  ~5 s); GRU on shuffled residues 0.80 -> the gain is residue order. Non-human -> human 0.89.
+## Alternative sessions 1–2: scaling laws (AnAge and genome data)
 
-Changing seeds, splits or models shifts these values and the answers written in the notebooks.
+Both are built around one contrast: a two-parameter law against flexible models.
 
-## Alternative sessions 1 and 2: scaling laws (`s01`, `s02`)
+**s01 – Scaling laws**
+- **Fitting the law:** metabolic rate against body mass in 422 mammals, using log-log axes and
+  least squares. The exponent is 0.709, and its bootstrap interval rules out both 2/3 and 3/4.
+- **Residuals:** they show the slope changing with body size.
+- **Lifespan:** the residuals are the biology. Humans live 4.5× and Brandt's bat 6.4× longer than
+  the law predicts.
+- **The pooling trap:** pooling all classes gives one line with R² 0.82; one intercept per class
+  gives 0.96 (Simpson's paradox).
+- **Homework:** other traits.
 
-Two newer notebooks that can replace `t01` and `t02` (which are kept unchanged). They contain no
-toxicity material and are built around one contrast: a two-parameter law against flexible models.
-They run in under a minute and need no PyTorch. `t03` follows them as session 3.
+**s02 – What a flexible model cannot do**
+- **Within the data**, linear, kNN, RF and MLP are tied (CV R² about 0.95).
+- **Extrapolation** (trained below 1 kg): the law and the MLP predict the elephant at 415 / 402 W
+  (measured 2336), kNN and RF at 3 W. Five MLP seeds range from 16 to 402 W.
+- **Species are not independent:** holding out whole taxonomic orders cuts R² sharply
+  (RF 0.80 → 0.48), and held-out bats are predicted 20% too short-lived.
+- **A law that breaks:** genes against genome size fits prokaryotes almost exactly (R² 0.98), but
+  that law predicts 2.3 million human genes. Also covers cleaning dirty data.
 
-| | notebook | biology | ML |
-|---|---|---|---|
-| 1 | `s01_scaling_laws` | metabolic rate and lifespan against body mass (AnAge); homework on other traits | log-log axes, least squares, bootstrap interval, residuals, a categorical variable, Simpson's paradox |
-| 2 | `s02_laws_vs_flexible_models` | same data; genes against genome size in prokaryotes and eukaryotes | linear, kNN, RF, MLP; cross-validation; extrapolation; **order-grouped CV vs random CV**; dirty data |
+## Optional session 4
 
-Key numbers (`RNG = 0`):
+**s04 – What a protein language model knows about enzymes** (about 60 min, scikit-learn only,
+with precomputed ESM-2 embeddings)
+- **Same classifier, different input:** the t02 enzyme task with the same logistic regression.
+  Composition gives 0.29 / 0.27 (random / families held out). ESM-2 embeddings give
+  0.65–0.77 / 0.53–0.61.
+- **Controls:** shuffled labels (0.15) and a nearest-neighbour check.
+- **Scaling with model size:** across 8M, 35M and 150M parameters, accuracy gains level off after
+  35M.
 
-* **s01** mammal metabolic rate: exponent 0.709 (bootstrap 95% 0.688 - 0.728, excluding both 2/3
-  and 3/4), R² 0.95; by size 0.60 / 0.71 / 0.82. Birds 0.655 (0.635 - 0.674). Mammal longevity:
-  exponent 0.159, R² 0.50; human 4.5x and Brandt's bat 6.4x the predicted lifespan. All classes
-  pooled R² 0.82; with one intercept per class 0.96 (reptiles at 6% of a mammal). "Careless"
-  dataset slope 1.11.
+## Threads running through the course
+
+- **Leakage and grouped validation** come back three times: homology in t02 and s04, taxonomic
+  orders in s02, and species in t03.
+- **Overfitting** gets a hands-on playground in t01, t02 and t03.
+- **Interpretation** runs from permutation importance to residuals to RNN saliency.
+
+## More reference numbers
+
+All numbers use fixed seeds (`RNG = 0`). Changing seeds, splits or models shifts these values and
+the answers written in the notebooks.
+
+* **t01** *Daphnia* homework: linear 0.46, RF 0.51, kNN 0.48 scaled vs 0.24 unscaled.
+* **s01** exponent 0.709, bootstrap 95% 0.688 - 0.728, R² 0.95; by size 0.60 / 0.71 / 0.82.
+  Birds 0.655 (0.635 - 0.674). Mammal longevity: exponent 0.159, R² 0.50. Reptiles at 6% of a
+  mammal (one intercept per class). "Careless" dataset slope 1.11.
 * **s02** 5-fold CV R²: linear 0.949, kNN 0.947, RF 0.928, MLP 0.953. Trained below 1 kg, R² above:
-  0.79 / -1.06 / -1.04 / 0.83; elephant (2336 W measured) 415 / 3 / 3 / 402 W, and 16 - 402 W over
-  five MLP seeds. Longevity from four traits, random CV vs orders held out: linear 0.78 / 0.59,
-  kNN 0.79 / 0.50, RF 0.80 / 0.48; bats held out are predicted 20% too short. Prokaryotes: genes ∝
-  size^0.964, R² 0.98, 942 genes/Mb; that law predicts 2.3 M human genes, the forest 11 000
-  (annotated 57 816). Eukaryotes: exponent 0.28, R² 0.60.
-
-## Optional session 4: a protein language model (`s04`)
-
-`s04_enzymes_esm2` (about 60 min, scikit-learn only) gives the same logistic regression two
-descriptions of the 2047 enzymes: amino-acid composition and precomputed ESM-2 embeddings
-(`data/enzymes_esm2.npz`, built by `data_prep/make_esm2_embeddings.py`, which needs PyTorch and
-`transformers` and uses a GPU if there is one). It reuses the family-grouped split of `t02`.
-
-Key numbers (`RNG = 0`), accuracy with a random split / with families held out (chance 0.17):
-composition 0.29 / 0.27; ESM-2 8M 0.65 / 0.53; 35M 0.76 / 0.61; 150M 0.77 / 0.61. Shuffled labels
-0.15. 1-NN on the 8M embeddings 0.70 / 0.54. Embeddings compressed to 100 columns by PCA, families
-held out: 0.53, 0.57, 0.54.
+  0.79 / -1.06 / -1.04 / 0.83. Longevity from four traits, random CV vs orders held out: linear
+  0.78 / 0.59, kNN 0.79 / 0.50, RF 0.80 / 0.48. Prokaryotes: genes ∝ size^0.964, 942 genes/Mb; the
+  forest predicts 11 000 human genes (annotated 57 816). Eukaryotes: exponent 0.28, R² 0.60.
+* **s04** accuracy, random split / families held out: ESM-2 8M 0.65 / 0.53; 35M 0.76 / 0.61; 150M
+  0.77 / 0.61. 1-NN on the 8M embeddings 0.70 / 0.54. Embeddings compressed to 100 columns by PCA,
+  families held out: 0.53, 0.57, 0.54. The embeddings (`data/enzymes_esm2.npz`) are built by
+  `data_prep/make_esm2_embeddings.py`, which needs PyTorch and `transformers` and uses a GPU if
+  there is one.
 
 ## Running
 
@@ -74,8 +116,17 @@ uv venv --python 3.12 && uv pip install -r course/requirements.txt
 uv run jupyter lab
 ```
 
-The notebooks look for `data/` in the current folder and its parents, then in `$QBIO_DATA`. On
-Colab, put `data/` in `MyDrive/AI_QBio/data`.
+All data are in `data/` in this repository. The notebooks use `$QBIO_DATA` if it is set,
+otherwise they look for `data/` in the current folder and its parents, so they work from any
+folder of a clone, locally or on Colab.
+
+Support code that students need not read (setup, figure-only cells, playgrounds and their sliders)
+is collapsed: such cells start with `# @title ...` and have `jupyter.source_hidden` and
+`cellView: form` set, so JupyterLab, VS Code and Colab show them folded.
+
+The `.ipynb` notebooks are the source. `marimo/` holds marimo versions built from them by
+`uv run python course/make_marimo.py` (re-run after editing a notebook; the playground sliders
+become marimo forms). Script exports (`jupyter nbconvert --to script`) are not kept in git.
 
 ## Data (`../data/`)
 

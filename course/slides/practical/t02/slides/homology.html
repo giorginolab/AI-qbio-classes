@@ -1,0 +1,16 @@
+<section id="homology" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">B4 · The homology trap</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:64px;line-height:1.05;width:1550px">With a random split, a test enzyme usually has a close relative in the training set.</h2>
+<p style="font-size:44px;line-height:1.3;width:1500px">The model can “recognise the family” instead of learning anything general. A fairer test for a new kind of enzyme keeps <b>whole families</b> out of training: StratifiedGroupKFold.</p>
+<div style="display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:3px solid #78B3E0;padding:24px 0px 0px 0px">
+<p style="font-size:120px;font-weight:700;line-height:1;color:#002060">1102</p>
+<p style="font-size:32px">protein families</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:3px solid #8779B6;padding:24px 0px 0px 0px">
+<p style="font-size:120px;font-weight:700;line-height:1;color:#002060">409</p>
+<p style="font-size:32px">with more than one member</p>
+</div>
+</div>
+<aside>Exercise B4.1: repeat the cross-validation of the three classifiers with cv=sgkf and groups=groups, and print both accuracies side by side.</aside>
+</section>

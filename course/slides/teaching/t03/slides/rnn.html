@@ -1,0 +1,24 @@
+<section id="rnn" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:24px;width:1500px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Model · recurrent neural network</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">An RNN reads one residue at a time and keeps a running summary, the hidden state</h2>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:0px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700">M</p><div style="background:#002060;padding:20px 28px"><p style="font-size:28px;color:#FFFFFF">GRU</p></div></div>
+<x-connector style="width:110px;color:#2A4385;border-width:3px" from="tl" head="end"></x-connector>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700">K</p><div style="background:#002060;padding:20px 28px"><p style="font-size:28px;color:#FFFFFF">GRU</p></div></div>
+<x-connector style="width:110px;color:#2A4385;border-width:3px" from="tl" head="end"></x-connector>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700">L</p><div style="background:#002060;padding:20px 28px"><p style="font-size:28px;color:#FFFFFF">GRU</p></div></div>
+<x-connector style="width:110px;color:#2A4385;border-width:3px" from="tl" head="end"></x-connector>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700;color:#5A6170">…</p><div style="background:#F6F7F9;padding:20px 28px"><p style="font-size:28px;color:#5A6170">…</p></div></div>
+<x-connector style="width:110px;color:#2A4385;border-width:3px" from="tl" head="end"></x-connector>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700">A</p><div style="background:#002060;padding:20px 28px"><p style="font-size:28px;color:#FFFFFF">GRU</p></div></div>
+<x-connector style="width:110px;color:#2A4385;border-width:3px" from="tl" head="end"></x-connector>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px"><p style="font-size:32px;font-weight:700;color:#5A6170">h_50</p><div style="background:#F99D27;padding:20px 28px"><p style="font-size:28px;color:#002060">linear → SP / mTP / other</p></div></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:64px">
+<p style="flex:1;font-size:32px;line-height:1.4">At each position, h_t = f(x_t, h_t−1): the new state mixes the current residue x_t with everything read so far. After residue 50, a linear layer turns h_50 into three class scores.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">The same f, with the same weights, is applied at every position. The network can detect a pattern wherever it occurs, and its size does not grow with sequence length.</p>
+</div>
+<aside>The arrows carry the hidden state, here a vector of 32 numbers. In a plain RNN, f is h_t = tanh(W·x_t + U·h_t−1 + b): W and U are learned matrices shared by all positions. Weight sharing is the same idea as in convolutional networks, applied along time instead of across space. Parameter count of our model: 3 · (32 · (20 + 32) + 2 · 32) = 5184 for the GRU plus 32 · 3 + 3 = 99 for the linear layer, 5283 in total, as printed in the notebook.</aside>
+</section>

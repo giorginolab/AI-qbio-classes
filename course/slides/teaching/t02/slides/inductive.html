@@ -1,0 +1,15 @@
+<section id="inductive" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Inductive bias</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A neural network is not automatically the best model</h2>
+<div style="display:flex;flex-direction:row;gap:48px;padding:24px 0px 0px 0px">
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:96px;font-weight:700;line-height:1;color:#002060">0.58</p><p style="font-size:28px">MLP, 5-fold CV R²</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:96px;font-weight:700;line-height:1;color:#002060">0.60</p><p style="font-size:28px">random forest</p></div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>Every model carries assumptions about what the answer looks like: its <b>inductive bias</b>. Trees assume the answer changes in steps along single descriptors; a network assumes smooth piecewise-linear surfaces.</p>
+<p>On a small table of a few hand-made descriptors, trees are hard to beat. Networks pay off with large data and raw, structured inputs such as sequences and images, where they can learn their own features.</p>
+</div>
+<aside>Exercise A.1: MLP R² 0.576 against random forest 0.604 with the same 5-fold cross-validation. The fish table has 908 chemicals and 6 descriptors. The point for students: choosing a model is choosing assumptions, and the right ones depend on the data.</aside>
+</section>

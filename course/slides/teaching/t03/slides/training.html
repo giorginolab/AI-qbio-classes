@@ -1,0 +1,11 @@
+<section id="training" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Training · the loop</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Training is repeated small corrections that reduce a loss</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">Show the network a <b>batch</b> of 64 sequences, compute the <b>cross-entropy loss</b>, −log of the probability given to the true class, and let the optimiser (<b>Adam</b>) nudge every weight downhill. One pass over the training set is an <b>epoch</b>.</p>
+<p style="font-size:32px;line-height:1.4">Keep three sets apart: <b>training</b> to fit the weights, <b>validation</b> to choose settings such as the number of epochs, <b>test</b> touched once at the end.</p>
+</div>
+<aside>The gradient of the loss with respect to every weight is computed by backpropagation (backward() in PyTorch); for an RNN this runs back through all positions, “backpropagation through time”. In the notebook the test set is watched each epoch for teaching purposes only; say this explicitly so students do not copy the habit.</aside>
+</section>

@@ -1,0 +1,8 @@
+<section id="playground" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t01_12.png" alt="Degree-15 polynomial fits and error against degree" style="width:1664px;height:572px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:640px">Overfitting you can see</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">A degree-15 polynomial on 20 noisy points: training error falls below the noise level and fits on other samples (faint curves) fan out. Degrees 4–5 are best, close to the noise floor.</p>
+</div>
+<aside>Exercise 5.3: degrees 0–3 underfit; from about 7 the test error climbs; degree 15 has training RMSE 0.13, below the noise 0.2, and test RMSE 0.8. With 60 points it drops to about 0.22, with 200 to about 0.20. Ridge alpha = 1 gives about 0.25; alpha = 100 underfits (0.38). Noise 0.05: best degree about 7; noise 0.5: a straight line.</aside>
+</section>

@@ -1,0 +1,8 @@
+<section id="epochs" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t02_04.png" alt="Training and test MSE per epoch for the big network without and with regularisation" style="width:1664px;height:544px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">When should we have stopped?</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">Unregularised (512, 512): test MSE is lowest at epoch 109 (0.855), then climbs to 0.998 while train falls to 0.140. With alpha = 1 the test error flattens at 0.869 instead of rising.</p>
+</div>
+<aside>Stopping at the minimum is early stopping. It must not be chosen on the test set: use a validation set carved out of the training data, MLPRegressor(early_stopping=True), as we do for the enzyme classifier.</aside>
+</section>

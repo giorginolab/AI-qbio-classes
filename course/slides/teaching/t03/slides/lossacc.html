@@ -1,0 +1,8 @@
+<section id="lossacc" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t03_06.png" alt="Training and test loss and accuracy per epoch for GRUs with 4, 32 and 128 hidden units" style="width:1664px;height:545px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">The loss sees overfitting before the accuracy does</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">For 128 hidden units the test loss rises after epoch 10 (0.16 → 0.23) while test accuracy barely moves. The network gets the same proteins right but becomes over-confident on the ones it gets wrong, and −log p punishes that hard.</p>
+</div>
+<aside>Accuracy only asks whether the top class is right; the loss also asks how confident the network was. That is why early stopping usually watches the validation loss. Over-confident probabilities are a problem in their own right whenever predictions are used as probabilities, for instance to rank candidates for an experiment.</aside>
+</section>

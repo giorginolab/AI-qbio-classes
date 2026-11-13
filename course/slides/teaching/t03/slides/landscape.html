@@ -1,0 +1,12 @@
+<section id="landscape" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Context · sequence models</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Recurrent networks are one of three ways to read a sequence</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4"><b>Convolutional networks</b> slide short learned filters along the sequence: good at local motifs, fast, with a fixed field of view.</p>
+<p style="font-size:32px;line-height:1.4"><b>Recurrent networks</b> carry a state along the chain: any length, order-aware, but sequential and slower on long proteins. Bidirectional versions read both ways.</p>
+<p style="font-size:32px;line-height:1.4"><b>Transformers</b> use attention: every position can look at every other. Pre-trained on millions of sequences they become protein language models.</p>
+</div>
+<aside>Real tools (SignalP 6, TargetP 2, DeepLoc 2) use bidirectional LSTMs, attention, or protein language models: the same ideas, scaled up. Session 4 uses ESM-2 embeddings. The choice is a trade-off between data size, sequence length and compute; for short N-termini and a few thousand examples, a small RNN is enough.</aside>
+</section>

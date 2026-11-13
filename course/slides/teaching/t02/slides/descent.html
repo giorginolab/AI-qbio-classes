@@ -1,0 +1,9 @@
+<section id="descent" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t02_00.png" alt="Training loss of the MLP against epoch, falling steeply then levelling off" style="width:1005px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Training</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Learning is walking downhill on the error</h2>
+<p style="font-size:32px;line-height:1.4">The weights start random. Gradient descent computes how the training error changes with each weight and moves every weight a small step in the direction that lowers it. Backpropagation is the bookkeeping that gets all these slopes in one pass. One pass over the data is an epoch.</p>
+</div>
+<aside>The loss curve stores the training loss after each epoch. It always goes down, because that is what the algorithm optimises. It tells us nothing about new data: for that we need a test or validation error, later in the deck. The step size is the learning rate: too large and the error jumps around, too small and training is slow.</aside>
+</section>

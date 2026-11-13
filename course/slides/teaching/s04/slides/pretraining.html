@@ -1,0 +1,23 @@
+<section id="pretraining" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Protein language models</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Learn from sequences alone by guessing hidden residues</h2>
+<p style="font-size:32px;line-height:1.4">ESM-2 was trained on about 65 million protein sequences, with no annotation at all: hide some residues, predict them from the rest.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">M</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">K</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">T</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">A</p>
+<p style="width:72px;background:#F99D27;font-size:44px;text-align:center;color:#002060;font-weight:700">?</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">I</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">A</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">K</p>
+<p style="width:72px;background:#F6F7F9;font-size:44px;text-align:center;color:#002060">Q</p>
+</div>
+<p style="font-size:32px;line-height:1.4">The network outputs a probability for each of the 20 amino acids at the hidden position, using context on both sides.</p>
+<p style="font-size:32px;line-height:1.4">To play this game well across millions of proteins, it has to pick up what constrains sequences: families, folds, contacts, binding sites. None of this is taught explicitly.</p>
+</div>
+<aside>This is the same objective as masked language models for text, which learn grammar and meaning from guessing missing words. The example sequence is illustrative. Pretraining = learning a general representation from a large unlabelled dataset; it is self-supervised because the labels (the hidden residues) come from the data itself.</aside>
+</section>

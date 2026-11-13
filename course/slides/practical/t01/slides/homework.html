@@ -1,0 +1,10 @@
+<section id="homework" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Homework · Part 7 · water fleas</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:64px;line-height:1.05;width:1500px">546 chemicals on <i>Daphnia magna</i>, 8 descriptors</h2>
+<ul style="font-size:40px;line-height:1.35;width:1500px">
+<li>Correlations with LC50; cross-validated R² of linear regression, scaled kNN and random forest.</li>
+<li>Is lipophilicity still the top predictor?</li>
+<li>Easier or harder than the fish? Does scaling matter more or less?</li>
+</ul>
+<aside>load_aquatic(): 48 h LC50, same units; descriptors include MLOGP, TPSA (polar surface area), nN, H050. Solution: MLOGP again the most correlated (r ≈ 0.54). Harder: linear 0.46, scaled kNN 0.48, RF 0.51. Scaling matters much more: unscaled kNN collapses to 0.24 because TPSA and SAacc are in the hundreds.</aside>
+</section>

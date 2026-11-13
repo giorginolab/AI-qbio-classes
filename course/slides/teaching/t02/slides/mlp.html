@@ -1,0 +1,20 @@
+<section id="mlp" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:32px">
+<div style="flex:1;background:#F6F7F9;padding:32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:44px;font-weight:700;color:#002060">6 descriptors</p><p style="font-size:28px">input layer</p></div>
+<x-connector style="width:96px;color:#002060;border-width:4px"></x-connector>
+<div style="flex:1;background:#002060;padding:32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:44px;font-weight:700;color:#FFFFFF">32 neurons, ReLU</p><p style="font-size:28px;color:rgba(255,255,255,0.78)">hidden layer</p></div>
+<x-connector style="width:96px;color:#002060;border-width:4px"></x-connector>
+<div style="flex:1;background:#F6F7F9;padding:32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:44px;font-weight:700;color:#002060">1 output</p><p style="font-size:28px">predicted LC50</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">The multilayer perceptron</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Layers of neurons make a flexible function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;font-size:32px;line-height:1.4">
+<p>Every hidden neuron sees all inputs; the output adds up the hidden neurons with its own weights. Each neuron contributes one bend, so more neurons give more bends.</p>
+<p>With enough hidden neurons an MLP can approximate any smooth function. That is its strength and its danger: it can also fit noise.</p>
+</div>
+</div>
+<aside>This network has 6·32 + 32 weights and biases into the hidden layer and 32 + 1 into the output: 257 parameters. Deeper networks stack several hidden layers; the same idea applies. The notebook’s first MLP reaches a test R² of 0.512 on one split.</aside>
+</section>

@@ -1,0 +1,11 @@
+<section id="dirty" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Data quality</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Look at the data before modelling: public databases contain errors.</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">In the genome table, the eukaryote with the most genes is the Iberian lynx, with 4.7 million, then an olive tree with 2 million. Bread wheat, famously gene-rich, has about 110 000. These are annotation errors, not biology.</p>
+<p style="font-size:32px;line-height:1.4">No model flags such records, and least squares gives them extra weight because errors are squared. Sort, plot, and check the extremes against what you know. The notebook drops the 8 entries above 150 000 genes.</p>
+</div>
+<aside>Part 4 data: genome size (Mb) and annotated gene number for 13 751 prokaryotes and 4685 eukaryotes from the NCBI genome reports. The absurd records were left in on purpose. They are probably features miscounted as genes in the submitted annotations.</aside>
+</section>

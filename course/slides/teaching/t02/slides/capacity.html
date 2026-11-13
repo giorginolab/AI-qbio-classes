@@ -1,0 +1,10 @@
+<section id="capacity" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Capacity and overfitting</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">More parameters fit the training data better, not necessarily new data</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>A model’s <b>capacity</b> is how many different shapes it can take. Low capacity misses real structure (underfitting). High capacity can also follow the noise of the particular sample (overfitting).</p><p>The symptom is a <b>gap</b>: the training score keeps improving while the score on unseen data stalls or gets worse. That gap, not the training score, tells you how the model will behave.</p>
+</div>
+<aside>Classical name: the bias-variance trade-off. Bias is the error from too rigid assumptions, variance is the sensitivity to which sample you happened to draw. Flexible models have low bias and high variance.</aside>
+</section>

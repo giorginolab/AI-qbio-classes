@@ -1,0 +1,8 @@
+<section id="playground" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t03_07.png" alt="Loss and accuracy per epoch for a GRU trained on 300 sequences for 60 epochs" style="width:1664px;height:555px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">Playground: with 300 sequences the GRU overfits</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">Training accuracy reaches 1.0, training loss below 0.01. The test loss is lowest at epoch 30, then noisier and higher; test accuracy plateaus at about 0.92.</p>
+</div>
+<aside>gru_playground() trains a fresh GRU on a random subset of n_train training sequences; the test set is always the same. weight_decay is the L2 penalty of PyTorch (alpha in scikit-learn). Sliders with ipywidgets.</aside>
+</section>

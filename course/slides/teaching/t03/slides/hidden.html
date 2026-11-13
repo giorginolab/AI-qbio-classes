@@ -1,0 +1,8 @@
+<section id="hidden" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t03_14.png" alt="PCA projection of GRU hidden states for test proteins, with trajectories of a few proteins as they are read" style="width:897px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">The hidden state is a learned map</h2>
+<p style="font-size:32px;line-height:1.4">Projected to two dimensions with PCA, the final states of the three classes occupy separate regions, so a linear layer can separate them. SP and mTP trajectories move fast while the signal is read, then stay put.</p>
+</div>
+<aside>Some mixing between other and mTP, the pair the confusion matrix confuses. Every trajectory starts at the same point (nothing read). A general lesson: a deep network’s main job is to transform inputs into a space where the final decision is simple.</aside>
+</section>

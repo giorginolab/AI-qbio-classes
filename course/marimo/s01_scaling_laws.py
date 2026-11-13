@@ -45,9 +45,9 @@ def _(mo):
     mo.md(r"""
     ## Setup
 
-    Everything runs on a laptop CPU in seconds. The notebook expects the `data/` folder of the course
-    (it looks for it in the current folder and the folders above). On Google Colab, upload the `data/`
-    folder to your Drive in `MyDrive/AI_QBio/data` and run the cell below.
+    Everything runs on a laptop CPU in seconds. The data are in the `data/` folder of the course
+    repository. The cell below finds it in the folders above the
+    notebook.
     """)
     return
 
@@ -67,18 +67,15 @@ def _():
     from pathlib import Path
 
     def find_data_dir():
-        "$QBIO_DATA if set, else a `data/` folder here or above, else Google Drive on Colab."
+        "$QBIO_DATA if set, else the `data/` folder of the course repository (here or above)."
         if os.environ.get("QBIO_DATA"):
             return Path(os.environ["QBIO_DATA"])
         here = Path.cwd().resolve()
         for p in [here, *here.parents]:
             if (p / "data" / "anage.tsv").exists():
                 return p / "data"
-        if "google.colab" in sys.modules:
-            from google.colab import drive
-            drive.mount("/content/drive")
-            return Path("/content/drive/MyDrive/AI_QBio/data")
-        raise FileNotFoundError("Cannot find the data/ folder: set QBIO_DATA to its path")
+        raise FileNotFoundError("Cannot find data/: run the notebook inside the course repository, "
+                                "or set QBIO_DATA to the path of its data/ folder")
 
     DATA_DIR = find_data_dir()
     print("data from", DATA_DIR)

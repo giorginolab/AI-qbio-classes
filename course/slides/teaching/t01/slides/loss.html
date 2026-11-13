@@ -1,0 +1,8 @@
+<section id="loss" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t01_05.png" alt="Loss landscape over a and b with the gradient-descent path" style="width:1664px;height:614px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:640px">Fitting means walking down a loss landscape</h2>
+<p style="flex:1;font-size:32px;line-height:1.4">Each intercept a and slope b has a mean squared error. Linear regression finds the bottom of the valley with a formula; neural networks walk downhill in small steps along the slope, gradient descent. Both reach a = 2.57, b = 0.70.</p>
+</div>
+<aside>The valley is long and tilted because a and b trade off (all MLOGP values are near 2). Gradient descent drops into the valley then crawls along it; with learning rate 0.15 it diverges (above about 0.14). Centring the input makes the valley round: one reason to standardise inputs of neural networks. Test loss follows training loss: a line has too few parameters to overfit.</aside>
+</section>

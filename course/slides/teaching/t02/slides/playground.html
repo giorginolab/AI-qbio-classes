@@ -1,0 +1,11 @@
+<section id="playground" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<img src="../../../assets/figures/t02_05.png" alt="Network curve at several training epochs and training and test error against epoch on a one-dimensional toy problem" style="width:1664px;height:572px;object-fit:contain">
+<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
+<div style="width:700px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Playground</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Networks learn the coarse trend first, the noise last</h2>
+</div>
+<p style="flex:1;font-size:32px;line-height:1.4">A toy dose-response curve with 20 noisy points. Epoch 10: nearly a straight line. Around 170: the S shape. By 3000: bends that follow single points. Test error is lowest near epoch 380, close to the noise level, then rises while training error drops below the noise.</p>
+</div>
+<aside>Exercise A.3. Test MSE best 0.048 at epoch about 380 (noise level 0.04), then 0.061; training error 0.007. With alpha = 0.1 the curve stays smooth and test error keeps falling (0.049). With alpha = 1, too stiff (about 0.09): underfitting. width = 8 or n_train = 200 both help; more data is the more reliable cure. Different seeds give different curves: averaging several networks (an ensemble) reduces this variance.</aside>
+</section>

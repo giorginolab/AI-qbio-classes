@@ -1,0 +1,9 @@
+<section id="sweep" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
+<img src="../../../assets/figures/t02_02.png" alt="Training and test R² against network width without regularisation" style="width:996px;height:800px;object-fit:contain">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Evidence</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Wider networks: train R² 0.60 → 0.93, test R² stuck near 0.4–0.5</h2>
+<p style="font-size:32px;line-height:1.4">Two hidden layers, widths 1 to 512. The training curve rises steadily; the test curve does not follow. The network memorises the 681 training chemicals, noise included.</p>
+</div>
+<aside>Width 1: train 0.599, test 0.416. Width 512: train 0.934, test 0.465. Ask: what happens to the gap as the network grows, and what is this called?</aside>
+</section>

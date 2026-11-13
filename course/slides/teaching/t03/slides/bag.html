@@ -1,0 +1,12 @@
+<section id="bag" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Representation · composition</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Composition treats a sequence as a bag of residues</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">The simplest description of a peptide is how often each of the 20 amino acids occurs: 20 numbers, whatever the length. Any classifier can use them.</p>
+<p style="font-size:32px;line-height:1.4">But composition is <b>order-free</b>: shuffle the residues and the 20 numbers do not change. A hydrophobic stretch at positions 5–20 and the same residues scattered along the chain look identical.</p>
+<p style="font-size:32px;line-height:1.4">The only way to inject position is by hand, by choosing which window to count.</p>
+</div>
+<aside>Bag-of-words in text analysis is the same idea and has the same blind spot: “dog bites man” and “man bites dog” have the same word counts. Composition baselines are still worth running: they are fast and tell you how much of the signal needs no order at all.</aside>
+</section>

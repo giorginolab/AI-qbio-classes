@@ -1,0 +1,11 @@
+<section id="capacity" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Training · capacity and data</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">How many parameters can the data support?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">More hidden units mean more capacity: the network can represent more complicated functions, and also memorise more noise. Whether it overfits depends on the ratio of parameters to training examples.</p>
+<p style="font-size:32px;line-height:1.4">In the notebook, 4 hidden units already reach 0.933 on test; 128 units push training accuracy to 0.988 while test accuracy does not improve. Past a point, capacity buys memory, not understanding.</p>
+</div>
+<aside>Exercise 5.1. Numbers: hidden=4, final train 0.944, test 0.933; hidden=128, final train 0.988, test 0.937, best test 0.952. Tools against overfitting: more data, fewer parameters, weight decay (an L2 penalty on the weights, the alpha of scikit-learn), and early stopping.</aside>
+</section>

@@ -1,0 +1,11 @@
+<section id="next" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">To try next</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:64px;line-height:1.05;width:1500px">Change one thing at a time</h2>
+<ul style="font-size:36px;line-height:1.4;width:1500px">
+<li>Replace the logistic regression by a random forest or an MLP on composition. Does a flexible classifier close the gap?</li>
+<li>Use the embeddings for the targeting task of session 3. Mean pooling loses where in the sequence a signal sits: does that matter there?</li>
+<li>Rebuild the embeddings with another model size using data_prep/make_esm2_embeddings.py (PyTorch and transformers; a GPU helps).</li>
+<li>Plot the embeddings with PCA, coloured by EC class and by organism. What separates first?</li>
+</ul>
+<aside>No new data needed for the first and last items. The second requires computing embeddings for targeting.tsv, which the course does not provide; frame it as a project idea.</aside>
+</section>

@@ -1,0 +1,10 @@
+<section id="nn" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Nearest neighbours</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">1-nearest-neighbour in embedding space is annotation by homology</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>Give each test enzyme the class of the most similar training enzyme. Biologically, this is what annotation pipelines do: find the closest known relative and copy its label.</p><p>On the embeddings it reaches 0.70 with a random split, better than the linear probe, and drops to 0.54 with families held out.</p><p>It works as long as a relative exists. When none does, a model that has learned something general does at least as well.</p>
+</div>
+<aside>Exercise 3.1. Exact values: 1-NN on ESM-2 (8M), random split 0.698, families held out 0.541. A nearest-neighbour baseline is a good habit whenever there is a notion of similarity: it tells you how much of a score is retrieval.</aside>
+</section>

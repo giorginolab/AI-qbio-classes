@@ -1,0 +1,11 @@
+<section id="forest" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Trees and random forests</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">A tree asks yes-or-no questions; a forest averages many trees.</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">A decision tree splits the data with questions such as ‘is the mass below some threshold?’ and predicts the mean of the training points that end in the same leaf. As a function of mass, it is a staircase.</p>
+<p style="font-size:32px;line-height:1.4">One deep tree memorises its training set. A <b>random forest</b> grows hundreds of trees, each on a bootstrap sample and with random choices, and averages them: the average is far more stable than any single tree. Like kNN, every prediction is an average of training values.</p>
+</div>
+<aside>The notebook uses 200 trees. Forests are strong default models for tables of features, which is why they appear in every session of the course.</aside>
+</section>

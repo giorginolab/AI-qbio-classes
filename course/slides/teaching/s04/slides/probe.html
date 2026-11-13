@@ -1,0 +1,10 @@
+<section id="probe" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;gap:96px">
+<div style="width:560px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Linear probes</p>
+<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Keep the classifier simple to measure the representation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:32px;line-height:1.4">
+<p>A <b>logistic regression</b> is a linear model: the classification counterpart of fitting a straight line. It can only draw flat boundaries between classes.</p><p>If such a weak model succeeds, the information was already organised in the input. This setup is called a <b>linear probe</b>.</p><p>Training a small model on top of a large pretrained one is <b>transfer learning</b>: the expensive learning is reused for a new task with few labels.</p>
+</div>
+<aside>Why not a random forest or an MLP? A flexible classifier could build its own features from composition and blur the comparison. Keeping it linear isolates the effect of the representation.</aside>
+</section>
