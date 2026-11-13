@@ -11,3 +11,6 @@ __marimo__/
 
 # ProteinBERT pretrained weights (192 MB, downloaded by course/extra04 on first run)
 data/proteinbert_model/
+
+# Office lock files
+~$*
