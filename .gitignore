@@ -14,3 +14,6 @@ data/proteinbert_model/
 
 # Office lock files
 ~$*
+
+# 75 MB source deck (and its copies): kept locally, too big for git history
+ai-qbio-unimi_2026_r1*.pptx

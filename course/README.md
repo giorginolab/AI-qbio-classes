@@ -124,9 +124,7 @@ Support code that students need not read (setup, figure-only cells, playgrounds 
 is collapsed: such cells start with `# @title ...` and have `jupyter.source_hidden` and
 `cellView: form` set, so JupyterLab, VS Code and Colab show them folded.
 
-The `.ipynb` notebooks are the source. `marimo/` holds marimo versions built from them by
-`uv run python course/make_marimo.py` (re-run after editing a notebook; the playground sliders
-become marimo forms). Script exports (`jupyter nbconvert --to script`) are not kept in git.
+The `.ipynb` notebooks are the source. `make_marimo.py` can build marimo versions on request (`uv run python course/make_marimo.py`); none are kept in the repo. Script exports (`jupyter nbconvert --to script`) are not kept in git.
 
 ## Data (`../data/`)
 
