@@ -1,8 +1,0 @@
-<section id="ex5" style="background:#F6F7F9;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
-<p style="font-size:32px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Exercises 5.1 and 5.2 · kNN</p>
-<ol style="font-size:44px;line-height:1.35;width:1500px">
-<li>Add kNN without the StandardScaler. What happens, and why?</li>
-<li>Try n_neighbors = 1, 3, 10, 30, 100 for the scaled kNN. What happens with very small and very large k?</li>
-</ol>
-<aside>5.1: unscaled R² drops from 0.62 to 0.57: distances are dominated by the descriptors with the largest numeric range, so the nearest chemicals are not the most similar. 5.2: k = 1 0.41, 3 0.58, 10 0.62, 30 0.60, 100 0.52. k = 1 copies the nearest chemical including its noise (overfitting); very large k flattens towards the mean (underfitting).</aside>
-</section>

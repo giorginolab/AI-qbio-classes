@@ -1,8 +1,0 @@
-<section id="rfpred" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
-<img src="../../../assets/figures/t01_10.png" alt="Predicted against measured LC50 for the random forest" style="width:785px;height:800px;object-fit:contain">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Random forest on the test set: RMSE 0.97, R² 0.52</h2>
-<p style="font-size:32px;line-height:1.4">Predictions shrink towards the mean: very toxic chemicals are under-predicted, harmless ones over-predicted. Averaging models cannot predict outside the range of their training targets.</p>
-</div>
-<aside>Ask: which chemicals are badly predicted? The most toxic ones, those a regulator cares about, often have a specific mode of action that six descriptors cannot capture.</aside>
-</section>

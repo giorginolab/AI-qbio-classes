@@ -1,8 +1,0 @@
-<section id="saliency" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<img src="../../../assets/figures/t03_15.png" alt="Mean saliency by position for the three classes" style="width:1664px;height:600px;object-fit:contain">
-<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">Which residues does the network look at?</h2>
-<p style="flex:1;font-size:32px;line-height:1.4">Saliency, gradient × input, is concentrated in the first 25–30 residues and falls off past the cleavage sites. It says where the model looks, not why.</p>
-</div>
-<aside>Gradient of the true-class score with respect to the one-hot input (same backward() as training, but with respect to input), times the input, averaged per class. Ask: compare with the hydropathy and charge profiles. The spike at position 50 is an artefact of reading left to right: the last residue enters the final state directly. A bidirectional RNN, as in TargetP, avoids it.</aside>
-</section>

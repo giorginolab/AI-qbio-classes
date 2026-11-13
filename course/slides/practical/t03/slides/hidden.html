@@ -1,8 +1,0 @@
-<section id="hidden" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
-<img src="../../../assets/figures/t03_14.png" alt="PCA of final GRU hidden states for test proteins, with trajectories of a few proteins residue by residue" style="width:897px;height:800px;object-fit:contain">
-<div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">The hidden state is a learned map</h2>
-<p style="font-size:32px;line-height:1.4">PCA of the 32-number final states: three regions, with some mixing of other and mTP. SP and mTP trajectories move fast while the signal is read, then hold; other keeps drifting until late.</p>
-</div>
-<aside>Ask: how are the classes arranged, and what do the trajectories do? Every trajectory starts at the same point (nothing read). The mixing of other and mTP is the pair the confusion matrix confuses. A linear layer draws the class boundaries in this map.</aside>
-</section>

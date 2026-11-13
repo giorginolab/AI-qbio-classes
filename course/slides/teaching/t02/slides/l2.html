@@ -1,9 +1,0 @@
-<section id="l2" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:row;align-items:center;gap:64px">
-<img src="../../../assets/figures/t02_03.png" alt="Training and test R² against width with alpha equal to 1" style="width:1044px;height:800px;object-fit:contain">
-<div style="flex:1;display:flex;flex-direction:column;gap:24px">
-<p style="font-size:24px;font-weight:600;color:#2A4385;letter-spacing:2px;text-transform:uppercase">Regularisation</p>
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px">Penalise large weights and the gap closes</h2>
-<p style="font-size:32px;line-height:1.4">L2 regularisation (weight decay) adds alpha · Σ w² to the error. Sharp bends need large weights, so the network is pushed towards smoother curves. With alpha = 1 training R² stays near 0.8 and the largest networks generalise best (test R² 0.56).</p>
-</div>
-<aside>Exercise A.2. Width 512 with alpha = 1: train 0.773, test 0.559. The general principle: when a model can do too much, constrain it. Regularisation trades a little training fit for a smoother, more stable function. alpha itself is a hyperparameter, chosen on validation data, not on the test set.</aside>
-</section>

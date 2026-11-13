@@ -1,8 +1,0 @@
-<section id="playground" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<img src="../../../assets/figures/t03_07.png" alt="Loss and accuracy per epoch for a GRU trained on 300 sequences" style="width:1664px;height:555px;object-fit:contain">
-<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">With little data, the same network memorises</h2>
-<p style="flex:1;font-size:32px;line-height:1.4">Trained on 300 sequences, training accuracy reaches 1.0 and the test loss is lowest around epoch 30, then drifts up. Early stopping keeps the best point; weight decay helps a little; the learning rate is the first knob to tune.</p>
-</div>
-<aside>Exercise 5.2. Weight decay 1e-3 helps (test about 0.93); 1e-2 is too strong and the network underfits (about 0.64). lr = 0.1: steps too big, accuracy stays at chance (about 0.34). lr = 0.0003: steps too small, after 60 epochs about 0.39. With 1200 sequences test accuracy reaches 0.95 but the test loss still rises after epoch 14, so early stopping is still needed.</aside>
-</section>

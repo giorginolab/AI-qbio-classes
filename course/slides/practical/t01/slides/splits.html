@@ -1,8 +1,0 @@
-<section id="splits" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<img src="../../../assets/figures/t01_08.png" alt="Distribution of R² over 200 random train/test splits with our split marked" style="width:1664px;height:543px;object-fit:contain">
-<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:700px">Our single split was unlucky</h2>
-<p style="flex:1;font-size:32px;line-height:1.4">200 random splits: R² = 0.57 ± 0.05, range 0.41 – 0.69. Ours (0.44) is in the worst 2%.</p>
-</div>
-<aside>Ask: was the Part 4 split representative? Which number would you report? Is RF better than kNN? Answer: report the cross-validated 0.56, which agrees with the average over many splits. Fold-to-fold variation (±0.05) is as large as the differences between kNN, RF and linear, so their ranking is not solid. Only MLOGP alone is clearly worse.</aside>
-</section>

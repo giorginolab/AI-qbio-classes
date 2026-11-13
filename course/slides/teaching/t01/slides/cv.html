@@ -1,8 +1,0 @@
-<section id="cv" style="background:#FFFFFF;color:#2D3340;font-family:'Source Sans 3', Arial, sans-serif;padding:96px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<img src="../../../assets/figures/t01_07.png" alt="Diagram of 5-fold cross-validation" style="width:1664px;height:376px;object-fit:contain">
-<div style="display:flex;flex-direction:row;gap:64px;align-items:start">
-<h2 style="font-family:'Source Sans 3', Arial, sans-serif;font-weight:700;line-height:1.1;color:#002060;font-size:44px;width:640px">Cross-validation uses every chemical once as test data</h2>
-<p style="flex:1;font-size:32px;line-height:1.4">Split into 5 folds; train on 4, test on the fifth, rotate, average. The spread across folds shows how much a score depends on which chemicals were held out.</p>
-</div>
-<aside>5-fold CV R²: MLOGP only 0.41 ± 0.05, linear 0.56 ± 0.04, kNN (k = 10, scaled) 0.62 ± 0.02, random forest 0.60 ± 0.03. A setting chosen by looking at test scores, such as k, must itself be validated, or the score is optimistic.</aside>
-</section>
