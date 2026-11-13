@@ -3,7 +3,9 @@
 Review of `t01_toxicity_qsar`, `t02_neural_networks_enzymes`, `t03_rnn_protein_targeting`
 against a master's-in-quantitative-biology audience. Proposals only — no notebook was edited.
 
-Written 2026-11-11.
+Written 2026-11-11. Pruned 2026-11-13: items already in the notebooks were removed (the
+protein-language-model session, now `s04`; the Cassotti, applicability-domain and
+SignalP/TargetP references).
 
 ## Overall assessment
 
@@ -107,7 +109,7 @@ which carries the unique message.
 
 ## 3. Originality
 
-The QSAR → MLP → RNN arc is sound and common. Three directions would make it distinctive.
+The QSAR → MLP → RNN arc is sound and common. Two directions would make it more distinctive.
 
 **(a) Let students compute the descriptors in t01.** The six UCI descriptors are a black box,
 and `NdsCH`/`NdssC` mean nothing to a biologist. With RDKit (pip-installable, CPU, seconds)
@@ -116,17 +118,8 @@ students can compute logP, TPSA and a Morgan fingerprint from SMILES themselves.
 versus a 2048-bit fingerprint on the same 908 molecules — the representation axis the whole
 course is secretly about.
 
-**(b) A protein-language-model coda to t03.** ESM-2 at 8M parameters runs on CPU; embeddings
-for 3600 50-mers take a couple of minutes and can be shipped precomputed as an `.npy` so the
-class never waits. Logistic regression on frozen ESM embeddings versus the hand-built GRU is
-the most instructive comparison available right now: it shows transfer learning, shows that a
-5k-parameter model trained in 5 seconds is not far behind, and gives a concrete reason to care
-about leakage (PLM pretraining is itself a leakage vector when the test proteins were in
-UniRef). The notebooks currently *mention* protein language models; letting students touch one
-would be the biggest single upgrade.
-
-**(c) Name the representation thread out loud.** Session 1 = fixed engineered descriptors;
-session 2 = bag-of-residues (order discarded); session 3 = order-aware encoding; optional =
+**(b) Name the representation thread out loud.** Session 1 = fixed engineered descriptors;
+session 2 = bag-of-residues (order discarded); session 3 = order-aware encoding; `s04` =
 learned pretrained representation. Each step is a strictly richer representation of the same
 kind of object, and the accuracy gains track it. A one-slide spine at the start of each notebook
 would make three practicals feel like one course — and that framing is what distinguishes a
@@ -139,17 +132,11 @@ which estimator wins.
 
 Short and assignable. **Verify each before use — quoted from memory, not looked up.**
 
-- **Cassotti et al. 2015**, *SAR QSAR Environ Res* — already the data source; worth a sentence
-  on the OECD/REACH validation principles, especially the **applicability domain**, which t02's
-  extrapolation slice illustrates perfectly but never names as a regulatory requirement.
 - **Walsh, Fishman et al. 2021, "DOME recommendations"**, *Nat Methods* — a checklist for
   reporting ML in biology. Ideal as a homework frame: fill the DOME items for your own notebook.
 - **Kapoor & Narayanan 2023, "Leakage and the reproducibility crisis in ML-based science"**,
   *Patterns* — canonical reference for t02 Part B; gives a taxonomy and the vocabulary.
-- **Teufel et al. 2022 (SignalP 6.0)**, *Nat Biotechnol*; **Almagro Armenteros et al. 2019
-  (TargetP 2.0)**, *Life Sci Alliance* — t03's real-world counterparts; both discuss
-  homology-reduced partitioning explicitly, which is the right context for §1's negative control.
-- **Lin et al. 2023 (ESM-2)**, *Science* — for the PLM coda.
+- **Lin et al. 2023 (ESM-2)**, *Science* — the model used in `s04`, which does not cite it yet.
 - **CLEAN / recent EC-number prediction work** — context for why t02's negative result is a
   *correct* negative: composition alone genuinely cannot do this.
 - For the statistics habit: **Dietterich 1998** or **Demšar 2006** on comparing classifiers.
