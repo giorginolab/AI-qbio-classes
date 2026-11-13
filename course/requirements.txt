@@ -7,3 +7,4 @@ matplotlib>=3.8
 torch>=2.2            # t03 only; CPU build is enough
 jupyterlab>=4.0
 ipywidgets>=8.0      # sliders in the overfitting playgrounds (optional)
+marimo>=0.25       # optional: marimo/ versions of the notebooks

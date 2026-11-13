@@ -1,8 +1,15 @@
 # AI in Quantitative Biology - three practicals (3 x 90 min)
 
 Self-contained notebooks, solutions included (exercises ✏️ and questions ❓ are followed by their
-solution). Each `.py` file is a `jupyter nbconvert --to script` export of the notebook with the same name.
-Everything runs on a laptop CPU in about 2 minutes per notebook.
+solution). Everything runs on a laptop CPU in about 2 minutes per notebook.
+
+Support code that students need not read (setup, figure-only cells, playgrounds and their sliders)
+is collapsed: such cells start with `# @title ...` and have `jupyter.source_hidden` and
+`cellView: form` set, so JupyterLab, VS Code and Colab show them folded.
+
+The `.ipynb` notebooks are the source. `marimo/` holds marimo versions built from them by
+`uv run python course/make_marimo.py` (re-run after editing a notebook; the playground sliders
+become marimo forms). Script exports (`jupyter nbconvert --to script`) are not kept in git.
 
 | | notebook | biology | data mining | ML |
 |---|---|---|---|---|

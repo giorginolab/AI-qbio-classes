@@ -3,3 +3,8 @@ __pycache__/
 .DS_Store
 .#*
 .venv/
+
+# nbconvert exports of course notebooks (notebooks are the source)
+course/*.py
+!course/make_marimo.py
+__marimo__/
