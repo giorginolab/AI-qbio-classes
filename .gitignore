@@ -8,3 +8,6 @@ __pycache__/
 course/*.py
 !course/make_marimo.py
 __marimo__/
+
+# ProteinBERT pretrained weights (192 MB, downloaded by course/extra04 on first run)
+data/proteinbert_model/

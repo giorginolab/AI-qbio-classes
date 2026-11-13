@@ -1,0 +1,27 @@
+# Environment for the ProteinBERT notebook (TensorFlow, separate from course/requirements.txt).
+# ProteinBERT is Keras-2 code: it runs on current TensorFlow through tf-keras with TF_USE_LEGACY_KERAS=1
+# (the notebook sets it). Versions pinned to the environment the notebook was tested with.
+#
+#   uv sync --project course/env_proteinbert
+#   uv run --project course/env_proteinbert jupyter lab
+[project]
+name = "qbio-proteinbert-env"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "tensorflow==2.21.0",
+    "tf-keras==2.21.0",
+    "numpy==2.5.4",
+    "pandas==3.1.1",
+    "scipy==1.18.1",
+    "scikit-learn==1.9.1",
+    "matplotlib==3.11.2",
+    "h5py==3.14.0",
+    "ipykernel==7.4.0",
+    "nbclient==0.11.0",
+    "nbconvert==7.17.2",
+    "jupyterlab>=4.0",
+]
+
+[tool.uv]
+package = false
