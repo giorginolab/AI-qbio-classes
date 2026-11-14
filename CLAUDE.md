@@ -39,7 +39,7 @@ Do not create worktrees unless necessary. Work in main.
 - The fish and aquatic CSVs are headerless and `;`-separated; column names are defined in the notebooks.
 - Marimo: `data_prep/make_marimo.py` (notebook -> marimo, swapping ipywidgets sliders for marimo forms)
   is kept but **only run it when the user explicitly asks**, and do not create a `marimo/` directory
-  otherwise. Its docstring still assumes the old `course/` location.
+  otherwise. It reads notebooks from `course/` and writes to `course/marimo/`.
 - nbconvert script exports (`course/*.py`), `__pycache__/`, `.ipynb_checkpoints/`, `.venv/`, `.#*` and
   `data/proteinbert_model/` are git-ignored noise.
 

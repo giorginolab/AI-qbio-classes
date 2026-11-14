@@ -1,9 +1,9 @@
-"""Build the marimo versions of the course notebooks in marimo/.
+"""Build the marimo versions of the course notebooks in course/marimo/.
 
-The .ipynb notebooks are the source; never edit marimo/*.py by hand, re-run this instead:
+The .ipynb notebooks are the source; never edit course/marimo/*.py by hand, re-run this instead:
 
-    uv run python course/make_marimo.py            # all notebooks
-    uv run python course/make_marimo.py t02_neural_networks_enzymes.ipynb
+    uv run python data_prep/make_marimo.py            # all notebooks
+    uv run python data_prep/make_marimo.py t02_neural_networks_enzymes.ipynb
 
 On top of `marimo convert` it
 - hides the code of cells whose first line is `# @title ...` (the support code that is
@@ -17,7 +17,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parent.parent / "course"   # the notebooks live in course/
 OUT = HERE / "marimo"
 
 SLIDER_MD_OLD = ("*Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and "
