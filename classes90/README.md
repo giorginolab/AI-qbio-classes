@@ -63,6 +63,26 @@ take-home messages, resources. The Merck slides are in class 2. Four closing sli
 earlier ones (a second "Final words", "Take-home messages", "Resources (self-study)" and "End") were
 left out. One typo corrected ("performace").
 
+## Teaching notes
+
+Each class also has a teaching-notes deck (`Class N · Teaching notes.pptx`), built by `make_decks.py`
+from the per-practical decks in `slides/`. They explain the ideas behind each part of the notebook and
+carry the expected numbers in the speaker notes.
+
+- **Class 1** (29 slides, from `slides/1 Fish toxicity QSAR`): reordered to follow `class1_basics`.
+  Part 1 is the look at the data, then a new slide covering Parts 2-7, which `Class 1.pptx` teaches.
+  After that come the overfitting playground (end of Part 6) and Parts 8-10. The loss-landscape slide
+  of t01 was dropped because Part 4 draws its own landscape with different numbers (divergence at
+  lr = 0.2, not 0.15). Exercise numbers in the notes follow the class 1 notebook (Warm-up, 4, 6, 7).
+- **Class 2** (25 slides, from `slides/2 Neural networks and enzymes`): the deck without the two
+  slides on early stopping and the MLP playground, and without the two "to try next" items about them.
+- **Class 3** (30 slides, from `slides/3 Recurrent networks and protein targeting`): complete. The
+  notes of the Part 5 playground slide mark the break.
+
+In all three decks the small headline on the cover says "Hands On/N" instead of "Practical N"; class 1 is
+retitled "Fish toxicity: from a line to a network, and how to trust it". The notes no longer name
+the t0x notebooks or "session 4": they point to the class notebooks, the lecture slides and `extra03`.
+
 ## What is not in the three classes
 
 Everything stays in `course/`.
@@ -90,7 +110,7 @@ Everything stays in `course/`.
 - Hidden slides were otherwise kept hidden. In class 1 these include linear separability and the
   evaluation of binary classifiers.
 - The decks are `.pptx`, which the repository ignores, so they are not in git. `make_decks.py` rebuilds
-  them from `slides/0 Class 1.pptx` and `old/ai-qbio-unimi_2026_r1.pptx`; run it from the repository root:
+  them from `slides/0 Class 1.pptx`, `old/ai-qbio-unimi_2026_r1.pptx` and the three teaching-notes decks in `slides/`; run it from the repository root:
   `uv run --no-project --with python-pptx python classes90/make_decks.py`.
   `Class 1.pptx` is 5 MB against 19 MB for the original because unused media were not carried over.
 - Classes 2 and 3 open with the title slide only ("Hands-on 2", "Hands-on 3"); the course outline
