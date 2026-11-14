@@ -15,24 +15,16 @@ and questions ❓, each followed by its answer. Everything is fixed-seed (`RNG =
 | `literature/` | Reference papers (ProteinBERT). |
 | `REFERENCES.md` | Papers cited on the lecture slides. |
 | `protein_bert/`, `env_proteinbert/` | Upstream ProteinBERT code and a pinned TensorFlow environment for its demo notebook. |
-| `carlos-course/` | A separate, older QM notebook (`t07_QM`). |
-| `old/`, `README.old.md`, `opus-ideas.md` | Earlier material, notes and proposals. |
 
-### Notebooks (`course/`)
 
-| Notebook | Topic | Data |
-|---|---|---|
-| `class1_from_regression_to_networks` | Lecture class 1 (slides 1-26): regression, the neuron, gradient descent, overfitting | fish toxicity |
-| `class2_architectures` | Lecture class 2 (slides 27-46): CNNs, RNNs, autoencoders, first look at transformers | targeting, enzymes |
-| `class3_applications` | Lecture class 3 (slides 47-79): transfer, scale, and which split to believe | ESM-2 embeddings |
-| `t01_toxicity_qsar` | Session 1: mining a toxicity dataset (QSAR) | fish, aquatic toxicity |
-| `t02_neural_networks_enzymes` | Session 2: MLPs, and classifying enzymes by EC class | fish toxicity, enzymes |
-| `t03_rnn_protein_targeting` | Session 3: a GRU reads protein N-termini | targeting |
-| `extra01_scaling_laws` | Alternative to t01: scaling laws | anage |
-| `extra02_laws_vs_flexible_models` | Alternative to t02: laws against flexible models | anage, genomes |
-| `extra03_enzymes_esm2` | Optional: what a protein language model knows about enzymes | enzymes, ESM-2 embeddings |
+## Running the notebooks
 
-`extra01`/`extra02` are toxicity-free replacements for `t01`/`t02`; both sets are kept.
+```bash
+uv venv --python 3.12
+uv pip install -r requirements.txt
+uv run jupyter lab          # run from the repository root, then open a notebook in course/
+```
+
 
 ## Data sources
 
@@ -51,13 +43,8 @@ and questions ❓, each followed by its answer. Everything is fixed-seed (`RNG =
 release, so re-running a data-prep script gives slightly different data. **The committed files are the
 reference**; the numbers quoted in the notebook answers refer to them.
 
-## Running the notebooks
 
-```bash
-uv venv --python 3.12
-uv pip install -r requirements.txt
-uv run jupyter lab          # run from the repository root, then open a notebook in course/
-```
+## Notes
 
 - Requires scikit-learn >= 1.4. PyTorch (CPU build is enough) is needed only by `t03` and `class2`;
   `ipywidgets` is optional (sliders in the overfitting playgrounds).
