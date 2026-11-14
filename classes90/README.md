@@ -1,56 +1,67 @@
-# Three classes of 90 minutes (proposal)
+# Three classes: 150, 90 and 150 minutes (proposal)
 
-A cut of the repository down to three 90-minute classes, each alternating blocks of slides with blocks
-of a notebook. Nothing outside this folder was changed: `course/`, `slides/` and `old/` are as they were.
+A cut of the repository down to three classes, each alternating blocks of slides with blocks of a
+notebook. Nothing outside this folder was changed: `course/`, `slides/` and `old/` are as they were.
+(The folder name dates from when all three were 90 minutes.)
 
-| Class | Deck | Notebook | Built from | Slides / notebook / buffer (min) |
-|---|---|---|---|---|
-| 1. Basics of neural networks | `Class 1.pptx` (32 slides, 5 hidden) | `class1_basics.ipynb` (42 cells) | `course/class1` | 39 / 49 / 2 |
-| 2. Flexible models, honest scores, the homology trap | `Class 2.pptx` (17 slides, 2 hidden) | `class2_models_and_enzymes.ipynb` (63 cells) | `t01` + `t02` | 31 / 55 / 4 |
-| 3. A recurrent network reads protein N-termini | `Class 3.pptx` (42 slides, 5 hidden) | `class3_rnn_targeting.ipynb` (45 cells) | `t03` | 45 / 39 / 6 |
+| Class | Length | Deck | Notebook | Built from | Slides / notebook / break / buffer (min) |
+|---|---|---|---|---|---|
+| 1. From a regression line to a neural network | 150 | `Class 1.pptx` (32 slides, 5 hidden) | `class1_basics.ipynb` (84 cells) | `course/class1` + `t01` | 43 / 93 / 10 / 4 |
+| 2. Neural networks, and classifying enzymes | 90 | `Class 2.pptx` (17 slides, 2 hidden) | `class2_neural_networks_enzymes.ipynb` (46 cells) | `t02` | 32 / 50 / 0 / 8 |
+| 3. A recurrent network reads protein N-termini | 150 | `Class 3.pptx` (42 slides, 5 hidden) | `class3_rnn_targeting.ipynb` (58 cells) | `t03` | 41 / 92 / 10 / 7 |
 
 Each notebook opens with its minute-by-minute timetable (which slides, then which notebook part). The
-timetables are estimates.
+slide numbers quoted in a notebook are those of the deck of the same class. The timetables are estimates.
 
-## Class 1
+## Class 1 (150 min)
 
-Starts from `slides/0 Class 1.pptx`. The deck is unchanged except for one move: "An optimization problem"
-and "Backpropagation" (were 27-28) now come before the three overfitting slides (were 24-26), so that the
-slides follow the notebook: loss, gradient descent, network, then overfitting. The notebook is
-`course/class1_from_regression_to_networks.ipynb` with its content intact and its slide references
-re-keyed to this deck (the original cited the numbering of an older 79-page PDF).
+Notebook: `course/class1_from_regression_to_networks.ipynb`, with the parts of `t01` it did not already
+cover placed where they belong:
 
-## Class 2
+- **Part 1** gains the histograms, a warm-up exercise and the PCA map: look at the data before modelling.
+- **Parts 2-5** are unchanged (regression as a box, one neuron, gradient descent, width scan).
+- **Part 6** (overfitting) is followed by the polynomial playground, right after the overfitting slides.
+  Its own "200 random splits" cell was dropped: Part 9 does the same experiment in more detail.
+  The break comes here.
+- **Part 7** (featurization controls) is unchanged.
+- **Parts 8-10** are new, from `t01`: one split with a baseline and linear fits; cross-validation, kNN
+  and random forest, the kNN exercises, learning curves; permutation importance.
 
-Notebook, three parts:
+Not taken from `t01` because Parts 1, 2 and 4 already do it on the same data: meeting the table,
+correlations, and the loss landscape.
 
-- **A (from `t01`)**: one train/test split, 5-fold cross-validation, kNN and random forest against linear
-  regression, 200 random splits, the random-forest scatter, learning curves, permutation importance.
-  Left out because class 1 already covers them on the same data: meeting the data, correlations, the
-  single-descriptor fit and the loss landscape. Also left out: PCA, standardised coefficients, the kNN
-  exercises, the polynomial playground and the Daphnia homework (which is the homework of class 1).
-- **B (from `t02` Part A)**: the MLP, the function each model learned along MLOGP, network size and
-  regularisation. Left out: overfitting epoch by epoch (class 1 Part 6 shows the same curve) and the
-  MLP playground.
-- **C (from `t02` Part B)**: the enzymes, amino-acid composition, three classifiers and the confusion
-  matrix, the homology trap. Left out: Exercise B1.1 and the PCA map of compositions.
+Deck: `slides/0 Class 1.pptx` with two moves and two text corrections.
 
-Deck: title, deephERG (a toxicity model built on descriptors), the Part II divider and deep networks,
-featurization, evaluation of binary classifiers, the Merck challenge, convolutional networks. The
-"Evaluation of (binary) classifiers" slide is hidden in your decks; it is **shown** here because Part C
-is where classification and the confusion matrix first appear.
+- "An optimization problem" and "Backpropagation" come before the three overfitting slides, so the
+  slides follow the notebook: loss, gradient descent, network, then overfitting.
+- "Interpretability" (the second one, on black boxes) moves after "Featurization", so that it
+  introduces Part 10.
+- The Backpropagation slide said the weights are adjusted to decrease the error "on the test set";
+  it now says "on the training set". "loss funtion" is corrected to "loss function".
 
-## Class 3
+The slide "Training and stopping" still says that training stops when the loss on the test set is
+minimal: the notebook asks the students to criticise exactly that sentence, so it was left alone.
 
-Notebook: `t03` with Parts 1-7 kept (data, profiles along the sequence, composition baseline, one-hot
-encoding, the GRU, the shuffling control, watching the network read, saliency). Left out: loss versus
-accuracy, the GRU playground, Exercise 7.1 (misclassified proteins) and the PCA of the hidden states.
+## Class 2 (90 min)
+
+Notebook: `t02` with both parts (A: a neural network on the toxicity data; B: enzyme classes from
+amino-acid composition, three classifiers, the homology trap). Left out: overfitting epoch by epoch
+(class 1 Part 6 shows the same curve) and the MLP playground.
+
+Deck: title, deephERG (a published toxicity model built on descriptors), the Part II divider and deep
+networks, featurization, evaluation of binary classifiers, the Merck challenge, convolutional networks.
+"Evaluation of (binary) classifiers" is hidden in your decks; it is **shown** here because Part B is
+where classification and the confusion matrix first appear.
+
+## Class 3 (150 min)
+
+Notebook: `t03` complete, with a break after Part 5.
 
 Deck: title, recurrent networks, autoencoders and generative models, transformers up to ProteinBERT,
 transfer learning and scaling, Part III applications (without deephERG, used in class 2), final words,
 take-home messages, resources. The Merck slides are in class 2. Four closing slides that duplicated
 earlier ones (a second "Final words", "Take-home messages", "Resources (self-study)" and "End") were
-left out.
+left out. One typo corrected ("performace").
 
 ## What is not in the three classes
 
@@ -58,24 +69,24 @@ Everything stays in `course/`.
 
 | Material | Note |
 |---|---|
-| `class2_architectures` (CNN, GRU, autoencoder on targeting signals) | Class 2 now shows convolutional networks on slides only. |
+| `class2_architectures` (CNN, GRU, autoencoder on targeting signals) | Class 2 shows convolutional networks on slides only. |
 | `class3_applications` (ESM-2 embeddings, scaling, the Merck split on molecules) | Class 3 covers transformers and transfer learning on slides only. |
 | `extra01`, `extra02` (scaling laws) | A separate thread, not connected to the deck. |
-| `extra03_enzymes_esm2` | The natural follow-up to class 2 Part C: the same enzymes with a pretrained representation. |
+| `extra03_enzymes_esm2` | The natural follow-up to class 2 Part B: the same enzymes with a pretrained representation. |
 | ProteinBERT demo | Class 3 slides 17-18 point to it. |
 
 ## Status and caveats
 
 - The notebooks were **not executed**. Every cell kept its stored output from the notebook it came from.
-  Classes 2 and 3 were checked statically for undefined names after the cuts (none left), but the printed
+  All three were checked statically (every name is defined before the cell that uses it), but the printed
   numbers are unverified until each notebook is run once:
   `uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" classes90/<notebook>.ipynb`.
-- Three code cells differ from their originals, only by added definitions that the cut cells used to
-  provide: `X`, `y` and two imports at the start of class 2 Part A, and `y_te`, `colours` in the saliency
-  cell of class 3.
-- Class 2 merges two notebooks. Part B reloads the fish data and redoes the same split as Part A, as it
-  did when it was a separate session. In the 200-splits figure of Part A the red line is still labelled
-  "Part 4" (the label is inside a stored image); the text says so.
+- Class 1 merges two notebooks, so the cells from `t01` will run under the class 1 setup cell (which sets
+  pandas display precision to 3 and silences warnings): expect small formatting differences in their
+  tables on the first run. One code cell differs from its original: the first cell of Part 8 redefines
+  `X` and `y` as a table, because Parts 2-7 use plain arrays.
+- In the 200-splits figure of Part 9 the red line is labelled "Part 4" (the label is inside a stored
+  image and will stay until the cell's code is edited); the text says so.
 - Hidden slides were otherwise kept hidden. In class 1 these include linear separability and the
   evaluation of binary classifiers.
 - The decks are `.pptx`, which the repository ignores, so they are not in git. `make_decks.py` rebuilds
