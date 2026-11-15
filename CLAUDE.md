@@ -28,7 +28,8 @@ Do not create worktrees unless necessary. Work in main.
 - `data/` holds the datasets (committed). `data_prep/` holds the scripts that built them
   (`make_enzyme_dataset.py`, `make_targeting_dataset.py`, `make_scaling_datasets.py`,
   `make_esm2_embeddings.py`); they need internet and are instructor-only.
-- `slides/` holds teaching-notes `.pptx` decks (new `.pptx` are git-ignored; use `git add -f`).
+- `slides/` holds teaching-notes `.pptx` decks. It is **not tracked in git** (removed from the index; the files
+  stay local only), so do not expect it in a fresh clone and do not re-add it.
 - `REFERENCES.md` lists the papers cited on the slides; `literature/` holds PDFs.
 - `protein_bert/` (upstream code) and `env_proteinbert/` (pinned TensorFlow env) are only for the ProteinBERT demo.
 - `carlos-course/` and `old/` are separate or earlier material.
@@ -47,7 +48,8 @@ Do not create worktrees unless necessary. Work in main.
 - The committed datasets are the reference: re-running a `data_prep` script (Swiss-Prot changes every
   release) shifts the quoted numbers.
 - The fish and aquatic CSVs are headerless and `;`-separated; column names are defined in the notebooks.
-- Marimo: `data_prep/make_marimo.py` (notebook -> marimo, swapping ipywidgets sliders for marimo forms)
+- Marimo is **not currently used**: no `marimo/` directory exists and none of the notebooks are maintained as
+  marimo. `data_prep/make_marimo.py` (notebook -> marimo, swapping ipywidgets sliders for marimo forms)
   is kept but **only run it when the user explicitly asks**, and do not create a `marimo/` directory
   otherwise. It reads notebooks from `extra_topics/` and writes to `extra_topics/marimo/`. Its playground table is
   **stale**: it still keys `t01`/`t02`/`t03`, which no longer exist (the playgrounds now live in
