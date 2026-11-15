@@ -7,22 +7,48 @@ each followed by its answer. Everything is fixed-seed (`RNG = 0`) and runs on a 
 The three classes actually taught are in `classes/`. `extra_topics/` holds supplementary notebooks:
 topics that the classes touch only on slides, and the scaling-law thread.
 
-## Repository organization
+
+## Running the notebooks
+
+### Preparation
 
 First, clone the repository on your machine. This is important so that the data files are accessible.
 
-    git clone ...
-    
+```bash
+git clone https://github.com/giorginolab/AI-qbio-classes.git
+```
+
+Second, install UV. UV simplifies installation and run of all things Python. Do yourself a favour and 
+use it. See [instructions](https://docs.astral.sh/uv/getting-started/installation/#__tabbed_1_2).
+
+Third, create an environment
+
+```bash
+cd AI-qbio-classes
+uv venv --python 3.12
+uv pip install -r requirements.txt
+```
+
+### Open the notebooks in jupyter
+
+Run jupyter from the repository directory:
+
+```bash
+cd AI-qbio-classes
+uv run jupyter lab
+```
+
+
+## Repository organization
+
 
 | Path | Contents |
 |---|---|
 | `classes/` | **The three classes** (one folder each: deck, teaching notes, notebook), 150 / 90 / 150 minutes. See its own `README.md`. |
-| `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
 | `data/` | Datasets read by the notebooks (committed, so nothing needs downloading). |
+| `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
+| `REFERENCES.md` | Papers cited on the lecture slides. Possible suggestions for your presentation. |
 | `data_prep/` | Scripts that built the datasets from public sources; instructor use only, they need internet. |
-| `slides/` | Teaching-notes decks of the `extra` notebooks (`.pptx`, untracked), plus the Class 1 deck. |
-| `literature/` | Reference papers (ProteinBERT). |
-| `REFERENCES.md` | Papers cited on the lecture slides. |
 | `protein_bert/`, `env_proteinbert/` | Upstream ProteinBERT code and a pinned TensorFlow environment for its demo notebook. |
 
 
@@ -40,20 +66,6 @@ First, clone the repository on your machine. This is important so that the data 
 
 `extra03`-`extra07` follow on from the three classes; `extra01`/`extra02` are an
 independent thread, not tied to the deck. The numbering is roughly increasing complexity.
-
-
-## Install uv
-
-UV simplified installation and run of all things Python. Do yourself a favour and 
-use it. See [instructions](https://docs.astral.sh/uv/getting-started/installation/#__tabbed_1_2).
-
-## Running the notebooks
-
-```bash
-uv venv --python 3.12
-uv pip install -r requirements.txt
-uv run jupyter lab          # run from the repository root, then open a notebook
-```
 
 
 ## Data sources
