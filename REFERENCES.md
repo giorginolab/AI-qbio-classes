@@ -13,15 +13,18 @@
 
 ### Bio-specific architectures
 
+These may work well as paper to present.
+
 - Vig J, Madani A, Varshney LR, et al. BERTology Meets Biology: Interpreting Attention in Protein Language Models. [arXiv:2006.15222](https://arxiv.org/abs/2006.15222) (2020; *ICLR* 2021). Code: [salesforce/provis](https://github.com/salesforce/provis)
 - Ferruz N, Höcker B. Controllable protein design with language models. *Nat Mach Intell* 4, 521-532 (2022). [doi:10.1038/s42256-022-00499-z](https://doi.org/10.1038/s42256-022-00499-z)
 - Rives A, et al. Biological structure and function emerge from scaling unsupervised learning to 250 million protein sequences. *PNAS* 118, e2016239118 (2021). [doi:10.1073/pnas.2016239118](https://doi.org/10.1073/pnas.2016239118) (preprint [10.1101/622803](https://doi.org/10.1101/622803))
 - Brandes N, Ofer D, Peleg Y, Rappoport N, Linial M. ProteinBERT: a universal deep-learning model of protein sequence and function. *Bioinformatics* 38, 2102-2110 (2022). [doi:10.1093/bioinformatics/btac020](https://doi.org/10.1093/bioinformatics/btac020); preprint [10.1101/2021.05.24.445464](https://doi.org/10.1101/2021.05.24.445464). Code: [nadavbra/protein_bert](https://github.com/nadavbra/protein_bert)
 - LeCun Y, Bottou L, Bengio Y, Haffner P. Gradient-based learning applied to document recognition (LeNet). *Proc IEEE* 86, 2278-2324 (1998). [doi:10.1109/5.726791](https://doi.org/10.1109/5.726791)
 - Szegedy C, et al. Going deeper with convolutions (GoogLeNet). *CVPR* 2015, 1-9. [doi:10.1109/CVPR.2015.7298594](https://doi.org/10.1109/CVPR.2015.7298594)
-- UDSMProt, UniRep, TAPE, ProtTrans (ProtBERT): protein language models listed on the slides; not looked up.
 
 ### Applications
+
+These may work well (even better) as paper to present.
 
 - Jiménez J, Doerr S, Martínez-Rosell G, Rose AS, De Fabritiis G. DeepSite: protein-binding site predictor using 3D-convolutional neural networks. *Bioinformatics* 33, 3036-3042 (2017). [doi:10.1093/bioinformatics/btx350](https://doi.org/10.1093/bioinformatics/btx350)
 - Segler MHS, Kogej T, Tyrchan C, Waller MP. Generating Focused Molecule Libraries for Drug Discovery with Recurrent Neural Networks. *ACS Cent Sci* 4, 120-131 (2018). [doi:10.1021/acscentsci.7b00512](https://doi.org/10.1021/acscentsci.7b00512)
