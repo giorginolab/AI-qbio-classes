@@ -26,7 +26,3 @@ opens with its own timetable.
 - GRU on targeting signals (signal peptide / mitochondrial transit peptide / other)
 - Recurrent-network playground
 
-## Teaching notes
-
-`Class N · Teaching notes.pptx`, built by `make_decks.py`, explain the ideas behind each notebook part.
-The `.pptx` files are not in git; `make_decks.py` builds only these notes decks, not the lecture decks.
