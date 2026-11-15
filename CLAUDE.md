@@ -11,17 +11,27 @@ Do not create worktrees unless necessary. Work in main.
 
 ## Layout
 
-- `course/` holds all nine notebooks: `class1`-`class3` (keyed to the lecture deck: slides 1-26 basics,
-  27-46 architectures, 47-79 applications), `t01`-`t03` (QSAR toxicity, enzyme EC classes, GRU on protein
-  targeting signals) and `extra01`-`extra03` (scaling laws, laws vs flexible models, ESM-2 on enzymes).
-  `extra01`/`extra02` are toxicity-free alternatives to `t01`/`t02`; both sets are kept.
+- `classes90/` holds **the three classes actually taught** (150/90/150 min), a deck and a notebook each:
+  `class1_basics` (fish-toxicity QSAR, from a line to a network), `class2_neural_networks_enzymes`
+  (MLP + enzyme EC classes + the homology trap) and `class3_rnn_targeting` (GRU on targeting signals).
+  It has its own `README.md` and `make_decks.py`. **Do not modify anything in `classes90/`.**
+- `course/` holds the **supplementary** notebooks, regrouped by macro-topic so that none of them repeats
+  a class: `topic1_training_neural_networks` (PyTorch from scratch + the overfitting playground),
+  `topic2_convolutional_networks` (CNN on N-termini, filter interpretation, CNN vs GRU, shuffling control,
+  transformers), `topic3_learning_without_labels` (autoencoders + peptide generation),
+  `topic4_transfer_scaling_evaluation` (ESM-2 vs descriptors, scaling, the Merck split, provenance) and
+  `extra01`-`extra03` (scaling laws, laws vs flexible models, ESM-2 on enzymes). `extra01`/`extra02` are
+  toxicity-free alternatives to class 1 / class 2.
+- The `topic*` notebooks were cut from the older `class1`-`class3` and `t01`-`t03` notebooks (removed in
+  the "regroup by macro-topic" commit; recover them from git history if needed). They cross-reference the
+  classes by number and each other by file name.
 - `data/` holds the datasets (committed). `data_prep/` holds the scripts that built them
   (`make_enzyme_dataset.py`, `make_targeting_dataset.py`, `make_scaling_datasets.py`,
   `make_esm2_embeddings.py`); they need internet and are instructor-only.
 - `slides/` holds teaching-notes `.pptx` decks (new `.pptx` are git-ignored; use `git add -f`).
 - `REFERENCES.md` lists the papers cited on the slides; `literature/` holds PDFs.
 - `protein_bert/` (upstream code) and `env_proteinbert/` (pinned TensorFlow env) are only for the ProteinBERT demo.
-- `carlos-course/`, `old/`, `README.old.md`, `opus-ideas.md` are separate or earlier material.
+- `carlos-course/` and `old/` are separate or earlier material.
 
 ## Conventions
 
@@ -39,7 +49,9 @@ Do not create worktrees unless necessary. Work in main.
 - The fish and aquatic CSVs are headerless and `;`-separated; column names are defined in the notebooks.
 - Marimo: `data_prep/make_marimo.py` (notebook -> marimo, swapping ipywidgets sliders for marimo forms)
   is kept but **only run it when the user explicitly asks**, and do not create a `marimo/` directory
-  otherwise. It reads notebooks from `course/` and writes to `course/marimo/`.
+  otherwise. It reads notebooks from `course/` and writes to `course/marimo/`. Its playground table is
+  **stale**: it still keys `t01`/`t02`/`t03`, which no longer exist (the playgrounds now live in
+  `topic1` and in `classes90/class3_rnn_targeting`).
 - nbconvert script exports (`course/*.py`), `__pycache__/`, `.ipynb_checkpoints/`, `.venv/`, `.#*` and
   `data/proteinbert_model/` are git-ignored noise.
 
