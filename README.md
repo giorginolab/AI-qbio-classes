@@ -16,7 +16,7 @@ First, clone the repository on your machine. This is important so that the data 
 
 | Path | Contents |
 |---|---|
-| `classes/` | **The three classes** (deck + notebook each), 150 / 90 / 150 minutes. See its own `README.md`. |
+| `classes/` | **The three classes** (one folder each: deck, teaching notes, notebook), 150 / 90 / 150 minutes. See its own `README.md`. |
 | `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
 | `data/` | Datasets read by the notebooks (committed, so nothing needs downloading). |
 | `data_prep/` | Scripts that built the datasets from public sources; instructor use only, they need internet. |
