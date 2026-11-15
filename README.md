@@ -20,7 +20,7 @@ First, clone the repository on your machine. This is important so that the data 
 | `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
 | `data/` | Datasets read by the notebooks (committed, so nothing needs downloading). |
 | `data_prep/` | Scripts that built the datasets from public sources; instructor use only, they need internet. |
-| `slides/` | Teaching-notes decks (`.pptx`), plus the Class 1 deck. |
+| `slides/` | Teaching-notes decks of the `extra` notebooks (`.pptx`, untracked), plus the Class 1 deck. |
 | `literature/` | Reference papers (ProteinBERT). |
 | `REFERENCES.md` | Papers cited on the lecture slides. |
 | `protein_bert/`, `env_proteinbert/` | Upstream ProteinBERT code and a pinned TensorFlow environment for its demo notebook. |
