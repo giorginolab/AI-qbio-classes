@@ -109,9 +109,9 @@ Everything stays in `course/`.
   image and will stay until the cell's code is edited); the text says so.
 - Hidden slides were otherwise kept hidden. In class 1 these include linear separability and the
   evaluation of binary classifiers.
-- The decks are `.pptx`, which the repository ignores, so they are not in git. `make_decks.py` rebuilds
-  them from `slides/0 Class 1.pptx`, `old/ai-qbio-unimi_2026_r1.pptx` and the three teaching-notes decks in `slides/`; run it from the repository root:
-  `uv run --no-project --with python-pptx python classes/make_decks.py`.
-  `Class 1.pptx` is 5 MB against 19 MB for the original because unused media were not carried over.
+- The decks are `.pptx`, which the repository ignores, so they are not in git. `make_decks.py` only builds
+  the three teaching-notes decks, from the per-practical decks in `slides/` (also untracked); run it from the
+  repository root: `uv run --no-project --with python-pptx python classes/make_decks.py`. The lecture decks
+  (`Class N.pptx`) are no longer built by it.
 - Classes 2 and 3 open with the title slide only ("Hands-on 2", "Hands-on 3"); the course outline
   slide is in class 1.
