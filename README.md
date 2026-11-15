@@ -29,7 +29,6 @@ use it. See [instructions](https://docs.astral.sh/uv/getting-started/installatio
 
 ## Running the notebooks
 
-
 ```bash
 uv venv --python 3.12
 uv pip install -r requirements.txt
