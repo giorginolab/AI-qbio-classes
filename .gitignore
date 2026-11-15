@@ -5,11 +5,11 @@ __pycache__/
 .venv/
 
 # nbconvert exports of course notebooks (notebooks are the source)
-course/*.py
-!course/make_marimo.py
+extra_topics/*.py
+!extra_topics/make_marimo.py
 __marimo__/
 
-# ProteinBERT pretrained weights (192 MB, downloaded by course/extra04 on first run)
+# ProteinBERT pretrained weights (192 MB, downloaded by extra_topics/extra04 on first run)
 data/proteinbert_model/
 
 # Office lock files

@@ -4,7 +4,7 @@ Teaching material (not an application) for the practicals of *AI in Quantitative
 notebook is self-contained, with the solutions inline: exercises are marked ✏️ and questions ❓,
 each followed by its answer. Everything is fixed-seed (`RNG = 0`) and runs on a laptop CPU.
 
-The three classes actually taught are in `classes90/`. `course/` holds supplementary notebooks:
+The three classes actually taught are in `classes/`. `extra_topics/` holds supplementary notebooks:
 topics that the classes touch only on slides, and the scaling-law thread.
 
 ## Repository organization
@@ -16,8 +16,8 @@ First, clone the repository on your machine. This is important so that the data 
 
 | Path | Contents |
 |---|---|
-| `classes90/` | **The three classes** (deck + notebook each), 150 / 90 / 150 minutes. See its own `README.md`. |
-| `course/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
+| `classes/` | **The three classes** (deck + notebook each), 150 / 90 / 150 minutes. See its own `README.md`. |
+| `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
 | `data/` | Datasets read by the notebooks (committed, so nothing needs downloading). |
 | `data_prep/` | Scripts that built the datasets from public sources; instructor use only, they need internet. |
 | `slides/` | Teaching-notes decks (`.pptx`), plus the Class 1 deck. |
@@ -82,7 +82,7 @@ reference**; the numbers quoted in the notebook answers refer to them.
   example on Colab), set `QBIO_DATA` to the data folder.
 - Runtimes are short: seconds to a few minutes per notebook.
 - Regression test: execute a notebook headless, e.g.
-  `uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" course/topic2_convolutional_networks.ipynb`.
+  `uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" extra_topics/topic2_convolutional_networks.ipynb`.
   Any cell that raises aborts the run.
 - The ProteinBERT demo needs TensorFlow and has its own environment:
   `uv sync --project env_proteinbert && uv run --project env_proteinbert jupyter lab`.

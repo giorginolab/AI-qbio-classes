@@ -11,11 +11,11 @@ Do not create worktrees unless necessary. Work in main.
 
 ## Layout
 
-- `classes90/` holds **the three classes actually taught** (150/90/150 min), a deck and a notebook each:
+- `classes/` holds **the three classes actually taught** (150/90/150 min), a deck and a notebook each:
   `class1_basics` (fish-toxicity QSAR, from a line to a network), `class2_neural_networks_enzymes`
   (MLP + enzyme EC classes + the homology trap) and `class3_rnn_targeting` (GRU on targeting signals).
-  It has its own `README.md` and `make_decks.py`. **Do not modify anything in `classes90/`.**
-- `course/` holds the **supplementary** notebooks, regrouped by macro-topic so that none of them repeats
+  It has its own `README.md` and `make_decks.py`. **Do not modify anything in `classes/`.**
+- `extra_topics/` holds the **supplementary** notebooks, regrouped by macro-topic so that none of them repeats
   a class: `topic1_training_neural_networks` (PyTorch from scratch + the overfitting playground),
   `topic2_convolutional_networks` (CNN on N-termini, filter interpretation, CNN vs GRU, shuffling control,
   transformers), `topic3_learning_without_labels` (autoencoders + peptide generation),
@@ -49,10 +49,10 @@ Do not create worktrees unless necessary. Work in main.
 - The fish and aquatic CSVs are headerless and `;`-separated; column names are defined in the notebooks.
 - Marimo: `data_prep/make_marimo.py` (notebook -> marimo, swapping ipywidgets sliders for marimo forms)
   is kept but **only run it when the user explicitly asks**, and do not create a `marimo/` directory
-  otherwise. It reads notebooks from `course/` and writes to `course/marimo/`. Its playground table is
+  otherwise. It reads notebooks from `extra_topics/` and writes to `extra_topics/marimo/`. Its playground table is
   **stale**: it still keys `t01`/`t02`/`t03`, which no longer exist (the playgrounds now live in
-  `topic1` and in `classes90/class3_rnn_targeting`).
-- nbconvert script exports (`course/*.py`), `__pycache__/`, `.ipynb_checkpoints/`, `.venv/`, `.#*` and
+  `topic1` and in `classes/class3_rnn_targeting`).
+- nbconvert script exports (`extra_topics/*.py`), `__pycache__/`, `.ipynb_checkpoints/`, `.venv/`, `.#*` and
   `data/proteinbert_model/` are git-ignored noise.
 
 ## Commands
@@ -62,7 +62,7 @@ uv venv --python 3.12 && uv pip install -r requirements.txt
 uv run jupyter lab
 
 # regression test (no test suite or linter): execute a notebook headless; any raising cell aborts
-uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" course/<notebook>.ipynb
+uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" extra_topics/<notebook>.ipynb
 
 # ProteinBERT demo (TensorFlow, separate env)
 uv sync --project env_proteinbert

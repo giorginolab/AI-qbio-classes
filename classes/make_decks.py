@@ -1,6 +1,6 @@
 """Rebuild the three class decks, and their teaching-notes decks, from the source decks in slides/ and old/.
 
-    uv run --no-project --with python-pptx python classes90/make_decks.py [SOURCE_ROOT]
+    uv run --no-project --with python-pptx python classes/make_decks.py [SOURCE_ROOT]
 
 SOURCE_ROOT (default: the current directory) is the folder that holds `slides/0 Class 1.pptx` and
 `old/ai-qbio-unimi_2026_r1.pptx`. The decks are written next to this script. Slide numbers below are
@@ -158,7 +158,7 @@ make(N1, R(1, 10) + [30, 20, 22, 23, 11, 12, 14, 15, 17, 18, 19, 16, 21, 25, 24]
             'Repeat the analysis on a new species, then take networks further'),
            ('Companion to t01_toxicity_qsar.ipynb. These slides explain the general ideas behind each part '
             'of the notebook;',
-            'Companion to classes90/class1_basics.ipynb. These slides explain the general ideas behind Part 1, '
+            'Companion to classes/class1_basics.ipynb. These slides explain the general ideas behind Part 1, '
             'the overfitting playground of Part 6 and Parts 8–10 of the notebook (Parts 2–7 follow the lecture '
             'deck, Class 1.pptx);'),
            ('Exercise 1.1: the counts', 'Warm-up: the counts'),
@@ -179,7 +179,7 @@ make(N1, R(1, 10) + [30, 20, 22, 23, 11, 12, 14, 15, 17, 18, 19, 16, 21, 25, 24]
 # class 2 notebook leaves out.
 make(N2, R(1, 11) + R(14, 27), 'Class 2 · Teaching notes.pptx',
      subs=[('PRACTICAL 2', 'HANDS ON/2'),
-           ('t02_neural_networks_enzymes.ipynb', 'classes90/class2_neural_networks_enzymes.ipynb'),
+           ('t02_neural_networks_enzymes.ipynb', 'classes/class2_neural_networks_enzymes.ipynb'),
            ('data of session 1', 'data of class 1'),
            ('one-hot encoding of each position (session 3), embeddings from protein language models (session 4)',
             'one-hot encoding of each position (class 3), embeddings from protein language models (class 3 '
@@ -191,7 +191,7 @@ make(N2, R(1, 11) + R(14, 27), 'Class 2 · Teaching notes.pptx',
 # Class 3: t03's notes complete; the break comes after Part 5 (slide 19).
 make(N3, R(1, 30), 'Class 3 · Teaching notes.pptx',
      subs=[('PRACTICAL 3', 'HANDS ON/3'),
-           ('t03_rnn_protein_targeting.ipynb', 'classes90/class3_rnn_targeting.ipynb'),
+           ('t03_rnn_protein_targeting.ipynb', 'classes/class3_rnn_targeting.ipynb'),
            ('which is what protein language models produce (session 4)',
             'which is what protein language models produce (ProteinBERT, on the slides after the break)'),
            ('early stopping is still needed.',

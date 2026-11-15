@@ -1,6 +1,6 @@
-"""Build the marimo versions of the course notebooks in course/marimo/.
+"""Build the marimo versions of the course notebooks in extra_topics/marimo/.
 
-The .ipynb notebooks are the source; never edit course/marimo/*.py by hand, re-run this instead:
+The .ipynb notebooks are the source; never edit extra_topics/marimo/*.py by hand, re-run this instead:
 
     uv run python data_prep/make_marimo.py            # all notebooks
     uv run python data_prep/make_marimo.py t02_neural_networks_enzymes.ipynb
@@ -17,7 +17,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent.parent / "course"   # the notebooks live in course/
+HERE = Path(__file__).resolve().parent.parent / "extra_topics"   # the notebooks live in extra_topics/
 OUT = HERE / "marimo"
 
 SLIDER_MD_OLD = ("*Sliders:* in Jupyter or Colab with `ipywidgets` installed, the next cell shows sliders and "
