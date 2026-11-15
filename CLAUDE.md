@@ -16,15 +16,9 @@ Do not create worktrees unless necessary. Work in main.
   (MLP + enzyme EC classes + the homology trap) and `class3_rnn_targeting` (GRU on targeting signals).
   It has its own `README.md` and `make_decks.py`. **Do not modify anything in `classes/`.**
 - `extra_topics/` holds the **supplementary** notebooks, regrouped by macro-topic so that none of them repeats
-  a class: `topic1_training_neural_networks` (PyTorch from scratch + the overfitting playground),
-  `topic2_convolutional_networks` (CNN on N-termini, filter interpretation, CNN vs GRU, shuffling control,
-  transformers), `topic3_learning_without_labels` (autoencoders + peptide generation),
-  `topic4_transfer_scaling_evaluation` (ESM-2 vs descriptors, scaling, the Merck split, provenance) and
-  `extra01`-`extra03` (scaling laws, laws vs flexible models, ESM-2 on enzymes). `extra01`/`extra02` are
-  toxicity-free alternatives to class 1 / class 2.
-- The `topic*` notebooks were cut from the older `class1`-`class3` and `t01`-`t03` notebooks (removed in
-  the "regroup by macro-topic" commit; recover them from git history if needed). They cross-reference the
-  classes by number and each other by file name.
+  a class. They are numbered `extra01`-`extra07` in roughly increasing complexity (scaling laws, laws vs
+  flexible models, PyTorch from scratch, autoencoders, CNNs, ESM-2 on enzymes, transfer/scaling/evaluation).
+  `extra01`/`extra02` are toxicity-free alternatives to class 1 / class 2.
 - `data/` holds the datasets (committed). `data_prep/` holds the scripts that built them
   (`make_enzyme_dataset.py`, `make_targeting_dataset.py`, `make_scaling_datasets.py`,
   `make_esm2_embeddings.py`); they need internet and are instructor-only.
@@ -53,7 +47,7 @@ Do not create worktrees unless necessary. Work in main.
   is kept but **only run it when the user explicitly asks**, and do not create a `marimo/` directory
   otherwise. It reads notebooks from `extra_topics/` and writes to `extra_topics/marimo/`. Its playground table is
   **stale**: it still keys `t01`/`t02`/`t03`, which no longer exist (the playgrounds now live in
-  `topic1` and in `classes/class3_rnn_targeting`).
+  `extra03` and in `classes/class3_rnn_targeting`).
 - nbconvert script exports (`extra_topics/*.py`), `__pycache__/`, `.ipynb_checkpoints/`, `.venv/`, `.#*` and
   `data/proteinbert_model/` are git-ignored noise.
 

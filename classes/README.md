@@ -81,7 +81,7 @@ carry the expected numbers in the speaker notes.
 
 In all three decks the small headline on the cover says "Hands On/N" instead of "Practical N"; class 1 is
 retitled "Fish toxicity: from a line to a network, and how to trust it". The notes no longer name
-the t0x notebooks or "session 4": they point to the class notebooks, the lecture slides and `extra03`.
+the t0x notebooks or "session 4": they point to the class notebooks, the lecture slides and `extra06`.
 
 ## What is not in the three classes
 
@@ -92,7 +92,7 @@ Everything stays in `course/`.
 | `class2_architectures` (CNN, GRU, autoencoder on targeting signals) | Class 2 shows convolutional networks on slides only. |
 | `class3_applications` (ESM-2 embeddings, scaling, the Merck split on molecules) | Class 3 covers transformers and transfer learning on slides only. |
 | `extra01`, `extra02` (scaling laws) | A separate thread, not connected to the deck. |
-| `extra03_enzymes_esm2` | The natural follow-up to class 2 Part B: the same enzymes with a pretrained representation. |
+| `extra06_enzymes_esm2` | The natural follow-up to class 2 Part B: the same enzymes with a pretrained representation. |
 | ProteinBERT demo | Class 3 slides 17-18 point to it. |
 
 ## Status and caveats

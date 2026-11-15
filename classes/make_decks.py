@@ -183,7 +183,7 @@ make(N2, R(1, 11) + R(14, 27), 'Class 2 · Teaching notes.pptx',
            ('data of session 1', 'data of class 1'),
            ('one-hot encoding of each position (session 3), embeddings from protein language models (session 4)',
             'one-hot encoding of each position (class 3), embeddings from protein language models (class 3 '
-            'slides; the extra03 notebook)'),
+            'slides; the extra06 notebook)'),
            ('In the playground, compare a smaller network, more data and a penalty on the same toy curve.', ''),
            ('Train the same network with several seeds and average them: does the curve settle?', ''),
            ('Next session: a recurrent network', 'Next class: a recurrent network')])
@@ -199,7 +199,7 @@ make(N3, R(1, 30), 'Class 3 · Teaching notes.pptx',
             'models, then the break.'),
            ('appeared in t02 with protein families held out', 'appeared in class 2 with protein families held out'),
            ('Session 4 uses ESM-2 embeddings.',
-            'The lecture slides cover transformers and ProteinBERT; the extra03 notebook uses ESM-2 embeddings.'),
+            'The lecture slides cover transformers and ProteinBERT; the extra06 notebook uses ESM-2 embeddings.'),
            ('In session 4, see how pre-trained protein language model embeddings change the picture.',
-            'In the extra03 notebook, see how pre-trained protein language model embeddings (ESM-2) change '
+            'In the extra06 notebook, see how pre-trained protein language model embeddings (ESM-2) change '
             'the picture for the enzymes of class 2.')])

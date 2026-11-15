@@ -30,16 +30,16 @@ First, clone the repository on your machine. This is important so that the data 
 
 | Notebook | Topic |
 |---|---|
-| `topic1_training_neural_networks` | PyTorch from scratch (tensors, autograd, modules, the training loop), then an overfitting playground with sliders. |
-| `topic2_convolutional_networks` | 1-D CNN on protein N-termini: dense vs convolutional, reading the learned filters, CNN against the GRU of class 3, the shuffling control, transformers. |
-| `topic3_learning_without_labels` | Autoencoders (a 2-D bottleneck against PCA) and a GRU that generates signal peptides, judged honestly. |
-| `topic4_transfer_scaling_evaluation` | ESM-2 embeddings against hand-crafted descriptors, the two axes of scaling, the Merck lesson on splits, and a provenance audit. |
 | `extra01_scaling_laws` | Allometric scaling: fitting a law, the 2/3 vs 3/4 exponent, residuals, the pooling trap. |
 | `extra02_laws_vs_flexible_models` | What a flexible model cannot do: extrapolation, phylogenetic non-independence, a law that breaks. |
-| `extra03_enzymes_esm2` | A shorter take on protein language models: two representations, unseen families, a scaling law. |
+| `extra03_training_neural_networks` | PyTorch from scratch (tensors, autograd, modules, the training loop), then an overfitting playground with sliders. |
+| `extra04_learning_without_labels` | Autoencoders (a 2-D bottleneck against PCA) and a GRU that generates signal peptides, judged honestly. |
+| `extra05_convolutional_networks` | 1-D CNN on protein N-termini: dense vs convolutional, reading the learned filters, CNN against the GRU of class 3, the shuffling control, transformers. |
+| `extra06_enzymes_esm2` | A shorter take on protein language models: two representations, unseen families, a scaling law. |
+| `extra07_transfer_scaling_evaluation` | ESM-2 embeddings against hand-crafted descriptors, the two axes of scaling, the Merck lesson on splits, and a provenance audit. |
 
-`topic1`-`topic3` and `extra03` follow on from the three classes; `extra01`/`extra02` are an
-independent thread, not tied to the deck.
+`extra03`-`extra07` follow on from the three classes; `extra01`/`extra02` are an
+independent thread, not tied to the deck. The numbering is roughly increasing complexity.
 
 
 ## Install uv
@@ -82,11 +82,11 @@ reference**; the numbers quoted in the notebook answers refer to them.
   example on Colab), set `QBIO_DATA` to the data folder.
 - Runtimes are short: seconds to a few minutes per notebook.
 - Regression test: execute a notebook headless, e.g.
-  `uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" extra_topics/topic2_convolutional_networks.ipynb`.
+  `uv run jupyter nbconvert --to notebook --execute --output-dir "$TMPDIR" extra_topics/extra05_convolutional_networks.ipynb`.
   Any cell that raises aborts the run.
 - The ProteinBERT demo needs TensorFlow and has its own environment:
   `uv sync --project env_proteinbert && uv run --project env_proteinbert jupyter lab`.
-- Requires scikit-learn >= 1.4. PyTorch (CPU build is enough) is needed by `topic1`-`topic3` and by
+- Requires scikit-learn >= 1.4. PyTorch (CPU build is enough) is needed by `extra03`-`extra05` and by
   class 3; `ipywidgets` is optional (sliders in the overfitting playgrounds).
 
 If you edit a notebook, re-run it and update the numbers quoted in its answers.
