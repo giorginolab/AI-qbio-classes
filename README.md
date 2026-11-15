@@ -1,4 +1,6 @@
-# AI in Quantitative Biology: practical classes
+# AI in Quantitative Biology: hands-on classes
+
+Toni Giorgino - toni.giorgino@cnr.it - www.giorginolab.it
 
 Teaching material (not an application) for the practicals of *AI in Quantitative Biology*. Each
 notebook is self-contained, with the solutions inline: exercises are marked ✏️ and questions ❓,
