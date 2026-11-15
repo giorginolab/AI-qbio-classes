@@ -12,22 +12,22 @@ topics that the classes touch only on slides, and the scaling-law thread.
 
 ### Preparation
 
-First, clone the repository on your machine. This is important so that the data files are accessible.
+1. First, clone the repository on your machine. This is important so that the data files are accessible.
 
-```bash
-git clone https://github.com/giorginolab/AI-qbio-classes.git
-```
+    ```bash
+    git clone https://github.com/giorginolab/AI-qbio-classes.git
+    ```
 
-Second, install UV. UV simplifies installation and run of all things Python. Do yourself a favour and 
+2. Second, install UV. UV simplifies installation and run of all things Python. Do yourself a favour and 
 use it. See [instructions](https://docs.astral.sh/uv/getting-started/installation/#__tabbed_1_2).
 
-Third, create an environment
+3. Third, create an environment
 
-```bash
-cd AI-qbio-classes
-uv venv --python 3.12
-uv pip install -r requirements.txt
-```
+    ```bash
+    cd AI-qbio-classes
+    uv venv --python 3.12
+    uv pip install -r requirements.txt
+    ```
 
 ### Open the notebooks in jupyter
 
@@ -46,7 +46,7 @@ uv run jupyter lab
 |---|---|
 | `classes/` | **The three classes** (one folder each: deck, teaching notes, notebook), 150 / 90 / 150 minutes. See its own `README.md`. |
 | `data/` | Datasets read by the notebooks (committed, so nothing needs downloading). |
-| `extra_topics/` | **Supplementary notebooks** (the source; there is no generator). See the table below. |
+| `extra_topics/` | Supplementary notebooks. Standalone expansions to the topics. Recommended. |
 | `REFERENCES.md` | Papers cited on the lecture slides. Possible suggestions for your presentation. |
 | `data_prep/` | Scripts that built the datasets from public sources; instructor use only, they need internet. |
 | `protein_bert/`, `env_proteinbert/` | Upstream ProteinBERT code and a pinned TensorFlow environment for its demo notebook. |
