@@ -31,6 +31,7 @@ use it. See [instructions](https://docs.astral.sh/uv/getting-started/installatio
     uv pip install -r requirements.txt
     ```
 
+
 ### Open the notebooks in jupyter
 
 Run jupyter from the repository directory:
@@ -38,6 +39,23 @@ Run jupyter from the repository directory:
 ```bash
 cd AI-qbio-classes
 uv run jupyter lab
+```
+
+### Alternative: use conda
+
+This is **untested**. You likely need to install pytorch separately, so remove it from the requirements. Then...
+
+```bash
+conda create -n ai-qbio-classes-env conda create -n ai-qbio-classes-env --file requirements.txt
+conda activate ai-qbio-classes-env
+conda install pytorch::pytorch
+```
+
+After that you run with...
+
+```bash
+conda activate ai-qbio-classes-env
+jupyter lab
 ```
 
 
