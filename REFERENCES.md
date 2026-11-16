@@ -11,7 +11,7 @@
 - Karras T, Laine S, Aittala M, et al. Analyzing and Improving the Image Quality of StyleGAN (StyleGAN2). [arXiv:1912.04958](https://arxiv.org/abs/1912.04958) (2019)
 - Devlin J, Chang M-W, Lee K, Toutanova K. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. [arXiv:1810.04805](https://arxiv.org/abs/1810.04805) (2018)
 
-### Bio-specific architectures
+### Architectures
 
 These may work well as paper to present.
 
@@ -22,7 +22,7 @@ These may work well as paper to present.
 - LeCun Y, Bottou L, Bengio Y, Haffner P. Gradient-based learning applied to document recognition (LeNet). *Proc IEEE* 86, 2278-2324 (1998). [doi:10.1109/5.726791](https://doi.org/10.1109/5.726791)
 - Szegedy C, et al. Going deeper with convolutions (GoogLeNet). *CVPR* 2015, 1-9. [doi:10.1109/CVPR.2015.7298594](https://doi.org/10.1109/CVPR.2015.7298594)
 
-### Applications
+### Bio-specific applications
 
 These may work well (even better) as paper to present.
 
