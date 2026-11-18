@@ -10,6 +10,16 @@ The three classes actually taught are in `classes/`. `extra_topics/` holds suppl
 topics that the classes touch only on slides, and the scaling-law thread.
 
 
+## A kind request
+
+Help the next generation of students: after these three classes, please fill the
+questionnaire here **about the three hands-on classes**. You can 
+submit anonymously using the "Private browsing" (or similar) feature
+of the browser.  (In-person or e-mail feedback is also welcome.)
+
+https://forms.cloud.microsoft/e/GB2tKL3YFG
+
+
 ## Running the notebooks
 
 ### Preparation
